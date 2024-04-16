@@ -1,0 +1,496 @@
+\documentclass[a4paper,12pt]{report}
+%
+%			PREAMBOLO
+%
+\usepackage[a4paper]{geometry}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{epsfig}
+\usepackage[italian]{babel}
+\usepackage{setspace}
+\usepackage{tesi}
+
+% per inserire codice java
+\usepackage{listings}
+
+\lstset{
+    language=Java,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4
+}
+
+%per personalizzare i caption del listing
+\usepackage{caption}
+\DeclareCaptionLabelFormat{code}{Codice #2}
+\captionsetup[lstlisting]{labelformat=code}
+
+% per le accentate
+\usepackage[utf8]{inputenc}
+%
+\newtheorem{myteor}{Teorema}[section]
+
+\newenvironment{teor}{\begin{myteor}\sl}{\end{myteor}}
+
+\usepackage{fancyhdr}
+% Definizione del nuovo stile di pagina
+\fancypagestyle{mystyle}{
+    \fancyhf{} % Pulisce tutti i campi di intestazione e piè di pagina
+    \fancyhead[R]{\thepage} % posiziona il numero di pagina in alto a destra della pagine
+    \fancyhead[L]{\textsc{capitolo \thechapter}} % Posiziona il numero del capitolo a sinistra
+    \renewcommand{\headrulewidth}{1pt} % Aggiunge la linea dell'intestazione
+    \renewcommand{\footrulewidth}{0pt} % Rimuove la linea del piè di pagina
+    \setlength{\headheight}{14.5pt}
+}
+
+%
+%
+%			TITOLO
+%
+\begin{document}
+\title{Implementazione in Java del metodo di risoluzione per la logica classica, ed estensione a logiche modali}
+\author{Nicolò IACCARINO}
+\dept{Corso di Laurea in Informatica} 
+\anno{2023-2024}
+\matricola{903870}
+\relatore{Prof. Camillo FIORENTINI}
+% 
+%			DEDICA
+%
+\beforepreface
+\prefacesection{Dediche}
+        {\hfill \Large {\sl dedicato a \dots}}
+% 
+%			PREFAZIONE
+%
+\prefacesection{Prefazione}
+...
+
+%
+%
+%			ORGANIZZAZIONE
+% \section*{Organizzazione della tesi}
+% \label{organizzazione}
+% La tesi \`e organizzata come segue:
+% \begin{itemize}
+% \item nel Capitolo \ref{intro} ....
+% \end{itemize}
+
+\afterpreface
+\pagestyle{mystyle} %togli questo per ripristinare la numerazione del template
+% 
+% 
+%			CAPITOLO 1
+\chapter{Introduzione}
+\label{intro}
+
+\section{Panoramica generale}
+Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione per la logica classica, ovvero la logica proposizionale. Nel capitolo \ref{modal} verrà trattato il metodo di risoluzione per la logica modale, che rappresenta un'estensione di quella proposizionale. Di seguito viene presentata una breve introduzione della logica proposizionale, utile a capire il funzionamento del metodo di risoluzione, trattato nel capitolo \ref{resol}.
+
+\section{Logica proposizionale}
+
+La logica proposizionale è un sistema formale per la rappresentazione e l'analisi del ragionamento, essa si basa su proposizioni. La sua sintassi comprende formule atomiche e formule composte. La semantica della logica proposizionale stabilisce come valutare le formule, associando loro valori di verità in base a interpretazioni che specificano lo stato di verità di ogni proposizione atomica.
+
+\subsection{Formule atomiche}
+
+Le formule atomiche rappresentano il caso più semplice di formula, nelle quali non vengono usati gli operatori logici. Una formula atomica può essere scritta come una lettera proposizionale, ad esempio ``$p$''; essa viene valutata come vera ($true$) o falsa ($false$) in base all'interpretazione considerata. 
+
+\subsection{Formule composte}
+
+Le formule composte sono costruite mediante operatori logici (detti anche ``connettivi'') a partire dalle formule atomiche. I connettivi della logica proposizionale sono:
+\begin{itemize}
+    \item $\lnot \;$ è la negazione logica (\textbf{not})
+    \item $\land \;$ è la congiunzione logica (\textbf{and})
+    \item $\lor \;$ è la disgiunzione logica (\textbf{or})
+    \item $\implies \;$ è l'implicazione logica (\textbf{implica})
+    \item $\iff \;$ è la doppia implicazione (\textbf{se e solo se})
+\end{itemize}
+Consideriamo il seguente esempio di formula composta: 
+\[ \lnot p \land q\] essa è ottenuta a partire dalla atomica ``$p$'' che viene negata tramite la negazione logica ($\lnot$), e successivamente messa in congiunzione logica ($\land$) con l'atomica ``$q$''. 
+Si possono creare formule composte più complicate, in tal caso si usano le parentesi tonde per evitare ambiguità tra i connettivi.
+
+L'interpretazione di una formula composta dipende dai connettivi usati e dall'interpretazione delle sue atomiche.
+
+\subsection{Soddisfacibilità di una formula}
+Una formula $F$ si dice \textbf{soddisfacibile} se e solo se ammette almeno un'interpretazione che la rende vera, ossia esiste almeno un assegnamento di valori di verità alle atomiche che rende vera $F$. Se tutte le interpretazioni possibili la rendono falsa, allora $F$ si dice \textbf{insoddisfacibile}.
+
+\subsection{Tautologie e contraddizioni}
+\label{taut-contr}
+Una formula è una \textbf{tautologia} se e solo se ogni interpretazione della formula la rende vera. Quindi una tautologia è una formula sempre vera, che come vedremo, può essere ridondante in alcuni casi. Ad esempio, la formula ``$\mathbf{p \, \lor \, \lnot p}$'' è il caso più semplice di tautologia.
+
+Una formula è una \textbf{contraddizione} se e solo se è insoddisfacibile, ovvero tutte le sue interpretazioni la rendono falsa. Ad esempio, la formula ``$\mathbf{p \, \land \, \lnot p}$'' è una contraddizione. \`E bene notare che se si applica la negazione logica ad una contraddizione si ottiene una tautologia, e viceversa.
+
+% 
+% 
+%			CAPITOLO 2
+\chapter{Il metodo di risoluzione per la logica classica}
+\label{resol}
+Il metodo di risoluzione è un sistema di calcolo logico per inferire la soddisfacibilità di una formula, esso ha avuto un impatto significativo in vari settori della matematica, dell'informatica e dell'ingegneria. È stato utilizzato per dimostrare teoremi importanti, risolvere problemi pratici e sviluppare algoritmi per l'intelligenza artificiale, la verifica formale e la progettazione dei circuiti. 
+
+Questo metodo consiste nell'applicare più volte una sola regola: la regola di risoluzione. Il difetto è che essa opera soltanto su formule espresse in \textbf{Forma normale congiuntiva (CNF)}, ovvero come congiunzione di clausole. Prima di vedere il metodo di risoluzione è bene capire in che cosa consiste la \textit{CNF}.
+
+\section{Forma normale congiuntiva}
+\subsection{Letterali}
+Un letterale è una formula atomica, oppure la sua negazione. Ad esempio ``$a$'' e ``$\lnot b$'' sono dei letterali, essi rappresentano l'elemento fondamentale delle clausole.
+
+\subsubsection{Opposto di un letterale}
+Dato un letterale $L$, il suo \emph{opposto} $\overline{L}$ è la sua negazione, ad esempio: se $L = p$ allora $\overline{L} = \lnot p$ e se $L = \lnot p$ allora $\overline{L} = p$.
+
+\subsection{Clausole}
+Una clausola è una disgiunzione di letterali. Consideriamo il seguente esempio:
+\[ a \lor \lnot b \lor \lnot c \lor d \] 
+questa è una clausola formata dai letterali ``$a$'', ``$\lnot b$'', ``$\lnot c$'', ``$d$''.
+
+Una clausola può anche essere rappresentata in notazione insiemistica, in questo modo diventa un insieme di letterali. La clausola dell'esempio precedente diventa:
+\[ \{a, \lnot b, \lnot c, d\}\]
+che come si può notare, il simbolo di disgiunzione logica non è più presente, ma è sottinteso. D'ora in avanti useremo sempre la notazione insiemistica per le clausole.
+
+L'interpretazione delle clausole è semplice: una clausola è vera se e solo se almeno un letterale appartenente ad essa è vero in una data interpretazione (a causa della disgiunzione).
+
+\subsubsection{Clausola tautologica}
+Una clausola è una tautologia se e solo se contiene un letterale ed il suo opposto. Ad esempio: ``$\{ a, b, c, \lnot a \}$'' è una tautologia, perché contiene il letterale ``$a$'' ed il suo opposto. Infatti questo tipo di clausola risulta essere sempre vera, qualunque sia l'interpretazione dei suoi letterali (si veda la sezione \ref{taut-contr}).
+
+\subsubsection{Clausola vuota}
+è importante notare che una clausola può non contenere alcun letterale, in tal caso si parla di \textbf{clausola vuota}. La clausola vuota rappresenta la \textbf{contraddizione} (si veda la sezione \ref{taut-contr}) e si può indicare con ``$\{ \}$''.
+
+\subsection{Insiemi di clausole}
+La \textit{CNF} consiste in una congiunzione di clausole. Seguendo lo stesso approccio per le clausole, la \textit{CNF} può essere rappresentata anch'essa in notazione insiemistica come \textbf{insieme di clausole}, quindi ad esempio la seguente \textit{CNF}:
+\[ (a \lor b) \land (\lnot a \lor c) \land (\lnot b \lor c) \]
+diventa
+\[\{ \; \{a, b\}, \{\lnot a, c\}, \{\lnot b, c\} \; \}\]
+anche in questo caso la congiunzione è sottintesa. Possiamo quindi considerare la \textit{CNF} e gli insiemi di clausole come lo stesso oggetto semantico.
+
+\subsubsection{Soddisfacibilità di un insieme di clausole}
+Un insieme di clausole $S$ è \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che rende vere \textbf{tutte} le clausole appartenenti a $S$ (a causa della congiunzione).
+
+\section{Regola di risoluzione}
+La regola di risoluzione è una regola di inferenza che, a partire da due clausole di premessa, genera una clausola conclusione (detta \textbf{risolvente}). Per poter applicare questa regola su due clausole $C1$ e $C2$, è necessario che esista un letterale $L \in C1$ ed il suo opposto $\overline{L} \in C2$. Se questo non dovesse capitare, allora la regola di risoluzione non è applicabile su $C1$ e $C2$.
+
+\subsection{Clausola risolvente}
+Per poter ottenere la clausola risolvente si rimuove il letterale $L$ dalla clausola $C1$ ed il suo opposto $\overline{L}$ dalla clausola $C2$, infine si uniscono le due clausole (con l'operazione di \textbf{unione} insiemistica). Vediamo un esempio:
+\[C1 = \{ a, b \}\]
+\[C2 = \{ \lnot b, c, d \}\]
+la risolvente R è:
+\[R = \{ a, c, d \}\]
+ottenuta cancellando il letterale ``$b$'' (da $C1$) ed il suo opposto ``$\lnot b$'' (da $C2$), e facendo l'unione.
+
+\section{Funzionamento del metodo di risoluzione}
+Il metodo di risoluzione opera su un insieme $S$ di clausole, e applica (dove possibile) la regola di risoluzione su tutte le coppie di clausole appartenenti a $S$ con lo scopo di trovare la contraddizione (clausola vuota). Ogni volta che il metodo applica la regola di risoluzione, la risolvente viene aggiunta a $S$, la quale potrà poi essere considerata come clausola di premessa per una successiva applicazione della regola. Se si riesce a trovare la clausola vuota, allora il metodo prova che $S$ è \textbf{insoddisfacibile}; se invece, dopo aver applicato la regola su tutte le possibili coppie di clausole non trova la contraddizione, allora il metodo prova che $S$ è \textbf{soddisfacibile}.
+
+\subsection{Gestione delle clausole tautologiche}
+Nella \textit{CNF} le clausole tautologiche rappresentano una ridondanza, perché essendo la \textit{CNF} una congiunzione di clausole, esse non indicano alcun valore informativo. Questo si traduce col fatto che nel metodo di risoluzione si possono ignorare questo tipo di clausole, rendendo più semplice l'esecuzione del metodo anche da un punto di vista computazionale (come vedremo nel capitolo \ref{impl}).
+
+Un altro aspetto da tenere in considerazione è che applicando la regola di risoluzione è possibile che la risolvente sia una tautologia, in tal caso la risolvente viene scartata (non viene aggiunta a $S$). Vediamo un esempio di clausole $C1$ e $C2$ che generano una risolvente $R$ tautologica:
+\[C1 = \{ a, \lnot b \}\]
+\[C2 = \{ \lnot a, b \}\]
+\[ \rule{4cm}{0.2pt} \]
+\[R = \{ \lnot b, b \}\]
+per ottenere $R$ è stato rimosso il letterale $a$ ed il suo opposto. Si può notare che in questo caso si poteva anche considerare il letterale $\lnot b \in C1$ ed il suo opposto $b \in C2$ ed ottenere $R^{'} = \{ \lnot a, a \}$, ma dal punto di vista del metodo di risoluzione non cambia nulla perché $R$ e $R^{'}$ sono entrambe tautologie, e quindi scartate.
+
+\subsection{Esempio pratico del metodo di risoluzione}
+\subsubsection{Esempio su un insieme di clausole insoddisfacibile}
+Consideriamo il seguente insieme di clausole $S$:
+\[ S = \{ \; \{a\}, \{\lnot a, b\}, \{\lnot b\} \; \} \]
+in questo caso la contraddizione si ricava applicando due volte la regola di risoluzione:
+
+\textbf{Step 1:} \[ C1 = \{a\} \] \[ C2 = \{\lnot a, b\} \] \[ \rule{4cm}{0.2pt} \] \[R = \{b \}\]
+
+\textbf{Step 2:} \[ C1 = \{b\} \] \[ C2 = \{\lnot b\} \] \[ \rule{4cm}{0.2pt} \] \[R = \{\}\]
+nello \textit{Step 2} la regola di risoluzione ha trovato la clausola vuota, questo dimostra che $S$ è \textbf{insoddisfacibile}. Si noti che la clausola $C1$ dello \textit{Step 2} è la risolvente $R$ dello \textit{Step 1}.
+
+\subsubsection{Esempio su un insieme di clausole soddisfacibile}
+Consideriamo ora il seguente insieme di clausole $S^{'}$:
+\[ S^{'} = \{ \; \{a\}, \{\lnot a, b\}, \{\lnot c\} \; \} \]
+in questo caso il metodo di risoluzione applica una sola volta la regola:
+\[ C1 = \{a\} \] \[ C2 = \{\lnot a, b\} \] \[ \rule{4cm}{0.2pt} \] \[R = \{b \}\]
+stavolta, il metodo non riesce più ad andare avanti, perché la regola non è più applicabile in nessun'altra coppia di clausole presenti in $S^{'}$, anche tenendo conto della clausola $R$ appena generata. Questo significa che la contraddizione non può essere ricavata, e quindi $S^{'}$ è \textbf{soddisfacibile}.
+
+% 
+% 
+%			CAPITOLO 3
+\chapter{Implementazione in Java del metodo di risoluzione}
+\label{impl}
+
+Questo capitolo si concentra sull'implementazione pratica del metodo di risoluzione per la logica classica in linguaggio Java. Esploreremo come tradurre i concetti teorici esaminati nei capitoli precedenti in codice eseguibile, analizzando le classi, i metodi e le strutture dati necessari per realizzare efficacemente il metodo di risoluzione. Partiremo con una panoramica generale dell'architettura del progetto Java, identificando le principali classi per rappresentare le strutture dati necessarie per il metodo di risoluzione. Successivamente, affronteremo la classe che implementa l'algoritmo di risoluzione. Nel capitolo \ref{formulas} vedremo l'implementazione delle formule della logica proposizionale e la loro conversione in \textit{CNF}.
+
+\section{Struttura del progetto Java}
+
+Di seguito viene mostrato l'elenco dei package contenuti nella directory \textit{src} del progetto, e i file java contenuti in ognuno di essi:
+\begin{itemize}
+    \item \textbf{literal}
+        \begin{itemize}
+            \item \textit{Literal.java}
+            \item \textit{Atom.java}
+            \item \textit{NegAtom.java}
+        \end{itemize}
+    \item \textbf{cnf}
+        \begin{itemize}
+            \item \textit{Clause.java}
+            \item \textit{ClauseSet.java}
+        \end{itemize}
+    \item \textbf{resolution}
+        \begin{itemize}
+            \item \textit{Resolution.java}
+            \item \textit{Step.java}
+        \end{itemize}
+    \item \textbf{formula}
+        \begin{itemize}
+            \item \textit{Formula.java}
+            \item \textit{AtomicFormula.java}
+            \item \textit{CompoundFormula.java}
+        \end{itemize}
+    \item \textbf{connective}
+        \begin{itemize}
+            \item \textit{Connective.java}
+        \end{itemize}
+    \item \textbf{antlr4}
+        \begin{itemize}
+            \item \textit{FormulaExpression.g4}
+            \item \textit{FormulaExpressionListener.java}
+            \item \textit{FormulaExpressionBaseListener.java}
+            \item \textit{FormulaExpressionLexer.java}
+            \item \textit{FormulaExpressionParser.java}
+            \item \textit{FormulaListenerImplementation.java}
+            \item \textit{ParseFormula.java}
+        \end{itemize}
+    \item \textbf{test}
+        \begin{itemize}
+            \item \textit{ResolutionTest.java}
+            \item (file \textit{txt} per il test)
+        \end{itemize}
+    \item \textit{App.java}
+\end{itemize}
+In questo capitolo ci concentriamo sui primi tre package dell'elenco, che sono i principali per l'implementazione del metodo di risoluzione. Gli altri package contengono le classi per rappresentare le formule, eseguire il parsing delle formule, effettuare il testing, ed infine è presente file \textit{App.java} che contiene il metodo \textit{main} (si noti che questa classe non è contenuta in alcun package).
+
+
+\section{Strutture dati per la CNF}
+I package ``\textbf{literal}'' e ``\textbf{cnf}'' contengono le classi per rappresentare la CNF, fondamentali per il metodo di risoluzione.
+
+\subsection{La classe astratta Literal e le classi Atom e NegAtom}
+La classe \texttt{Literal} permette di rappresentare i letterali. Essa è una classe astratta che fornisce un'interfaccia comune per le classi \textit{Atom} e \textit{NegAtom}, che la estendono per rappresentare rispettivamente un letterale semplice e un letterale negato. Questo approccio consente una gestione modulare dei letterali, facilitando l'estensione e il mantenimento del codice. La classe \textit{Literal} contiene una stringa come campo privato che identifica il nome del letterale, e il corrispettivo metodo \textit{getName()} che lo restituisce; inoltre, ha un metodo astratto \textit{getOpposite()} sovrascritto dalle due classi che la estendono, che permette di restituire l'opposto del letterale sul quale viene chiamato (se chiamato su un'istanza di \textit{Atom} restituisce l'istanza corrispondente di \textit{NegAtom}, e viceversa).
+
+\begin{lstlisting}[title={metodo getOpposite sovrascritto dalla classe Atom}]
+    @Override
+    public Literal getOpposite() {
+        return new NegAtom(this.getName());
+    }
+\end{lstlisting}
+
+\subsection{La classe Clause}
+Questa classe permette di rappresentare le clausole della \textit{CNF}, tenendo conto della loro notazione insiemistica. La classe contiene il campo \texttt{literals} di tipo \texttt{Set<Literal>} che consiste nell'insieme di letterali, inoltre contiene anche il campo \texttt{index} che rappresenta un indice numerico che identifica la clausola istanziata.
+
+All'interno della classe \textit{Clause} sono presenti i classici metodi per gli insiemi (\texttt{add}, \texttt{remove}, \texttt{contains}, ecc.), in aggiunta al metodo \texttt{union} che permette di eseguire l'unione insiemistica con un'altra clausola specificata come parametro. Un altro importante metodo è \texttt{isTautology} che restituisce \textit{true} se e solo se la clausola è una tautologia (si veda il codice \ref{istaut}). La classe \textit{Clause} segue il design pattern ``iterator'', che permette di iterare facilmente sui letterali di una clausola tramite il ciclo \textit{for-each} di Java.
+
+\begin{lstlisting}[caption={Metodo isTautology della classe Clause}, label={istaut}]
+    public boolean isTautology() {
+        for (Literal l1 : this.literals) {
+            for (Literal l2 : this.literals) { 
+                if (l1.equals(l2.getOpposite())) return true;
+            }
+        }
+        return false;
+    }
+\end{lstlisting}
+Questo codice mostrato esegue un doppio loop sulla clausola (utilizzando il campo \texttt{literals}) per verificare la presenza di un letterale ed il suo opposto all'interno di essa. Se questo dovesse capitare, allora la clausola è una tautologia e il metodo restituisce \textit{true}; altrimenti restituisce \textit{false} dopo aver terminato il doppio loop.
+
+\subsection{La classe ClauseSet}
+Questa classe rappresenta la \textit{CNF} in notazione insiemistica, ovvero gli insiemi di clausole. Nella classe è presente il campo \texttt{clauses} di tipo \texttt{Set<Clause>}, che contiene le clausole dell'istanza di \textit{ClauseSet}. Anche in questo caso ci sono i metodi per gestire gli elementi dell'insieme come nella classe \textit{Clause}, ed il metodo \texttt{union} per fare l'unione insiemistica dell'oggetto con un'altra istanza di \textit{ClauseSet}. Importante è il metodo \texttt{removeTautologies} che rimuove le clausole tautologiche dall'oggetto, in questo modo si tolgono le ridondanze, rendendo più semplice la \textit{CNF} (si veda il codice \ref{remtaut}). Anche la classe \textit{ClauseSet} segue il design pattern ``iterator''.
+
+\begin{lstlisting}[caption={Metodo ``removeTautologies'' della classe ClauseSet}, label={remtaut}]
+    public void removeTautologies() {
+        List<Clause> tautologies = new ArrayList<>();
+        for (Clause c : this.clauses) {
+            if (c.isTautology()) {
+                tautologies.add(c);
+            }
+        }
+        for (Clause taut : tautologies) {
+            this.clauses.remove(taut);
+        }
+    }
+\end{lstlisting}
+Questo codice esegue la rimozione delle clausole tautologiche: prepara una lista \texttt{tautologies} vuota, esegue un loop sul campo \texttt{clauses} per aggiungere alla lista le tautologie, ed infine esegue un loop sulla lista \texttt{tautologies} per rimuovere le tautologie contenute in \texttt{clauses}.
+
+\section{La classe Resolution}
+La classe \textit{Resolution} è una classe senza costruttori che contiene alcuni campi statici e metodi statici per l'implementazione del metodo di risoluzione. I campi della classe sono tre:
+\begin{itemize}
+    \item \texttt{visited}: è di tipo \texttt{Map<Integer, Set<Integer>>} e consiste in una mappa che associa una clausola ad un insieme di clausole (utilizzando i loro indici). Essa memorizza tutte le clausole alle quali è stata applicata la regola di risoluzione con la clausola rappresentata dalla chiave della mappa (si veda la sottosezione \ref{visited}).
+    \item \texttt{enableSteps}: è un campo booleano che, se impostato a \texttt{true}, permette di abilitare i passaggi del metodo di risoluzione quando viene eseguito (si veda la sottosezione \ref{step}).
+    \item \texttt{trace}: è una lista di \texttt{Step}, che memorizza tutti i passaggi del metodo di risoluzione se il campo \texttt{enableSteps} è impostato a \texttt{true} (si veda la sottosezione \ref{step}).
+\end{itemize}
+
+I metodi statici della classe sono:
+\begin{itemize}
+    \item \texttt{isSatisfiable} (spiegato nella sottosezione \ref{isSat})
+    \item \texttt{getComplementaryLiteral} (spiegato nella sottosezione \ref{isSat})
+    \item \texttt{alreadyVisited} (spiegato nella sottosezione \ref{isSat})
+    \item \texttt{resolRule} (spiegato nella sottosezione \ref{resolRule})
+    \item \texttt{setEnableSteps} (spiegato nella sottosezione \ref{step})
+    \item \texttt{printTrace} (spiegato nella sottosezione \ref{step})
+\end{itemize}
+
+\subsection{Il metodo ``isSatisfiable''}
+\label{isSat}
+Questo è il metodo più importante della classe \textit{Resolution}. Esso ha come parametro in input un oggetto ClauseSet \texttt{s} e restituisce \texttt{true} se \texttt{s} è soddisfacibile, \texttt{false} altrimenti. Di seguito viene mostrato il codice. Il metodo \textit{isSatisfiable} dopo aver controllato che \texttt{s} non sia \texttt{null} o un insieme vuoto, elimina tutte le clausole tautologiche appartenenti a \texttt{s} richiamando il metodo \texttt{removeTautologies} sull'oggetto \texttt{s}. Successivamente controlla che sia vuoto (in tal caso viene restituito \texttt{true} perchè \texttt{s} è una tautologia), e in caso negativo continua l'esecuzione inizializzando i campi \texttt{visited} e \texttt{trace}; inoltre, le clausole in \texttt{s} vengono inserite nella lista di clausole \texttt{listCl} per poter consentire la modifica della lista durante il suo scorrimento (eseguito dal ciclo \textit{for}). 
+
+A questo punto vengono eseguiti due cicli for innestati su \texttt{listCl}; il ciclo esterno itera la lista utilizzando la clausola \texttt{c1}, il ciclo interno utilizza la clausola \texttt{c2}. Il codice \ref{double-for} mostra l'esecuzione dei due cicli. 
+
+\begin{lstlisting}[caption={Metodo ``isSatisfiable'' della classe Resolution}, label={double-for}]
+        for (int i = 0; i < listCl.size(); i++) {
+            Clause c1 = listCl.get(i);
+            int index1 = c1.getIndex();
+            for (int j = 0; j < listCl.size(); j++) {
+                Clause c2 = listCl.get(j);
+                int index2 = c2.getIndex();
+                if ((i != j) && !alreadyVisited(c1, c2)) {
+                    Literal complemLit = getComplementaryLiterals(c1, c2);
+                    if (complemLit != null) {
+                        if (index1 < index2) {
+                            (visited.get(index1)).add(index2);
+                        } else {
+                            (visited.get(index2)).add(index1);
+                        }
+                        Clause newClause = resolRule(c1, c2, complemLit);
+                        Step step = null;
+                        if (enableSteps) {
+                            step = new Step(c1, c2, newClause, complemLit);
+                            trace.add(step);
+                        }
+                        if (newClause.isEmpty()) {
+                            if (enableSteps) printTrace();
+                            return false;
+                        } 
+                        if (newClause.isTautology()) {
+                            if (enableSteps)
+                                step.setTautology();
+                        } else if (listCl.contains(newClause)) {
+                            if (enableSteps)
+                                step.setAlreadyPresent();
+                        } else {
+                            visited.put(newClause.getIndex(), new HashSet<>());
+                            listCl.add(newClause);
+                        }
+                    }
+                }
+            }
+        }
+        if (enableSteps) printTrace();
+        return true;
+    }
+\end{lstlisting}
+
+Una volta entrato nel secondo ciclo, il metodo esegue la regola di risoluzione (metodo \texttt{resolRule}) \texttt{c1} e \texttt{c2} 
+
+\subsection{Memorizzazione delle coppie di clausole visitate}
+\label{visited}
+\subsection{Implementazione della regola di risoluzione}
+\label{resolRule}
+\subsection{Gestione degli step}
+\label{step}
+
+% 
+% 
+%			CAPITOLO 4
+\chapter{Implementazione in Java di formule generiche}
+\label{formulas}
+
+\section{La classe astratta Formula}
+
+\section{La classe AtomicFormula}
+
+\section{La classe CompoundFormula}
+\subsection{L'enumerazione Connective}
+
+\section{Conversione di una formula in CNF}
+
+\section{Parsing di formule}
+\subsection{Utilizzo del parser ANTLR4}
+
+% 
+% 
+%			CAPITOLO 5
+\chapter{Logica modale ed estensione del metodo di risoluzione}
+\label{modal}
+
+% TODO definire le sezioni del capitolo
+
+
+% 
+% 
+%			CAPITOLO 6
+\chapter{Applicazioni pratiche del metodo di risoluzione}
+\label{app}
+
+\section{Verificare la validità di una formula}
+\section{Dimostrazione di conseguenze logiche}
+\section{Dimostrazione di equivalenze logiche}
+
+% 
+% 
+%			CAPITOLO 7
+\chapter{Testing}
+\label{testing}
+
+\section{Struttura del file di test}
+
+% 
+% 
+%			CAPITOLO 8
+\chapter{Conclusioni}
+\label{conclusion}
+
+%
+%			BIBLIOGRAFIA
+%
+\begin{thebibliography}{00}
+
+% esempio di bibliografia:
+
+
+%
+\bibitem{esempio}
+...
+%
+% \bibitem{gotti91}
+% M. Gotti, I linguaggi specialistici, Firenze, La Nuova Italia, 1991.
+% %
+% \bibitem{wellek62}
+% R. Wellek, A. Warren, Theory of Literature , 3rd edition, New York, Harcourt, 1962.
+% %
+% \bibitem{canziani78}
+% A. Canziani et al., Come comunica il teatro: dal testo alla scena. Milano, Il Formichiere, 1978.
+% %
+% \bibitem{MoD67}
+% Ministry of Defence, Great Britain, Author and Subject Catalogues of the Naval Library, London, Ministry of Defence, HMSO, 1967.
+% %
+% \bibitem{heine23}
+% H. Heine, Pensieri e ghiribizzi. A cura di A. Meozzi. Lanciano, Carabba, 1923.
+% %
+% \bibitem{basso62}
+% L. Basso, ``Capitalismo monopolistico e strategia operaia'', Problemi del socialismo, vol. 8, n. 5, pp. 585-612, 1962.
+% %
+% \bibitem{avirovic93}
+% L. Avirovic, J. Dodds (a cura di), Atti del Convegno internazionale ``Umberto Eco, Claudio Magris. Autori e traduttori a confronto'' ( Trieste, 27-28 novembre 1989), Udine, Campanotto, 1993.
+% %
+% \bibitem{gans67}
+% E.L. Gans, "The Discovery of Illusion: Flaubert's Early Works, 1835-1837", unpublished Ph.D. Dissertation, Johns Hopkins University, 1967.
+% %
+% \bibitem{harrison92}
+% R. Harrison, Bibliography of planned languages (excluding Esperanto).  \url{http://www.vor.nu/langlab/bibliog.html}, 1992, agg. 1997.
+%
+\end{thebibliography}
+% 
+
+%
+%			RINGRAZIAMENTI
+%
+\prefacesection{Ringraziamenti}
+...
+
+\end{document}
+
+
+ 
