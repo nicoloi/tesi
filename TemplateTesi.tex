@@ -20,7 +20,9 @@
     frame=single,
     breaklines=true,
     breakatwhitespace=true,
-    tabsize=4
+    tabsize=4,
+    numbers=left,
+    % numberstyle=\tiny
 }
 
 %per personalizzare i caption del listing
@@ -326,7 +328,7 @@ I metodi statici della classe sono:
 \begin{itemize}
     \item \texttt{isSatisfiable} (spiegato nella sottosezione \ref{isSat})
     \item \texttt{getComplementaryLiteral} (spiegato nella sottosezione \ref{isSat})
-    \item \texttt{alreadyVisited} (spiegato nella sottosezione \ref{isSat})
+    \item \texttt{alreadyVisited} (spiegato nella sottosezione \ref{visited})
     \item \texttt{resolRule} (spiegato nella sottosezione \ref{resolRule})
     \item \texttt{setEnableSteps} (spiegato nella sottosezione \ref{step})
     \item \texttt{printTrace} (spiegato nella sottosezione \ref{step})
@@ -346,32 +348,32 @@ A questo punto vengono eseguiti due cicli for innestati su \texttt{listCl}; il c
                 Clause c2 = listCl.get(j);
                 int index2 = c2.getIndex();
                 if ((i != j) && !alreadyVisited(c1, c2)) {
-                    Literal complemLit = getComplementaryLiterals(c1, c2);
+                    Literal complemLit = getComplementaryLiteral(c1, c2);
                     if (complemLit != null) {
                         if (index1 < index2) {
                             (visited.get(index1)).add(index2);
                         } else {
                             (visited.get(index2)).add(index1);
                         }
-                        Clause newClause = resolRule(c1, c2, complemLit);
+                        Clause resolvent = resolRule(c1, c2, complemLit);
                         Step step = null;
                         if (enableSteps) {
-                            step = new Step(c1, c2, newClause, complemLit);
+                            step = new Step(c1, c2, resolvent, complemLit);
                             trace.add(step);
                         }
-                        if (newClause.isEmpty()) {
+                        if (resolvent.isEmpty()) {
                             if (enableSteps) printTrace();
                             return false;
                         } 
-                        if (newClause.isTautology()) {
+                        if (resolvent.isTautology()) {
                             if (enableSteps)
                                 step.setTautology();
-                        } else if (listCl.contains(newClause)) {
+                        } else if (listCl.contains(resolvent)) {
                             if (enableSteps)
                                 step.setAlreadyPresent();
                         } else {
-                            visited.put(newClause.getIndex(), new HashSet<>());
-                            listCl.add(newClause);
+                            visited.put(resolvent.getIndex(), new HashSet<>());
+                            listCl.add(resolvent);
                         }
                     }
                 }
@@ -382,14 +384,112 @@ A questo punto vengono eseguiti due cicli for innestati su \texttt{listCl}; il c
     }
 \end{lstlisting}
 
-Una volta entrato nel secondo ciclo, il metodo esegue la regola di risoluzione (metodo \texttt{resolRule}) \texttt{c1} e \texttt{c2} 
+Una volta entrato nel secondo ciclo, il metodo esegue la regola di risoluzione (metodo \texttt{resolRule}) su \texttt{c1} e \texttt{c2}, se e solo se le due clausole non sono uguali, non sono già state visitate in precedenza, e contengono almeno un letterale complementare in comune (metodo \texttt{getComplementaryLiteral}). Una volta eseguita la regola sulle due clausole, viene controllato se la clausola \texttt{resolvent} è vuota (metodo \texttt{isEmpty}); in tal caso il metodo restituisce \texttt{false} e termina la sua esecuzione, altrimenti la continua e aggiunge la risolvente a \texttt{listCl} se e solo se \texttt{resolvent} non è tautologica e non è già presente nella lista. A questo punto si esegue la successiva iterazione del \texttt{for} interno.
+
+\subsubsection{Il metodo ``getComplementaryLiteral''}
+Questo metodo controlla se nella clausola \texttt{c1} è presente un letterale \texttt{l1}, ed il suo opposto \texttt{l2} nella clausola \texttt{c2}. Se lo trova lo restituisce, altrimenti restituisce \texttt{null}. Il codice \ref*{gcl} mostra questo metodo. 
+
+\begin{lstlisting}[caption={Metodo ``getComplementaryLiteral'' della classe Resolution}, label={gcl}]
+    private static Literal getComplementaryLiteral(Clause c1, Clause c2) { 
+        for (Literal l1 : c1) {
+            for (Literal l2 : c2) { 
+                if (l1.equals(l2.getOpposite())) return l1;
+            }
+        }
+        return null;
+    }
+\end{lstlisting}
 
 \subsection{Memorizzazione delle coppie di clausole visitate}
 \label{visited}
+Per evitare che si esegua la regola di risoluzione più di una volta su una stessa coppia di clausole, è opportuno memorizzare la coppia sulla mappa \texttt{visited}. Essa utilizza gli indici delle clausole, ed ha come chiave un \texttt{Integer}, e come valore un insieme di interi (\texttt{Set<Integer>}). Ogni volta che viene eseguita la regola di risoluzione su \texttt{c1} e \texttt{c2}, viene aggiunto l'indice più grande alla mappa ottenuta come valore a partire dalla chiave corrispondente all'indice più piccolo. In questo modo viene gestita più semplicemente la simmetra, infatti se \texttt{c1} e \texttt{c2} sono già state visitate, allora vale la stessa cosa anche per \texttt{c2} e \texttt{c1}. Nel codice \ref{double-for} L'inserimento degli indici nella mappa viene eseguito tra la riga 10 e la riga 14.
+
+\subsubsection{Esempio di struttura della mappa}
+Consideriamo il seguente insieme di clausole con associati gli indici ad ognuna di essa:
+
+\vspace{10pt}
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|}
+    \hline
+    \textbf{Clausole} & $\{a, \lnot b, c\}$ & $\{\lnot a, d\}$ & $\{\lnot c\}$ \\
+    \hline
+    \textbf{Indici} & 0 & 1 & 2 \\
+    \hline
+\end{tabular}
+\end{center}
+\vspace{10pt}
+In questo caso, il metodo \texttt{isSatisfiable} richiama il metodo \texttt{resolRule} sulle clausole \textbf{0} e \textbf{1}, e crea la risolvente con indice \textbf{3}. Nella mappa viene aggiunto \textbf{1} nell'insieme corrispondente alla chiave \textbf{0} (perchè $0 < 1$). Poi va avanti eseguendo altre volte la regola; le clausole che vengono aggiunte all'insieme di partenza sono le seguenti:
+
+\vspace{10pt}
+
+\begin{center}
+    \begin{tabular}{|c||c|c|c|}
+        \hline
+        \textbf{Clausole} & $\{\lnot b, c, d\}$ & $\{a, \lnot b\}$ & $\{d, \lnot b\}$ \\
+        \hline
+        \textbf{Indici} & 3 & 4 & 5 \\
+        \hline
+    \end{tabular}
+\end{center}
+\vspace{10pt}
+Nella situazione finale la mappa visited avrà la seguente struttura:
+
+\vspace{10pt}
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        \multicolumn{1}{|c|}{\textbf{Chiavi}} & \multicolumn{1}{c|}{\textbf{Valori}} \\
+        \hline\hline
+        0 & $\{1, 2\}$ \\
+        1 & $\{4\}$ \\
+        2 & $\{3\}$ \\
+        \hline
+    \end{tabular}
+\end{center}
+\vspace{10pt}
+La prima riga dice che la clausola \textbf{0} è stata visitata con le clausole \textbf{1} e \textbf{2} (infatti le clausole \textbf{3} e \textbf{4} sono state ottenute dalle coppie \textbf{0 - 1} e \textbf{0 - 2}). La seconda riga dice che la clausola \textbf{1} è stata visitata con la clausola \textbf{4} (per ottenere la clausola \textbf{5}); infine, la terza riga dice che la clausola \textbf{2} è stata visitata con la clausola \textbf{3} (in quest'ultimo caso viene generata la clausola \textbf{6} che è uguale alla clausola \textbf{5}, quindi viene scartata).
+
+\subsubsection{Il metodo ``alreadyVisited''}
+Questo metodo utilizza la mappa \texttt{visited} per verificare se una coppia di clausole è gia stata visitata in precedenza, ossia la regola di risoluzione è già stata applicata. Per farlo controlla se nell'insieme ottenuto dall'indice più piccolo è presente l'indice più grande (utilizzando il metodo \texttt{contains}). Questo garantisce che l'algoritmo possa terminare. Il codice \ref{alreadyVisited} mostra questo metodo.
+
+\begin{lstlisting}[caption={Metodo ``alreadyVisited'' della classe Resolution}, label={alreadyVisited}]
+    private static boolean alreadyVisited(Clause c1, Clause c2) {
+        int i1 = c1.getIndex();
+        int i2 = c2.getIndex();
+        if (i1 < i2) {
+            return (visited.get(i1)).contains(i2);
+        }
+        return (visited.get(i2)).contains(i1);
+    }
+\end{lstlisting}
+
+
+
 \subsection{Implementazione della regola di risoluzione}
 \label{resolRule}
+La regola di risoluzione viene implementata dal metodo \texttt{resolRule}; esso prende in input le clausole \texttt{c1} e \texttt{c2}, insieme al letterale \texttt{lit}. Il metodo esegue l'unione delle due clausole (tramite il metodo \texttt{union} della classe \texttt{Clause}), e successivamente rimuove il letterale \texttt{lit} ed il suo opposto dalla clausola risultante; infine restituisce il risultato. Il codice \ref{rr} mostra questo metodo.
+
+\begin{lstlisting}[caption={Metodo ``resolRule'' della classe Resolution}, label={rr}]
+    private static Clause resolRule(Clause c1, Clause c2, Literal lit) {
+        Clause result = c1.union(c2);
+        result.remove(lit);
+        result.remove(lit.getOpposite());
+        return result;
+    }
+\end{lstlisting}
+
 \subsection{Gestione degli step}
 \label{step}
+Per verificare la correttezza del metodo di risoluzione è possibile tenere traccia di tutti gli step che vengono eseguiti dal metodo \texttt{isSatisfiable}, ovvero di tutte le applicazioni della regola di risoluzione. Per farlo è stata scritta la classe \texttt{Step}, le cui istanze memorizzano le due clausole di premessa, la clausola risolvente, il letterale da considerare per la regola, ed infine le informazioni che dicono se lo step è inutile perchè la risolvente è tautologica oppure già presente nella lista di clausole.
+
+Nella classe Resolution è presente il metodo \texttt{setEnableSteps} che prende in input un valore booleano che viene impostato sul campo statico \texttt{enableSteps}. Se questo campo è impostato a \texttt{true}, verrà stampata su standard output la lista degli step quando viene chiamato il metodo \texttt{isSatisfiable}.
+
+Gli step vengono memorizzati in un campo statico \texttt{trace} di tipo \texttt{List<Step>}. Nel codice \ref{double-for}, nelle righe 17-19 viene creata una nuova istanza di Step e aggiunta a \texttt{trace} soltanto nel caso in cui il campo \texttt{enableSteps} è \texttt{true}. Nelle righe 25-30 viene controllato se la clausola risolvente è una tautologia oppure è già presente in \texttt{listCl}, e vengono chiamati i metodi \texttt{setTautology} o \texttt{setAlreadyPresent} sullo step, per indicare che la risolvente viene scartata specificandone il suo motivo.
+
+
+
 
 % 
 % 
