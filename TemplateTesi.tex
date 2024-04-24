@@ -11,6 +11,7 @@
 \usepackage[italian]{babel}
 \usepackage{setspace}
 \usepackage{tesi}
+\usepackage{float}
 
 % per inserire codice java
 \usepackage{listings}
@@ -219,6 +220,7 @@ stavolta, il metodo non riesce più ad andare avanti, perché la regola non è p
 Questo capitolo si concentra sull'implementazione pratica del metodo di risoluzione per la logica classica in linguaggio Java. Esploreremo come tradurre i concetti teorici esaminati nei capitoli precedenti in codice eseguibile, analizzando le classi, i metodi e le strutture dati necessari per realizzare efficacemente il metodo di risoluzione. Partiremo con una panoramica generale dell'architettura del progetto Java, identificando le principali classi per rappresentare le strutture dati necessarie per il metodo di risoluzione. Successivamente, affronteremo la classe che implementa l'algoritmo di risoluzione. Nel capitolo \ref{formulas} vedremo l'implementazione delle formule della logica proposizionale e la loro conversione in \textit{CNF}.
 
 \section{Struttura del progetto Java}
+\label{project_structure}
 
 Di seguito viene mostrato l'elenco dei package contenuti nella directory \textit{src} del progetto, e i file java contenuti in ognuno di essi:
 \begin{itemize}
@@ -272,7 +274,7 @@ In questo capitolo ci concentriamo sui primi tre package dell'elenco, che sono i
 I package ``\textbf{literal}'' e ``\textbf{cnf}'' contengono le classi per rappresentare la CNF, fondamentali per il metodo di risoluzione.
 
 \subsection{La classe astratta Literal e le classi Atom e NegAtom}
-La classe \texttt{Literal} permette di rappresentare i letterali. Essa è una classe astratta che fornisce un'interfaccia comune per le classi \textit{Atom} e \textit{NegAtom}, che la estendono per rappresentare rispettivamente un letterale semplice e un letterale negato. Questo approccio consente una gestione modulare dei letterali, facilitando l'estensione e il mantenimento del codice. La classe \textit{Literal} contiene una stringa come campo privato che identifica il nome del letterale, e il corrispettivo metodo \textit{getName()} che lo restituisce; inoltre, ha un metodo astratto \textit{getOpposite()} sovrascritto dalle due classi che la estendono, che permette di restituire l'opposto del letterale sul quale viene chiamato (se chiamato su un'istanza di \textit{Atom} restituisce l'istanza corrispondente di \textit{NegAtom}, e viceversa).
+La classe \texttt{Literal} permette di rappresentare i letterali. Essa è una classe astratta che fornisce un'interfaccia comune per le classi \texttt{Atom} e \texttt{NegAtom}, che la estendono per rappresentare rispettivamente una variabile atomica e la negazione di essa. Questo approccio consente una gestione modulare dei letterali, facilitando l'estensione e il mantenimento del codice. La classe \texttt{Literal} contiene una stringa come campo privato che identifica il nome del letterale, e il corrispettivo metodo \texttt{getName()} che lo restituisce; inoltre, ha un metodo astratto \texttt{getOpposite()} sovrascritto dalle due classi che la estendono, che permette di restituire l'opposto del letterale sul quale viene chiamato (se chiamato su un'istanza di \texttt{Atom} restituisce l'istanza corrispondente di \texttt{NegAtom}, e viceversa). Il metodo \texttt{toString} della classe \texttt{NegAtom} usa il carattere ``\textbf{$\sim $}'' per rappresentare testualmente la negazione logica in un atomo negato (ad esempio ``\emph{$\sim p$}'').
 
 \begin{lstlisting}[title={metodo getOpposite sovrascritto dalla classe Atom}]
     @Override
@@ -452,7 +454,7 @@ Nella situazione finale la mappa visited avrà la seguente struttura:
 La prima riga dice che la clausola \textbf{0} è stata visitata con le clausole \textbf{1} e \textbf{2} (infatti le clausole \textbf{3} e \textbf{4} sono state ottenute dalle coppie \textbf{0 - 1} e \textbf{0 - 2}). La seconda riga dice che la clausola \textbf{1} è stata visitata con la clausola \textbf{4} (per ottenere la clausola \textbf{5}); infine, la terza riga dice che la clausola \textbf{2} è stata visitata con la clausola \textbf{3} (in quest'ultimo caso viene generata la clausola \textbf{6} che è uguale alla clausola \textbf{5}, quindi viene scartata).
 
 \subsubsection{Il metodo ``alreadyVisited''}
-Questo metodo utilizza la mappa \texttt{visited} per verificare se una coppia di clausole è gia stata visitata in precedenza, ossia la regola di risoluzione è già stata applicata. Per farlo controlla se nell'insieme ottenuto dall'indice più piccolo è presente l'indice più grande (utilizzando il metodo \texttt{contains}). Questo garantisce che l'algoritmo possa terminare. Il codice \ref{alreadyVisited} mostra questo metodo.
+Questo metodo utilizza la mappa \texttt{visited} per verificare se una coppia di clausole è gia stata visitata in precedenza, ossia la regola di risoluzione è già stata applicata su di essa. Per farlo controlla se nell'insieme ottenuto dall'indice più piccolo è presente l'indice più grande (utilizzando il metodo \texttt{contains}). Questo garantisce che l'algoritmo possa terminare. Il codice \ref{alreadyVisited} mostra questo metodo.
 
 \begin{lstlisting}[caption={Metodo ``alreadyVisited'' della classe Resolution}, label={alreadyVisited}]
     private static boolean alreadyVisited(Clause c1, Clause c2) {
@@ -482,13 +484,21 @@ La regola di risoluzione viene implementata dal metodo \texttt{resolRule}; esso 
 
 \subsection{Gestione degli step}
 \label{step}
-Per verificare la correttezza del metodo di risoluzione è possibile tenere traccia di tutti gli step che vengono eseguiti dal metodo \texttt{isSatisfiable}, ovvero di tutte le applicazioni della regola di risoluzione. Per farlo è stata scritta la classe \texttt{Step}, le cui istanze memorizzano le due clausole di premessa, la clausola risolvente, il letterale da considerare per la regola, ed infine le informazioni che dicono se lo step è inutile perchè la risolvente è tautologica oppure già presente nella lista di clausole.
+Per verificare la correttezza dell'implementazione del metodo di risoluzione è possibile tenere traccia di tutti gli step che vengono eseguiti dal metodo \texttt{isSatisfiable}, ovvero di tutte le applicazioni della regola di risoluzione. Per farlo è stata scritta la classe \texttt{Step}, le cui istanze memorizzano il numero di step attuale, le due clausole di premessa, la clausola risolvente, il letterale da considerare per la regola, ed infine le informazioni che dicono che la risolvente viene scartata perchè è tautologica oppure già presente nella lista di clausole.
 
-Nella classe Resolution è presente il metodo \texttt{setEnableSteps} che prende in input un valore booleano che viene impostato sul campo statico \texttt{enableSteps}. Se questo campo è impostato a \texttt{true}, verrà stampata su standard output la lista degli step quando viene chiamato il metodo \texttt{isSatisfiable}.
+Nella classe \texttt{Resolution} è presente il metodo \texttt{setEnableSteps} che prende in input un valore booleano che viene impostato sul campo statico \texttt{enableSteps}. Se questo campo è impostato a \texttt{true}, verrà stampata su Standard Output (\emph{Stdout}) la lista degli step quando viene chiamato il metodo \texttt{isSatisfiable}.
 
-Gli step vengono memorizzati in un campo statico \texttt{trace} di tipo \texttt{List<Step>}. Nel codice \ref{double-for}, nelle righe 17-19 viene creata una nuova istanza di Step e aggiunta a \texttt{trace} soltanto nel caso in cui il campo \texttt{enableSteps} è \texttt{true}. Nelle righe 25-30 viene controllato se la clausola risolvente è una tautologia oppure è già presente in \texttt{listCl}, e vengono chiamati i metodi \texttt{setTautology} o \texttt{setAlreadyPresent} sullo step, per indicare che la risolvente viene scartata specificandone il suo motivo.
+Gli step vengono memorizzati nel campo statico \texttt{trace} (di tipo \texttt{List<Step>}). Nel codice \ref{double-for}, nelle righe 16-19 viene creata una nuova istanza di \texttt{Step} e aggiunta a \texttt{trace} soltanto nel caso in cui il campo \texttt{enableSteps} è \texttt{true}. Nelle righe 25-30 viene controllato se la clausola risolvente è tautologica oppure è già presente in \texttt{listCl}, e vengono chiamati i metodi \texttt{setTautology} o \texttt{setAlreadyPresent} sullo step, per indicare che in quello step la risolvente viene scartata, specificandone il suo motivo. Nella riga 22 e nella riga 39 viene richiamato il metodo \texttt{printTrace}; esso itera sulla lista \texttt{trace}, stampando tutti gli step su \emph{Stdout}. 
 
-
+\subsubsection{Esempio di funzionamento degli step}
+Supponendo che il campo \texttt{enableSteps} sia impostato a \texttt{true}, consideriamo l'esecuzione del metodo \texttt{isSatisfiable} con il seguente insieme di clausole \texttt{s} in input:
+\[\texttt{s} = \{\; \{a\}; \{\lnot a, b\}; \{\lnot b\} \;\}\]
+La lista degli step che verrà stampata su \emph{Stdout} è la seguente:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth, height=0.4\textheight]{img/step.png}
+\end{figure} 
+Come si può notare, nello \emph{step 3} viene trovata la clausola vuota, quindi in questo caso il metodo restituisce \texttt{false} (\texttt{s} è \emph{insoddisfacibile}).
 
 
 % 
@@ -496,15 +506,42 @@ Gli step vengono memorizzati in un campo statico \texttt{trace} di tipo \texttt{
 %			CAPITOLO 4
 \chapter{Implementazione in Java di formule generiche}
 \label{formulas}
+Finora ci siamo concentrati soltanto su formule espresse in \emph{CNF} rappresentate mediante la classe \texttt{ClauseSet}. Se volessimo implementare una formula qualsiasi della logica proposizionale sono necessari altri elementi. I package \emph{formula} e \emph{connective} del progetto java visto nella sezione \ref{project_structure} contengono i file necessari per rappresentare le formule della logica proposizionale. Se si volesse verificare la soddisfacibilità di una formula, è necessario convertire prima la formula in \emph{CNF} (ottenendo così l'istanza di \texttt{ClauseSet} associata), e poi richiamare il metodo \texttt{isSatisfiable} della classe \texttt{Resolution} dando in input quella istanza. Questo aspetto viene affrontato nella sezione \ref{conversion}.
 
 \section{La classe astratta Formula}
+Come visto nel capitolo \ref{intro}, una formula può essere \emph{atomica} o \emph{composta}, perciò nell'implementazione in Java è stata scritta la classe astratta \texttt{Formula}, che viene estesa dalle classi concrete \texttt{AtomicFormula} e \texttt{CompoundFormula}.
+
+La classe \texttt{Formula} contiene soltanto il metodo astratto \texttt{toCnf} che permette di convertire la formula in \emph{CNF}, restituendo l'istanza di \texttt{ClauseSet} corrispondente (si veda la sezione \ref{conversion}).
 
 \section{La classe AtomicFormula}
+Questa classe estende \texttt{Formula} ed istanzia una formula atomica. Essa contiene un campo \texttt{atm} di tipo \texttt{Atom} che lo identifica, e alcuni semplici metodi per la sua gestione: il metodo per ottenere il nome (\texttt{getName}), il metodo per ottenere il letterale associato (\texttt{toLiteral}), e i classici metodi \texttt{equals} e \texttt{toString}.
+
+\section{L'enumerazione Connective}
+Prima di considerare la classe \texttt{CompoundFormula} è bene vedere prima l'enumerazione \texttt{Connective}. Essa si trova nel package \emph{connective} e definisce delle costanti enumerative che descrivono i connettivi della logica proposizionale usati dalle formule composte. La seguente tabella mostra le costanti associate alla loro rappresentazione testuale (ottenute dal metodo \texttt{toString}):
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c||c|}
+        \hline
+        \textbf{Costante enumerativa} & \textbf{Rappresentazione testuale} \\
+        \hline\hline
+        NOT & $\sim$ \\
+        \hline
+        AND & $\&$ \\
+        \hline
+        OR & $|$ \\
+        \hline
+        IMPLIES & $->$ \\
+        \hline
+        IFF & $<->$ \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \section{La classe CompoundFormula}
-\subsection{L'enumerazione Connective}
+Questa classe estende \texttt{Formula} ed istanzia una formula composta, utilizzando le costanti dell'enumerazione \texttt{Connective}. Per la rappresentazione interna di una formula composta si usa un albero binario, che definisce la sua struttura ricorsiva. La radice dell'albero contiene il connettivo principale della formula, i nodi interni contengono i connettivi delle sue sottoformule, ed infine le foglie contengono le sue formule atomiche. I nodi che contengono i connettivi binari hanno due figli, mentre i nodi che contengono i connettivi unari hanno un solo figlio (il figlio sinistro).
 
 \section{Conversione di una formula in CNF}
+\label{conversion}
 
 \section{Parsing di formule}
 \subsection{Utilizzo del parser ANTLR4}
