@@ -91,7 +91,7 @@
 \label{intro}
 
 \section{Panoramica generale}
-Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione per la logica classica, ovvero la logica proposizionale. Nel capitolo \ref{modal} verrà trattato il metodo di risoluzione per la logica modale, che rappresenta un'estensione di quella proposizionale. Di seguito viene presentata una breve introduzione della logica proposizionale, utile a capire il funzionamento del metodo di risoluzione, trattato nel capitolo \ref{resol}.
+Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione per la logica classica, ovvero la logica proposizionale. Nel capitolo \ref{modal} verrà trattato il metodo di risoluzione per le logiche modali, che rappresentano un'estensione di quella proposizionale. Di seguito viene presentata una breve introduzione della logica proposizionale, utile a capire il funzionamento del metodo di risoluzione, trattato nel capitolo \ref{resol}.
 
 \section{Logica proposizionale}
 
@@ -540,8 +540,30 @@ Prima di considerare la classe \texttt{CompoundFormula} è bene vedere prima l'e
 \section{La classe CompoundFormula}
 Questa classe estende \texttt{Formula} ed istanzia una formula composta, utilizzando le costanti dell'enumerazione \texttt{Connective}. Per la rappresentazione interna di una formula composta si usa un albero binario, che definisce la sua struttura ricorsiva. La radice dell'albero contiene il connettivo principale della formula, i nodi interni contengono i connettivi delle sue sottoformule, ed infine le foglie contengono le sue formule atomiche. I nodi che contengono i connettivi binari hanno due figli, mentre i nodi che contengono i connettivi unari hanno un solo figlio (il figlio sinistro).
 
+Consideriamo il seguente esempio di formula:
+\[\lnot(a \land b) \implies (c \lor \lnot d)\]
+La sua rappresentazione ad albero è la seguente:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth, height=0.4\textheight]{img/albero.png}
+\end{figure}
+In questo albero, la radice è il nodo ``$->$'', perchè è il connettivo principale della formula dell'esempio. I nodi ``$\thicksim$'' hanno solo il figlio sinistro perchè rappresentano la negazione, e le foglie sono le atomiche \emph{a, b, c, d}.
+
+La classe \texttt{CompoundFormula} ha quindi come attributi il campo \texttt{mainConnective} che definisce il connettivo principale, e il campo \texttt{subFormulas} che consiste in un array di formule che contiene i nodi figli. La classe contiene dei metodi getter per ottenere il connettivo, il figlio destro ed il figlio sinistro, e sovrascrive i metodi \texttt{toString} e \texttt{toCnf}.
+
 \section{Conversione di una formula in CNF}
 \label{conversion}
+Come spiegato all'inizio di questo capitolo, se volessimo verificare la soddisfacibilità di una formula \emph{F} tramite il metodo di risoluzione, è fondamentale effettuare prima la \emph{clausificazione} di \emph{F}, ovvero la conversione in \emph{CNF}, in modo tale da ottenere l'insieme di clausole necessario per il metodo di risoluzione. Per fare ciò bisogna applicare alcune regole di inferenza:
+
+
+
+
+
+
+
+
+
+
 
 \section{Parsing di formule}
 \subsection{Utilizzo del parser ANTLR4}
