@@ -506,12 +506,12 @@ Come si può notare, nello \emph{step 3} viene trovata la clausola vuota, quindi
 %			CAPITOLO 4
 \chapter{Implementazione in Java di formule generiche}
 \label{formulas}
-Finora ci siamo concentrati soltanto su formule espresse in \emph{CNF} rappresentate mediante la classe \texttt{ClauseSet}. Se volessimo implementare una formula qualsiasi della logica proposizionale sono necessari altri elementi. I package \emph{formula} e \emph{connective} del progetto java visto nella sezione \ref{project_structure} contengono i file necessari per rappresentare le formule della logica proposizionale. Se si volesse verificare la soddisfacibilità di una formula, è necessario convertire prima la formula in \emph{CNF} (ottenendo così l'istanza di \texttt{ClauseSet} associata), e poi richiamare il metodo \texttt{isSatisfiable} della classe \texttt{Resolution} dando in input quella istanza. Questo aspetto viene affrontato nella sezione \ref{conversion}.
+Finora ci siamo concentrati soltanto su formule espresse in \emph{CNF} rappresentate mediante la classe \texttt{ClauseSet}. Se volessimo implementare una formula qualsiasi della logica proposizionale sono necessari altri elementi. I package \emph{formula} e \emph{connective} del progetto java visto nella sezione \ref{project_structure} contengono i file necessari per rappresentare le formule della logica proposizionale. Se si volesse verificare la soddisfacibilità di una formula, è necessario convertire prima la formula in \emph{CNF} (ottenendo così l'istanza di \texttt{ClauseSet} associata), e poi richiamare il metodo \texttt{isSatisfiable} della classe \texttt{Resolution} dando in input quella istanza. Questo aspetto viene affrontato nella sezione \ref{clausification}.
 
 \section{La classe astratta Formula}
 Come visto nel capitolo \ref{intro}, una formula può essere \emph{atomica} o \emph{composta}, perciò nell'implementazione in Java è stata scritta la classe astratta \texttt{Formula}, che viene estesa dalle classi concrete \texttt{AtomicFormula} e \texttt{CompoundFormula}.
 
-La classe \texttt{Formula} contiene soltanto il metodo astratto \texttt{toCnf} che permette di convertire la formula in \emph{CNF}, restituendo l'istanza di \texttt{ClauseSet} corrispondente (si veda la sezione \ref{conversion}).
+La classe \texttt{Formula} contiene soltanto il metodo astratto \texttt{toCnf} che permette di convertire la formula in \emph{CNF}, restituendo l'istanza di \texttt{ClauseSet} corrispondente (si veda la sezione \ref{clausification}).
 
 \section{La classe AtomicFormula}
 Questa classe estende \texttt{Formula} ed istanzia una formula atomica. Essa contiene un campo \texttt{atm} di tipo \texttt{Atom} che lo identifica, e alcuni semplici metodi per la sua gestione: il metodo per ottenere il nome (\texttt{getName}), il metodo per ottenere il letterale associato (\texttt{toLiteral}), e i classici metodi \texttt{equals} e \texttt{toString}.
@@ -551,19 +551,61 @@ In questo albero, la radice è il nodo ``$->$'', perchè è il connettivo princi
 
 La classe \texttt{CompoundFormula} ha quindi come attributi il campo \texttt{mainConnective} che definisce il connettivo principale, e il campo \texttt{subFormulas} che consiste in un array di formule che contiene i nodi figli. La classe contiene dei metodi getter per ottenere il connettivo, il figlio destro ed il figlio sinistro, e sovrascrive i metodi \texttt{toString} e \texttt{toCnf}.
 
-\section{Conversione di una formula in CNF}
-\label{conversion}
-Come spiegato all'inizio di questo capitolo, se volessimo verificare la soddisfacibilità di una formula \emph{F} tramite il metodo di risoluzione, è fondamentale effettuare prima la \emph{clausificazione} di \emph{F}, ovvero la conversione in \emph{CNF}, in modo tale da ottenere l'insieme di clausole necessario per il metodo di risoluzione. Per fare ciò bisogna applicare alcune regole di inferenza:
+\section{Clausificazione di una formula}
+\label{clausification}
+Come spiegato all'inizio di questo capitolo, se volessimo verificare la soddisfacibilità di una formula \emph{F} tramite il metodo di risoluzione, è fondamentale effettuare prima la \emph{clausificazione} di \emph{F}, ovvero la sua conversione in \emph{CNF}, in modo tale da ottenere l'insieme di clausole necessario per il metodo di risoluzione. Per fare ciò bisogna applicare alcune regole di inferenza:
+\begin{enumerate}
+    \item \textbf{Eliminazione della doppia implicazione}: 
+    \[
+    (p \iff q) \quad \equiv \quad ((p \implies q) \land (q \implies p))
+    \]
+    
+    \item \textbf{Eliminazione dell'implicazione}: 
+    \[
+    (p \implies q) \quad \equiv \quad (\lnot p \lor q)
+    \]
+    
+    \item \textbf{Proprietà distributiva di or su and}:
+    \[
+    (p \lor (q \land r)) \quad \equiv \quad ((p \lor q) \land (p \lor r))
+    \]
+    
+    \item \textbf{Doppia negazione}:
+    \[
+    \lnot\lnot p \quad \equiv \quad p
+    \]
+    
+    \item \textbf{Leggi di De Morgan}:
+    \[
+    \lnot(p \land q) \quad \equiv \quad (\lnot p \lor \lnot q)
+    \]
+    \[
+    \lnot(p \lor q) \quad \equiv \quad (\lnot p \land \lnot q)
+    \]
+\end{enumerate}
 
+Queste regole vengono applicate nel metodo astratto \texttt{toCnf} della classe \texttt{Formula}. Questo metodo ha quindi due diverse implementazioni: una per le formule atomiche e una per le formule composte.
 
+L'implementazione del metodo \texttt{toCnf} nella classe \texttt{AtomicFormula} è molto semplice: esso restituisce un \texttt{ClauseSet} contenente una sola clausola, tale clausola contiene soltanto il letterale associato a quella formula atomica.
+ 
+L'implementazione del metodo nella classe \texttt{CompoundFormula} invece applica sulla formula le regole di inferenza sopra citate, seguendo un approccio ricorsivo
 
+\subsection*{Esempio di clausificazione}
+Consideriamo la seguente formula:
+\[ (a \lor b) \implies c \]
+la clausificazione viene fatta in tre passaggi:
 
+\begin{itemize}
+    \item Eliminazione implicazione:
+    \[ \lnot (a \lor b) \lor c \]
+    \item De Morgan:
+    \[ (\lnot a \land \lnot b) \lor c \]
+    \item Proprietà distributiva:
+    \[ (\lnot a \lor c) \land (\lnot b \lor c) \]
+\end{itemize}
 
-
-
-
-
-
+La formula ricavata nell'ultimo passaggio è in \emph{CNF}, ed essa corrisponde all'insieme di clausole:
+\[ \{ \; \{\lnot a, c\}; \{\lnot b, c\} \; \} \]
 
 \section{Parsing di formule}
 \subsection{Utilizzo del parser ANTLR4}
