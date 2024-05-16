@@ -338,7 +338,7 @@ I metodi statici della classe sono:
 
 \subsection{Il metodo ``isSatisfiable''}
 \label{isSat}
-Questo è il metodo più importante della classe \textit{Resolution}. Esso ha come parametro in input un oggetto ClauseSet \texttt{s} e restituisce \texttt{true} se \texttt{s} è soddisfacibile, \texttt{false} altrimenti. Di seguito viene mostrato il codice. Il metodo \textit{isSatisfiable} dopo aver controllato che \texttt{s} non sia \texttt{null} o un insieme vuoto, elimina tutte le clausole tautologiche appartenenti a \texttt{s} richiamando il metodo \texttt{removeTautologies} sull'oggetto \texttt{s}. Successivamente controlla che sia vuoto (in tal caso viene restituito \texttt{true} perchè \texttt{s} è una tautologia), e in caso negativo continua l'esecuzione inizializzando i campi \texttt{visited} e \texttt{trace}; inoltre, le clausole in \texttt{s} vengono inserite nella lista di clausole \texttt{listCl} per poter consentire la modifica della lista durante il suo scorrimento (eseguito dal ciclo \textit{for}). 
+Questo è il metodo più importante della classe \textit{Resolution}. Esso ha come parametro in input un oggetto ClauseSet \texttt{s} e restituisce \texttt{true} se \texttt{s} è soddisfacibile, \texttt{false} altrimenti. Di seguito viene mostrato il codice. Il metodo \textit{isSatisfiable} dopo aver controllato che \texttt{s} non sia \texttt{null} o un insieme vuoto, elimina tutte le clausole tautologiche appartenenti a \texttt{s} richiamando il metodo \texttt{removeTautologies} sull'oggetto \texttt{s}. Successivamente controlla che sia vuoto (in tal caso viene restituito \texttt{true} perché \texttt{s} è una tautologia), e in caso negativo continua l'esecuzione inizializzando i campi \texttt{visited} e \texttt{trace}; inoltre, le clausole in \texttt{s} vengono inserite nella lista di clausole \texttt{listCl} per poter consentire la modifica della lista durante il suo scorrimento (eseguito dal ciclo \textit{for}). 
 
 A questo punto vengono eseguiti due cicli for innestati su \texttt{listCl}; il ciclo esterno itera la lista utilizzando la clausola \texttt{c1}, il ciclo interno utilizza la clausola \texttt{c2}. Il codice \ref{double-for} mostra l'esecuzione dei due cicli. 
 
@@ -404,7 +404,7 @@ Questo metodo controlla se nella clausola \texttt{c1} è presente un letterale \
 
 \subsection{Memorizzazione delle coppie di clausole visitate}
 \label{visited}
-Per evitare che si esegua la regola di risoluzione più di una volta su una stessa coppia di clausole, è opportuno memorizzare la coppia sulla mappa \texttt{visited}. Essa utilizza gli indici delle clausole, ed ha come chiave un \texttt{Integer}, e come valore un insieme di interi (\texttt{Set<Integer>}). Ogni volta che viene eseguita la regola di risoluzione su \texttt{c1} e \texttt{c2}, viene aggiunto l'indice più grande alla mappa ottenuta come valore a partire dalla chiave corrispondente all'indice più piccolo. In questo modo viene gestita più semplicemente la simmetra, infatti se \texttt{c1} e \texttt{c2} sono già state visitate, allora vale la stessa cosa anche per \texttt{c2} e \texttt{c1}. Nel codice \ref{double-for} L'inserimento degli indici nella mappa viene eseguito tra la riga 10 e la riga 14.
+Per evitare che si esegua la regola di risoluzione più di una volta su una stessa coppia di clausole, è opportuno memorizzare la coppia sulla mappa \texttt{visited}. Essa utilizza gli indici delle clausole, ed ha come chiave un \texttt{Integer}, e come valore un insieme di interi (\texttt{Set<Integer>}). Ogni volta che viene eseguita la regola di risoluzione su \texttt{c1} e \texttt{c2}, viene aggiunto l'indice più grande alla mappa ottenuta come valore a partire dalla chiave corrispondente all'indice più piccolo. In questo modo viene gestita più semplicemente la simmetria, infatti se \texttt{c1} e \texttt{c2} sono già state visitate, allora vale la stessa cosa anche per \texttt{c2} e \texttt{c1}. Nel codice \ref{double-for} L'inserimento degli indici nella mappa viene eseguito tra la riga 10 e la riga 14.
 
 \subsubsection{Esempio di struttura della mappa}
 Consideriamo il seguente insieme di clausole con associati gli indici ad ognuna di essa:
@@ -421,7 +421,7 @@ Consideriamo il seguente insieme di clausole con associati gli indici ad ognuna 
 \end{tabular}
 \end{center}
 \vspace{10pt}
-In questo caso, il metodo \texttt{isSatisfiable} richiama il metodo \texttt{resolRule} sulle clausole \textbf{0} e \textbf{1}, e crea la risolvente con indice \textbf{3}. Nella mappa viene aggiunto \textbf{1} nell'insieme corrispondente alla chiave \textbf{0} (perchè $0 < 1$). Poi va avanti eseguendo altre volte la regola; le clausole che vengono aggiunte all'insieme di partenza sono le seguenti:
+In questo caso, il metodo \texttt{isSatisfiable} richiama il metodo \texttt{resolRule} sulle clausole \textbf{0} e \textbf{1}, e crea la risolvente con indice \textbf{3}. Nella mappa viene aggiunto \textbf{1} nell'insieme corrispondente alla chiave \textbf{0} (perché $0 < 1$). Poi va avanti eseguendo altre volte la regola; le clausole che vengono aggiunte all'insieme di partenza sono le seguenti:
 
 \vspace{10pt}
 
@@ -547,7 +547,7 @@ La sua rappresentazione ad albero è la seguente:
     \centering
     \includegraphics[width=0.7\textwidth, height=0.4\textheight]{img/albero.png}
 \end{figure}
-In questo albero, la radice è il nodo ``$->$'', perchè è il connettivo principale della formula dell'esempio. I nodi ``$\thicksim$'' hanno solo il figlio sinistro perchè rappresentano la negazione, e le foglie sono le atomiche \emph{a, b, c, d}.
+In questo albero, la radice è il nodo ``$->$'', perché è il connettivo principale della formula dell'esempio. I nodi ``$\thicksim$'' hanno solo il figlio sinistro perché rappresentano la negazione, e le foglie sono le atomiche \emph{a, b, c, d}.
 
 La classe \texttt{CompoundFormula} ha quindi come attributi il campo \texttt{mainConnective} che definisce il connettivo principale, e il campo \texttt{subFormulas} che consiste in un array di formule che contiene i nodi figli. La classe contiene dei metodi getter per ottenere il connettivo, il figlio destro ed il figlio sinistro, e sovrascrive i metodi \texttt{toString} e \texttt{toCnf}.
 
@@ -590,7 +590,7 @@ L'implementazione del metodo \texttt{toCnf} nella classe \texttt{AtomicFormula} 
  
 L'implementazione del metodo nella classe \texttt{CompoundFormula} invece applica sulla formula le regole di inferenza sopra citate, seguendo un approccio ricorsivo
 
-\subsection*{Esempio di clausificazione}
+\subsection{Esempio di clausificazione}
 Consideriamo la seguente formula:
 \[ (a \lor b) \implies c \]
 la clausificazione viene fatta in tre passaggi:
@@ -608,7 +608,95 @@ La formula ricavata nell'ultimo passaggio è in \emph{CNF}, ed essa corrisponde 
 \[ \{ \; \{\lnot a, c\}; \{\lnot b, c\} \; \} \]
 
 \section{Parsing di formule}
+\label{parsing}
+Se volessimo utilizzare un programma che legge da un flusso di input una formula in formato testuale (ad esempio da \emph{Stdin} o da un file di testo), è necessario interpretare la stringa di testo in modo tale da ottenere la formula. La trasformazione di questa rappresentazione testuale in strutture dati utilizzabili dal software è un processo noto come parsing. Nel nostro sistema, implementiamo un parser per convertire le formule da stringhe di testo in oggetti di tipo \texttt{Formula}, che possono essere utilizzati dal programma. Per eseguire il parsing, bisogna definire prima una grammatica che riconosce il linguaggio per le formule. A partire dalla grammatica vengono generati il \emph{lexer}, il \emph{parser} e il \emph{listener}.
+
+
 \subsection{Utilizzo del parser ANTLR4}
+Il parser utilizzato nel nostro sistema è \emph{ANTLR4}. Nella struttura del progetto presente nella sezione \ref{project_structure}, nel package \emph{antlr4} è presente il file \emph{FormulaExpression.g4} che contiene la grammatica. Inoltre, sono presenti quattro file che sono stati generati automaticamente da \emph{ANTLR4}:
+\begin{itemize}
+    \item \textbf{FormulaExpressionLexer.java}:
+    esso consiste nel lexer, ovvero l'analizzatore lessicale; il suo scopo è quello di analizzare la stringa in input ed ottenere da esso un flusso di \emph{token}. In questo caso i token sono i connettivi, le variabili atomiche, e i caratteri di \emph{white space}.
+    \item \textbf{FormulaExpressionParser.java}:
+    esso consiste nel parser, che esegue l'analisi sintattica della stringa in input generando un \textbf{albero sintattico} (\emph{AST}), fondamentale per la costruzione della formula.
+    \item \textbf{FormulaExpressionListener.java}:
+    è un interfaccia che definisce i metodi che vengono richiamati durante l'attraversamento dell'albero sintattico.
+    \item \textbf{FormulaExpressionBaseListener.java}:
+    è una classe che implementa l'interfaccia \texttt{FormulaExpressionListener}, dove ogni metodo sovrascritto non esegue alcuna operazione.
+\end{itemize}
+
+Oltre a questi file, ne sono presenti altri due:
+\begin{itemize}
+    \item \textbf{FormulaListenerImplementation.java}:
+    è una classe che estende il Base Listener. Utilizza uno \emph{stack} come campo per la creazione delle sottoformule, e sovrascrive alcuni metodi per la creazione della formula durante l'attraversamento dell'\emph{AST}.
+    \item \textbf{ParseFormula.java}:
+    è una classe che contiene soltanto il metodo \texttt{parse}. Esso è il metodo principale che prende in input una stringa, e mette insieme tutte le componenti viste precedentemente, creando tutto l'occorrente per il parsing. Infine restituisce la formula ottenuta a partire dalla stringa in input.
+\end{itemize}
+
+\subsubsection{La grammatica utilizzata}
+
+Nel codice \ref{grammar} è presente il contenuto del file \emph{FormulaExpression.g4} che descrive la grammatica.
+
+\begin{lstlisting}[language=TeX, label=grammar, caption={file FormulaExpression.g4}]
+    grammar FormulaExpression;
+
+    start : formula EOF;
+
+    formula : atomic_formula
+            | '(' formula ')' 
+            | unary_connective formula
+            | formula binary_connective formula
+            ;
+
+    atomic_formula : LITERAL ;
+
+    unary_connective : NOT ;
+
+    binary_connective : AND | OR | IMPLIES | IFF;
+
+    //token
+    AND : '&' ;
+    OR : '|' ;
+    IMPLIES : '->' ;
+    NOT : '~' ;
+    IFF : '<->';
+
+    LITERAL : [a-z]+ ;
+    WS : [ \t\r\n]+ -> skip ;
+\end{lstlisting}
+In questa grammatica ci sono le regole che definiscono le formule generiche, le formule atomiche e composte, e le regole che descrivono i connettivi unari e binari; le sottoformule sono distinguibili grazie alle parentesi tonde, che specificano anche la precedenza tra i vari connettivi della formula. in fondo al file è presente la definizione dei token. È bene notare che la rappresentazione testuale dei connettivi in questa grammatica è la medesima utilizzata dall'enumerazione \texttt{Connective}.
+
+\subsubsection{Esempio di \emph{AST}}
+Consideriamo la seguente stringa:
+\[ (a \; \& \; \sim b) \quad -> \quad c \]
+se eseguiamo il parsing di questa stringa otteniamo il seguente \emph{AST}:
+\begin{figure}[H]
+    % \centering
+    \includegraphics[width=0.7\textwidth, height=0.5\textheight]{img/antlr4_parse_tree.png}
+\end{figure}
+
+durante l'attraversamento di questo albero vengono eseguiti i metodi \\ \texttt{ExitAtomic\_formula} e \texttt{exitFormula}, che vengono implementati nella classe \\ \texttt{FormulaListenerImplementation} e vengono richiamati rispettivamente quando si esce da un nodo \emph{atomic\_formula} e da un nodo \emph{formula}. Nel primo caso si crea una formula atomica e la si aggiunge allo \emph{stack} (tramite l'operazione di \emph{push}), nel secondo caso si controlla la presenza di un figlio che contiene un connettivo unario o binario, e si crea una formula composta applicando quel connettivo alla formula in cima allo stack (nel caso di connettivo unario) oppure alle prime due formule in cima allo stack (nel caso di connettivo binario). Per ottenere la formula in cima allo stack viene usata l'operazione di \emph{pop} su di esso.
+
+Alla fine della visita dell'\emph{AST}, in cima allo stack ci sarà la formula associata alla stringa di partenza, che viene ottenuta dal metodo \texttt{getFormula} e a sua volta restituita dal metodo \texttt{parse}; nell'esempio visto in precedenza la formula ottenuta è:
+\[ (a \land \lnot b) \implies c \]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 % 
 % 
