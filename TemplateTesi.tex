@@ -94,7 +94,7 @@
 \label{intro}
 
 \section{Panoramica generale}
-Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione per la logica classica, ovvero la logica proposizionale. Nel capitolo \ref{modal} verrà trattato il metodo di risoluzione per le logiche modali, che rappresentano un'estensione di quella proposizionale. Di seguito viene presentata una breve introduzione della logica proposizionale, utile a capire il funzionamento del metodo di risoluzione, trattato nel capitolo \ref{resol}.
+Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione per la logica classica, ovvero la logica proposizionale. Nel capitolo \ref{modal} verrà trattato il metodo di risoluzione per le logiche modali non-normali, che rappresentano un'estensione di quella proposizionale. Di seguito viene presentata una breve introduzione della logica proposizionale, utile a capire il funzionamento del metodo di risoluzione, trattato nel capitolo \ref{resol}.
 
 \section{Logica proposizionale}
 
@@ -172,6 +172,7 @@ anche in questo caso la congiunzione è sottintesa. Possiamo quindi considerare 
 Un insieme di clausole $S$ è \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che rende vere \textbf{tutte} le clausole appartenenti a $S$ (a causa della congiunzione).
 
 \section{Regola di risoluzione}
+\label{Res}
 La regola di risoluzione, che chiamiamo Res, è una regola di inferenza che, a partire da due clausole di premessa, genera una clausola conclusione (detta \textbf{risolvente}). Per poter applicare \emph{Res} su due clausole $C_1$ e $C_2$, è necessario che esista un letterale $L \in C_1$ ed il suo opposto $\overline{L} \in C_2$. Se questo non dovesse capitare, allora la regola non è applicabile su $C_1$ e $C_2$.
 
 \subsection{Clausola risolvente}
@@ -770,7 +771,7 @@ Le logiche modali \emph{non-normali} (\emph{NNML}) sono una classe di sistemi lo
 Le formule delle logiche modali (normali e non-normali) utilizzano, oltre ai connettivi della logica classica, il connettivo \emph{box} ($\Box$); Questo connettivo è fondamentale nella formalizzazione di concetti come la necessità, l'obbligatorietà, la conoscenza o la verità assoluta, a seconda del contesto in cui viene utilizzato.
 
 \section{Forma clausale}
-La forma clausale di una formula consiste in un insieme di clausole, come nel caso della logica classica.
+La forma clausale di una formula $\phi$ consiste nell'esprimere $\phi$ come un insieme di clausole, come nel caso della logica classica.
 \subsection{Letterali}
 I letterali possono essere di due tipi: \emph{proposizionali} o \emph{modali}. I letterali proposizionali sono i medesimi della logica classica (si veda sezione \ref{CNF}); i letterali modali sono della forma $\Box p$ oppure $\lnot \Box p$, dove $p$ è una variabile proposizionale.
 \subsection{Clausole}
@@ -779,12 +780,12 @@ Le clausole, come nella logica classica, sono una disgiunzione di letterali. Que
     \item \textbf{Clausola locale}: \[ l_1 \lor l_2 \lor \ldots \lor l_n \]
     \item \textbf{Clausola globale}: \[ G(l_1 \lor l_2 \lor \ldots \lor l_n) \]
 \end{itemize}
-dove $l_i$ è un letterale proposizionale o modale. Una clausola globale è vera in tutti i mondi di un modello, una clausola locale invece è vera soltanto in un mondo del modello.
+dove $l_i$ è un letterale proposizionale o modale. Una clausola globale è vera in tutti i mondi di un modello, una clausola locale invece è vera soltanto in un mondo del modello. Anche in questo caso è possibile utilizzare la notazione insiemistica per rappresentare le clausole.
 
 \section{Clausificazione di formule modali}
-Per poter effettuare la clausificazione di una formula $\phi$ è necessario utilizzare una funzione $\eta$ il cui scopo è quello di associare una nuova variabile proposizionale ad ogni sottoformula di $\phi$. La funzione $\eta$ si utilizza all'interno di un'altra funzione, chiamata \textbf{R}, che è la funzione di riduzione. La clausificazione della formula $\phi$ viene fatta in questo modo:
+Per poter effettuare la clausificazione di una formula $\phi$ è necessario utilizzare una funzione $\eta$. Essa è una funzione iniettiva di rinominazione, il cui scopo è quello di mappare una nuova variabile proposizionale ad ogni sottoformula di $\phi$; è importante che questa nuova variabile non sia presente in $\phi$. La funzione $\eta$ viene utilizzata all'interno di un'altra funzione, chiamata \textbf{R}, ossia la funzione di \emph{riduzione}. La clausificazione della formula $\phi$ viene fatta nel seguente modo:
 \[ \{ \eta(\phi) \} \cup R(G(\eta(\phi) \tto \phi)) \]
-dove \textbf{R} è definita in questo modo:
+dove \textbf{R} è così definita (si consideri $t$ e $p$ come variabili proposizionali):
 \[
 \begin{aligned}
 R(G(t \tto p)) &= \{ G(\lnot t \lor p), G(t \lor \lnot p) \} \\
@@ -794,17 +795,141 @@ R(G(t \tto \psi \lor \psi')) &= \{ G(\lnot t \lor \eta(\psi) \lor \eta(\psi')), 
 R(G(t \tto \Box \psi)) &= \{ G(\lnot t \lor \Box \eta(\psi)), G(t \lor \lnot \Box \eta(\psi)) \} \cup R(G(\eta(\psi) \tto \psi))
 \end{aligned}
 \]
-La clausola {$\eta(\phi)$} è una clausola locale che contiene soltanto la variabile proposizionale associata alla formula $\phi$.      L'insieme di clausole che contiene solo questa clausola viene unito all'insieme di clausole ottenuto ricorsivamente dalla funzione \emph{R} applicata alla formula globale $G(\eta(\phi) \tto \phi)$. Si noti che questa funzione è definita solamente per i connettivi \emph{not}, \emph{or} e \emph{box}. Gli altri connettivi binari possono essere trasformati in \emph{or}.
+Essa è una funzione ricorsiva, in cui il caso base è rappresentato da $R(G(t \tto p))$. La clausola $\{\eta(\phi)\}$ è una clausola locale che contiene soltanto la variabile proposizionale associata alla formula $\phi$, ossia $\eta(\phi)$. L'insieme di clausole che contiene solo questa clausola viene unito ad un altro insieme di clausole ottenuto ricorsivamente dalla funzione \textbf{R} applicata alla formula globale $G(\eta(\phi) \tto \phi)$. Si noti che questa funzione è definita solamente per formule $\phi$ che contengono i connettivi \emph{not}, \emph{or} e \emph{box}. Gli altri connettivi binari possono essere ottenuti utilizzando i connettivi \emph{or} e \emph{not}.
 
 \subsection{Esempio di clausificazione}
+Consideriamo la seguente formula $\phi$:
+\[
+    \phi = \Box(\lnot a \lor b)
+\]
+Prima di procedere con la clausificazione dobbiamo vedere quali sono le nuove variabili proposizionali ottenute dalla funzione di rinominazione $\eta$ su ogni sottoformula $\psi$. La tabella \ref{tab:eta} mostra questa mappatura. Si noti che $\phi$ è una sottoformula di se stessa.
 
-\section{Metodo di Risoluzione per logiche modali}
-\subsection{Regole di inferenza per la logica modale \emph{E}}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        $\psi$ & $\eta(\psi)$ \\
+        \hline\hline
+        $\Box(\lnot a \lor b)$ & $\$p_0$ \\
+        \hline
+        $\lnot a \lor b$ & $\$p_1$ \\
+        \hline
+        $\lnot a$ & $\$p_2$ \\
+        \hline
+        $a$ & $\$p_3$ \\
+        \hline
+        $b$ & $\$p_4$ \\
+        \hline
+    \end{tabular}
+    \caption{Funzione $\eta$ applicata su tutte le sottoformule $\psi$ di $\phi$}
+    \label{tab:eta}
+\end{table}
+
+
+Di seguito viene mostrato l'elenco degli step per effettuare la clausificazione.
+\begin{enumerate}
+    \item Si ottiene la clausola locale $\{\eta(\phi)\}$: \[ \{\$p_0\} \]
+    \item A questa clausola si aggiungono le clausole globali ottenute da $R(G(\eta(\phi) \tto \phi))$:
+    \[G(\{\lnot \$p_0, \Box \$p_1\})\]
+    \[G(\{\$p_0, \lnot \Box \$p_1\})\]
+    \item Si aggiungono le clausole ottenute da $R(G(\eta(\psi) \tto \psi))$, dove $\psi = \lnot a \lor b$:
+    \[G(\{\lnot \$p_1, \$p_2, \$p_4\})\]
+    \[G(\{\$p_1, \lnot \$p_2\})\]
+    \[G(\{\$p_1, \lnot \$p_4\})\]
+    \item Si aggiungono le clausole ottenute da $R(G(\eta(\psi) \tto \psi))$ e da $R(G(\eta(\psi') \tto \psi'))$ dove $\psi = \lnot a$ e $\psi' = b$. Consideriamo $R(G(\eta(\psi) \tto \psi))$, si ottengono le seguenti clausole:
+    \[G(\{\lnot \$p_2, \lnot \$p_3\})\]
+    \[G(\{\$p_2, \$p_3\})\]
+    \item Si aggiungono le clausole ottenute da $R(G(\eta(\psi) \tto \psi))$, dove $\psi = a$ (\textbf{caso base}):
+    \[G(\{\lnot \$p_3, a\})\]
+    \[G(\{\$p_3, \lnot a\})\]
+    \item Ritorniamo allo step 4, e consideriamo $R(G(\eta(\psi') \tto \psi'))$ (\textbf{caso base}). Si aggiungono le seguenti clausole:
+    \[G(\{\lnot \$p_4, b\})\]
+    \[G(\{\$p_4, \lnot b\})\]
+\end{enumerate}
+Nella sezione \ref{clausification_impl}, che riguarda l'implementazione, vedremo che è possibile semplificare la clausificazione di una formula in modo da ottenere meno clausole rispetto a quelle che si otterrebbero applicando la clausificazione come sopra riportato.
+
+\section{Metodo di Risoluzione per logiche modali non-normali}
+Il metodo di risoluzione per le logiche modali non-normali è un approccio sistematico per determinare la soddisfacibilità delle formule (espresse in forma clausale) di queste logiche. Esso rappresenta un'estensione del metodo di risoluzione per la logica classica, che considera l'utilizzo di clausole locali e globali, e l'applicazione di regole di risoluzione adattate alla logica da considerare ($RES_L$). Come nella logica classica, si considerano tutte le coppie di clausole e si cerca di trovare la contraddizione applicando le regole. Qui ci concentriamo solo sulle regole per la logica modale minimale \textbf{E}, ovvero $RES_E$.
+
+\subsection{Regole di risoluzione per la logica modale \emph{E}}
+Nelle regole $RES_E$ che vediamo ora, $C$ e $D$ sono clausole, $l$ sono letterali, e $p$ sono variabili proposizionali. Le regole $RES_E$ sono le seguenti:
+
+% \[
+%     \AXC{$(D \lor l)$}
+%     \AXC{$(D' \lor \lnot l)$}
+%     \RightLabel{LRES}
+%     \BIC{$(D \lor D')$}
+%     \DP
+% \]
+
+% \[
+%     \AXC{$G(D \lor l)$}
+%     \AXC{$G(D' \lor \lnot l)$}
+%     \RightLabel{GRES}
+%     \BIC{$G(D \lor D')$}
+%     \DP
+% \]
+
+% \[
+%     \AXC{$G(D)$}
+%     \RightLabel{G2L}
+%     \UnaryInfC{$D$}
+%     \DP
+% \]
+
+% \begin{prooftree}
+%     \AXC{$(D \lor \Box p)$}
+%     \AXC{$(D' \lor \lnot \Box p')$}
+%     \AXC{$G(C)$}
+%     \AXC{$G(C')$}
+%     \RightLabel{LERES}
+%     \QuaternaryInfC{$(D \lor D')$}
+% \end{prooftree}
+    
+% \begin{prooftree}
+%     \AXC{$G(D \lor \Box p)$}
+%     \AXC{$G(D' \lor \lnot \Box p')$}
+%     \AXC{$G(C)$}
+%     \AXC{$G(C')$}
+%     \RightLabel{GERES}
+%     \QuaternaryInfC{$G(D \lor D')$}
+% \end{prooftree}    
+
+\begin{align*}
+    \textbf{LRES} & \quad \frac{(D \lor l) \quad (D' \lor \lnot l)}{(D \lor D')} \\[10pt]
+    \textbf{GRES} & \quad \frac{G(D \lor l) \quad G(D' \lor \lnot l)}{G(D \lor D')} \\[10pt]
+    \textbf{G2L} & \quad \frac{G(D)}{D} \\[10pt]
+    \textbf{LERES} & \quad \frac{(D \lor \Box p) \quad (D' \lor \lnot \Box p') \quad G(C) \quad G(C')}{(D \lor D')} \\[10pt]
+    \textbf{GERES} & \quad \frac{G(D \lor \Box p) \quad G(D' \lor \lnot \Box p') \quad G(C) \quad G(C')}{G(D \lor D')} \\[10pt]
+    & \text{dove } C \subseteq (\lnot p \lor p') \text{ e } C' \subseteq (p \lor \lnot p')
+\end{align*}
+
+Di seguito viene riportata la descrizione di ogni regola:
+\begin{itemize}
+    \item \textbf{LRES}: Questa regola è la medesima della regola \emph{Res} della logica classica (si veda sezione \ref{Res}), con la differenza che le due premesse e la risolvente sono clausole locali, e che $l$ presente nelle premesse può essere un letterale modale.
+    \item \textbf{GRES}: Come \emph{LRES}, ma le due premesse e la risolvente sono clausole globali.
+    \item \textbf{G2L}: Questa regola permette di ricavare una clausola locale a partire dalla sua controparte globale (la soddisfacibilità locale è conseguenza di quella globale).
+    \item \textbf{LERES}: Questa regola afferma che i letterali modali $\Box p$ e $\lnot \Box p'$ possono essere considerati come uno l'opposto dell'altro ogni volta che i letterali proposizionali $p$ e $p'$ sono globalmente equivalenti. Questo avviene in tre casi: \begin{enumerate}
+        \item 
+        \item 
+        \item 
+    \end{enumerate}
+    \item \textbf{GERES}:
+\end{itemize}
+
+
+
+
+
+
+
+
 
 \section{Implementazione della forma clausale}
 
 \section{implementazione delle formule modali}
 \subsection{Implementazione della clausificazione}
+\label{clausification_impl}
 
 \section{Implementazione del metodo di risoluzione}
 
