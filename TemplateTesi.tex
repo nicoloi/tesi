@@ -307,6 +307,7 @@ In questo capitolo ci concentriamo sui primi tre package dell'elenco, che sono i
 I package ``\textbf{literal}'' e ``\textbf{cnf}'' contengono le classi per rappresentare la CNF, fondamentali per il metodo di risoluzione.
 
 \subsection{La classe astratta Literal e le classi Atom e NegAtom}
+\label{literal}
 La classe \texttt{Literal} permette di rappresentare i letterali. Essa è una classe astratta che fornisce un'interfaccia comune per le classi \texttt{Atom} e \texttt{NegAtom}, che la estendono per rappresentare rispettivamente una variabile atomica e la negazione di essa. Questo approccio consente una gestione modulare dei letterali, facilitando l'estensione e il mantenimento del codice. La classe \texttt{Literal} contiene una stringa come campo privato che identifica il nome del letterale, e il corrispettivo metodo \texttt{getName()} che lo restituisce; inoltre, ha un metodo astratto \texttt{getOpposite()} sovrascritto dalle due classi che la estendono, che permette di restituire l'opposto del letterale sul quale viene chiamato (se chiamato su un'istanza di \texttt{Atom} restituisce l'istanza corrispondente di \texttt{NegAtom}, e viceversa). Il metodo \texttt{toString} della classe \texttt{NegAtom} usa il carattere ``\textbf{$\sim $}'' per rappresentare testualmente la negazione logica in un atomo negato (ad esempio ``\emph{$\sim p$}'').
 
 \begin{minipage}{\linewidth}
@@ -319,6 +320,7 @@ La classe \texttt{Literal} permette di rappresentare i letterali. Essa è una cl
 \end{minipage}
 
 \subsection{La classe Clause}
+\label{Clause}
 Questa classe permette di rappresentare le clausole della \emph{CNF}, tenendo conto della loro notazione insiemistica. La classe contiene il campo \texttt{literals} di tipo \texttt{Set<Literal>} che consiste nell'insieme di letterali, inoltre contiene anche il campo \texttt{index} che rappresenta un indice numerico che identifica la clausola istanziata.
 
 All'interno della classe \emph{Clause} sono presenti i classici metodi per gli insiemi (\texttt{add}, \texttt{remove}, \texttt{contains}, ecc.), in aggiunta al metodo \texttt{union} che permette di eseguire l'unione insiemistica con un'altra clausola specificata come parametro. Un altro importante metodo è \texttt{isTautology} che restituisce \emph{true} se e solo se la clausola è una tautologia (si veda il codice \ref{istaut}). La classe \emph{Clause} segue il design pattern ``iterator'', che permette di iterare facilmente sui letterali di una clausola tramite il ciclo \emph{for-each} di Java.
@@ -339,6 +341,7 @@ All'interno della classe \emph{Clause} sono presenti i classici metodi per gli i
 Questo codice mostrato esegue un doppio loop sulla clausola (utilizzando il campo \texttt{literals}) per verificare la presenza di un letterale ed il suo opposto all'interno di essa. Se questo dovesse capitare, allora la clausola è una tautologia e il metodo restituisce \emph{true}; altrimenti restituisce \emph{false} dopo aver terminato il doppio loop.
 
 \subsection{La classe ClauseSet}
+\label{ClauseSet}
 Questa classe rappresenta la \emph{CNF} in notazione insiemistica, ovvero gli insiemi di clausole. Nella classe è presente il campo \texttt{clauses} di tipo \texttt{Set<Clause>}, che contiene le clausole dell'istanza di \emph{ClauseSet}. Anche in questo caso ci sono i metodi per gestire gli elementi dell'insieme come nella classe \emph{Clause}, ed il metodo \texttt{union} per fare l'unione insiemistica dell'oggetto con un'altra istanza di \emph{ClauseSet}. Importante è il metodo \texttt{removeTautologies} che rimuove le clausole tautologiche dall'oggetto, in questo modo si tolgono le ridondanze, rendendo più semplice la \emph{CNF} (si veda il codice \ref{remtaut}). Anche la classe \emph{ClauseSet} segue il design pattern ``iterator''.
 
 \begin{minipage}{\linewidth}
@@ -566,6 +569,7 @@ Come visto nel capitolo \ref{intro}, una formula può essere \emph{atomica} o \e
 La classe \texttt{Formula} contiene soltanto il metodo astratto \texttt{toCnf} che permette di convertire la formula in \emph{CNF}, restituendo l'istanza di \texttt{ClauseSet} corrispondente (si veda la sezione \ref{clausification}).
 
 \section{La classe AtomicFormula}
+\label{AtomicFormula}
 Questa classe estende \texttt{Formula} ed istanzia una formula atomica. Essa contiene un campo \texttt{atm} di tipo \texttt{Atom} che lo identifica, e alcuni semplici metodi per la sua gestione: il metodo per ottenere il nome (\texttt{getName}), il metodo per ottenere il letterale associato (\texttt{toLiteral}), e i classici metodi \texttt{equals} e \texttt{toString}.
 
 \section{L'enumerazione Connective}
@@ -770,6 +774,8 @@ Le logiche modali \emph{non-normali} (\emph{NNML}) sono una classe di sistemi lo
 
 Le formule delle logiche modali (normali e non-normali) utilizzano, oltre ai connettivi della logica classica, il connettivo \emph{box} ($\Box$); Questo connettivo è fondamentale nella formalizzazione di concetti come la necessità, l'obbligatorietà, la conoscenza o la verità assoluta, a seconda del contesto in cui viene utilizzato.
 
+Gli assiomi della logica minimale \textbf{E} comprendono gli assiomi della logica classica e la regola di congruenza \textbf{RE}: da $\phi \tto \psi$ si inferisce $\Box \phi \tto \Box \psi$, dove $\phi$ e $\psi$ sono due formule.
+
 \section{Forma clausale}
 La forma clausale di una formula $\phi$ consiste nell'esprimere $\phi$ come un insieme di clausole, come nel caso della logica classica.
 \subsection{Letterali}
@@ -783,6 +789,7 @@ Le clausole, come nella logica classica, sono una disgiunzione di letterali. Que
 dove $l_i$ è un letterale proposizionale o modale. Una clausola globale è vera in tutti i mondi di un modello, una clausola locale invece è vera soltanto in un mondo del modello. Anche in questo caso è possibile utilizzare la notazione insiemistica per rappresentare le clausole.
 
 \section{Clausificazione di formule modali}
+\label{modal_claus}
 Per poter effettuare la clausificazione di una formula $\phi$ è necessario utilizzare una funzione $\eta$. Essa è una funzione iniettiva di rinominazione, il cui scopo è quello di mappare una nuova variabile proposizionale ad ogni sottoformula di $\phi$; è importante che questa nuova variabile non sia presente in $\phi$. La funzione $\eta$ viene utilizzata all'interno di un'altra funzione, chiamata \textbf{R}, ossia la funzione di \emph{riduzione}. La clausificazione della formula $\phi$ viene fatta nel seguente modo:
 \[ \{ \eta(\phi) \} \cup R(G(\eta(\phi) \tto \phi)) \]
 dove \textbf{R} è così definita (si consideri $t$ e $p$ come variabili proposizionali):
@@ -909,29 +916,92 @@ Di seguito viene riportata la descrizione di ogni regola:
     \item \textbf{LRES}: Questa regola è la medesima della regola \emph{Res} della logica classica (si veda sezione \ref{Res}), con la differenza che le due premesse e la risolvente sono clausole locali, e che $l$ presente nelle premesse può essere un letterale modale.
     \item \textbf{GRES}: Come \emph{LRES}, ma le due premesse e la risolvente sono clausole globali.
     \item \textbf{G2L}: Questa regola permette di ricavare una clausola locale a partire dalla sua controparte globale (la soddisfacibilità locale è conseguenza di quella globale).
-    \item \textbf{LERES}: Questa regola afferma che i letterali modali $\Box p$ e $\lnot \Box p'$ possono essere considerati come uno l'opposto dell'altro ogni volta che i letterali proposizionali $p$ e $p'$ sono globalmente equivalenti. Questo avviene in tre casi: \begin{enumerate}
-        \item 
-        \item 
-        \item 
+    \item \textbf{LERES}: Questa regola afferma che i letterali modali $\Box p$ e $\lnot \Box p'$ possono essere considerati come l'uno l'opposto dell'altro ogni volta che i letterali proposizionali $p$ e $p'$ sono globalmente equivalenti. Questo avviene in tre casi: \begin{enumerate}
+        \item quando $G(C) = G(\lnot p \lor p')$ e $G(C') = G(p \lor \lnot p')$, questo significa che $p$ e $p'$ sono semanticamente equivalenti (ossia $p \tto p'$).
+        \item quando $G(C) = G(\lnot p)$ e $G(C') = G(\lnot p')$, in questo caso $p$ e $p'$ sono entrambi globalmente falsi, e quindi semanticamente equivalenti.
+        \item quando $G(C) = G(p')$ e $G(C') = G(p)$, in questo caso $p$ e $p'$ sono entrambi globalmente veri, e quindi semanticamente equivalenti.
     \end{enumerate}
-    \item \textbf{GERES}:
+    Ogni volta che si rientra in uno di questi casi, si considera l'approccio classico della regola di risoluzione, ovvero si genera la risolvente cancellando i letterali modali $\Box p$ e $\lnot \Box p'$ dalle prime due premesse, e facendo l'unione. In questo caso le prime due premesse e la risolvente sono clausole locali.
+    \item \textbf{GERES}: Come \emph{LERES}, ma le prime due premesse e la risolvente sono clausole globali.
 \end{itemize}
+Nella sezione \ref{impl_res_modal} vedremo un esempio di applicazione di queste regole.
 
-
-
-
-
-
-
-
+\section{Implementazione in Java}
+Ora vediamo la seconda parte di questo capitolo, che si concentra sull'implementare in Java i concetti che abbiamo visto finora nel capitolo. La struttura del progetto Java è simile a quella del progetto per la logica classica (si veda sezione \ref{project_structure}), e anche alcune classi sono simili a quelle della logica classica.
 
 \section{Implementazione della forma clausale}
+\subsection*{Le classi per i letterali}
+Come nell'implementazione per la logica classica, è presente la classe astratta \texttt{Literal} (si veda sezione \ref{literal}). Questa classe viene estesa dalle classi \texttt{PropAtom} e \texttt{NegPropAtom} che rappresentano i letterali proposizionali, e dalle classi \texttt{ModalAtom} e \texttt{NegModalAtom} che rappresentano i letterali modali. Per la rappresentazione testuale dei letterali modali si usa il carattere ``$\#$'', ad esempio ``$\#p$'' o ``$\sim\!\#q$''.
+
+\subsection*{Le classi per le clausole}
+Per quanto riguarda le clausole, è presente la classe astratta \texttt{Clause}. Questa classe è simile a quella utilizzata nella logica classica (si veda sezione \ref{Clause}), con la differenza che in questo caso si tratta di una classe astratta che definisce il metodo astratto \texttt{union}; gli altri metodi sono gli stessi della classe \texttt{Clause} per la logica classica.
+
+La classe \texttt{Clause} viene estesa dalle due classi \texttt{LocalClause} e \texttt{GlobalClause}, che rappresentano rispettivamente le clausole locali e globali. Queste due classi forniscono un'implementazione del metodo \texttt{union}, infatti una clausola di un tipo (locale o globale) può essere unita soltanto con un'altra clausola dello stesso tipo. Inoltre le due classi sovrascrivono i metodi \texttt{equals} e \texttt{toString} (nella rappresentazione testuale delle clausole globali viene usato ``G($\cdot$)'').
+
+\subsection*{La classe ClauseSet}
+La classe \texttt{ClauseSet} rappresenta la forma clausale di una formula, espressa come insieme di clausole. Questa classe è la medesima utilizzata nella logica classica (si veda sezione \ref{ClauseSet}). La differenza sostanziale è che le clausole all'interno di un'istanza di \texttt{ClauseSet} possono essere indistintamente locali o globali, e i letterali contenuti in ciascuna clausola possono essere indistintamente proposizionali o modali.
+
 
 \section{implementazione delle formule modali}
+Per l'implementazione delle formule modali generiche si segue lo stesso approccio usato per la logica classica (si veda l'inizio del capitolo \ref{formulas}); quindi si usa la classe astratta \texttt{Formula} che viene estesa dalle classi \texttt{AtomicFormula} e \texttt{CompoundFormula}. La classe \texttt{AtomicFormula} è identica a quella presentata nella sezione \ref{AtomicFormula}. La classe \texttt{CompoundFormula} utilizza l'enumerazione \texttt{Connective} estesa al connettivo unario \emph{box} (si utilizza la costante enumerativa \texttt{BOX}, la cui rappresentazione testuale usa il carattere ``$\#$''). La classe \texttt{AtomicFormula} implementa le formule seguendo lo stesso approccio con alberi binari che abbiamo già visto; i nodi che descrivono il connettivo \emph{box} hanno solo il figlio sinistro, come nel caso del \emph{not} (perché è unario).
+
 \subsection{Implementazione della clausificazione}
 \label{clausification_impl}
+\subsubsection{La classe Eta}
+La clausificazione viene fatta utilizzando la classe \texttt{Eta}, essa gestisce l'esecuzione della funzione di rinominazione $\eta$. Questa classe ha come campo una mappa che associa istanze di \texttt{Formula} a istanze di \texttt{PropAtom}; il costruttore della classe prende in input un oggetto \texttt{Formula} $f$ e crea ricorsivamente la mappa associando ad ogni sottoformula di $f$ una nuova variabile proposizionale (\texttt{PropAtom}), i nomi che vengono dati alle variabili atomiche sono $\$p1, \$p2, \dots, \$pi$.
+
+La classe \emph{Eta} ha il metodo \texttt{getPropVariable} che prende in input un oggetto \texttt{Formula} $f$ e restituisce il valore $\eta(f)$. Un'istanza di \texttt{Eta} viene usata come campo statico all'interno della classe \texttt{Formula}.
+
+\subsubsection{I metodi per la clausificazione}
+La classe \texttt{CompoundFormula} permette di eseguire la clausificazione tramite i metodi \texttt{toClauseSet}, \texttt{R} e \texttt{classicClausification}. La clausificazione viene implementata in maniera leggermente diversa rispetto a quanto riportato in questo capitolo (nella sezione \ref{modal_claus}), infatti è possibile considerare $\eta(p) = p$ nel caso in cui $p$ sia una formula atomica (\texttt{AtomicFormula}); in questo modo si evita il caso $R(G(\eta(p) \tto p))$. Inoltre, è possibile applicare la clausificazione della logica classica quando la funzione \textbf{R} arriva a calcolare $R(G(\eta(F) \tto F))$, dove $F$ è una formula della logica classica (ossia non contiene il connettivo \emph{box}); in questo caso si fa la clausificazione classica della formula $\eta(F) \tto F$, che consiste in un caso base della funzione \textbf{R}. Si può applicare la clausificazione classica anche quando la formula $F$ contiene il connettivo \emph{box} ma solo se esso viene applicato alle atomiche della formula. Ad esempio, se avessimo la formula $(\Box a \land b) \to \Box c$, possiamo applicare su di essa la clausificazione classica, senza usare la funzione $\eta$.
+
+Vediamo ora una descrizione dei metodi usati per la clausificazione.
+
+\subsubsection{Il metodo \texttt{toClauseSet}}
+Questo metodo è il primo ad essere richiamato per la clausificazione, ed è l'unico ad essere pubblico. Esso controlla se la formula \texttt{this} da clausificare è classica, in tal caso richiama il metodo \texttt{classicClausification}. Se invece non è classica, procede con la parte iniziale della clausificazione con $\eta$: crea una nuova istanza del campo statico \texttt{Eta} (della \emph{superclasse} \texttt{Formula}), e crea un nuovo \texttt{ClauseSet} vuoto nel quale aggiunge la clausola locale $\{\eta(this)\}$, ed infine restituisce l'unione con il \texttt{ClauseSet} ottenuto da $R(G(\eta(this) \tto this))$. Il codice \ref{toClauseSet} mostra questo metodo.
+
+\begin{minipage}{\linewidth}
+    % \small
+    \begin{lstlisting}[caption={Metodo \texttt{toClauseSet} della classe \texttt{CompoundFormula}}, label={toClauseSet}]
+        @Override
+        public ClauseSet toClauseSet() {
+            if (this.isClassic()) {
+                return this.classicClausification();
+            } else {
+                eta = new Eta(this); //eta e' il campo statico della classe Formula.
+                PropAtom t = eta.getPropVariable(this);
+                ClauseSet cs = new ClauseSet(new LocalClause(t));
+                return cs.union(this.R(t));
+            }
+        }
+    \end{lstlisting}
+\end{minipage}
+
+
+
+\subsubsection{Il metodo \texttt{R}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Il metodo \texttt{classicClausification}}
+
+
+
+\section*{Parsing di formule modali}
 
 \section{Implementazione del metodo di risoluzione}
+\label{impl_res_modal}
 
 
 
