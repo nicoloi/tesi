@@ -52,6 +52,8 @@
 
 \newcommand{\tto} {\leftrightarrow}
 
+\newtheorem{definition}{Definizione}[section]
+
 %
 %
 %			TITOLO
@@ -97,14 +99,18 @@
 Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione per la logica classica, ovvero la logica proposizionale. Nel capitolo \ref{modal} verrà trattato il metodo di risoluzione per le logiche modali non-normali, che rappresentano un'estensione di quella proposizionale. Di seguito viene presentata una breve introduzione della logica proposizionale, utile a capire il funzionamento del metodo di risoluzione, trattato nel capitolo \ref{resol}.
 
 \section{Logica proposizionale}
+La logica proposizionale è un sistema formale per la rappresentazione e l'analisi del ragionamento, essa si basa su proposizioni. La sua sintassi comprende l'utilizzo di formule.
 
-La logica proposizionale è un sistema formale per la rappresentazione e l'analisi del ragionamento, essa si basa su proposizioni. La sua sintassi comprende formule atomiche e formule composte. La semantica della logica proposizionale stabilisce come valutare le formule, associando loro valori di verità in base a interpretazioni che specificano lo stato di verità di ogni proposizione atomica.
+\begin{definition}
+    Una formula è un'espressione sintattica che rappresenta una proposizione. Le formule sono costruite utilizzando gli operatori (o connettivi) logici e variabili proposizionali, e sono utilizzate per rappresentare relazioni, proprietà e regole all'interno di un sistema formale.
+\end{definition}
+La semantica della logica proposizionale stabilisce come valutare le formule, associando loro valori di verità in base a interpretazioni che specificano lo stato di verità di ogni proposizione atomica. Le formule possono essere \emph{atomiche} o \emph{composte}.
 
 \subsection{Formule atomiche}
 Le formule atomiche rappresentano il caso più semplice di formula, nelle quali non vengono usati gli operatori logici. Una formula atomica è una variabile proposizionale, che può essere identificata tramite una lettera dell'alfabeto, ad esempio ``$p$''; essa viene valutata come vera (\emph{true}) o falsa (\emph{false}) in base all'interpretazione considerata. 
 
 \subsection{Formule composte}
-Le formule composte sono costruite mediante operatori logici (detti anche ``\emph{connettivi}'') a partire dalle formule atomiche. I connettivi della logica proposizionale sono:
+Le formule composte sono costruite mediante i connettivi logici a partire dalle formule atomiche. I connettivi della logica proposizionale sono:
 \begin{itemize}
     \item $\lnot \;$ è la negazione logica (\textbf{not})
     \item $\land \;$ è la congiunzione logica (\textbf{and})
@@ -119,13 +125,22 @@ Si possono creare formule composte più complicate, in tal caso si usano le pare
 L'interpretazione di una formula composta dipende dai connettivi usati e dall'interpretazione delle sue atomiche.
 
 \subsection{Soddisfacibilità di una formula}
-Una formula $F$ si dice \textbf{soddisfacibile} se e solo se ammette almeno un'interpretazione che la rende vera, ossia esiste almeno un assegnamento di valori di verità alle atomiche che rende vera $F$. Se tutte le interpretazioni possibili la rendono falsa, allora $F$ si dice \textbf{insoddisfacibile}.
+\begin{definition}
+    Una formula $F$ si dice \textbf{soddisfacibile} se e solo se ammette almeno un'interpretazione che la rende vera, ossia esiste almeno un assegnamento di valori di verità alle atomiche che rende vera $F$. Se tutte le interpretazioni possibili la rendono falsa, allora $F$ si dice \textbf{insoddisfacibile}.
+\end{definition}
+Ad esempio, la formula $p \land q$ è soddisfacibile, perché è vera quando le atomiche $p$ e $q$ sono entrambe vere.
 
 \subsection{Tautologie e contraddizioni}
 \label{taut-contr}
-Una formula è una \textbf{tautologia} se e solo se ogni interpretazione della formula la rende vera. Quindi una tautologia è una formula sempre vera, che come vedremo, può essere ridondante in alcuni casi. Ad esempio, la formula ``$p \, \lor \, \lnot p$'' è il caso più semplice di tautologia.
+\begin{definition}
+    Una formula è una \textbf{tautologia} se e solo se ogni interpretazione della formula la rende vera.
+\end{definition}
+Quindi una tautologia è una formula sempre vera, che come vedremo, può essere ridondante in alcuni casi. Ad esempio, la formula ``$p \, \lor \, \lnot p$'' è il caso più semplice di tautologia.
 
-Una formula è una \textbf{contraddizione} se e solo se è insoddisfacibile, ovvero tutte le sue interpretazioni la rendono falsa. Ad esempio, la formula ``$p \, \land \, \lnot p$'' è una contraddizione. \`E bene notare che se si applica la negazione logica ad una contraddizione si ottiene una tautologia, e viceversa.
+\begin{definition}
+    Una formula è una \textbf{contraddizione} se e solo se è insoddisfacibile.
+\end{definition}
+Dunque, una contraddizione è una formula in cui tutte le sue interpretazioni la rendono falsa. Ad esempio, la formula ``$p \, \land \, \lnot p$'' è una contraddizione. \`E bene notare che se si applica la negazione logica ad una contraddizione si ottiene una tautologia, e viceversa.
 
 % 
 % 
@@ -134,18 +149,28 @@ Una formula è una \textbf{contraddizione} se e solo se è insoddisfacibile, ovv
 \label{resol}
 Il metodo di risoluzione è un sistema di calcolo logico per inferire la soddisfacibilità di una formula, esso ha avuto un impatto significativo in vari settori della matematica, dell'informatica e dell'ingegneria. È stato utilizzato per dimostrare teoremi importanti, risolvere problemi pratici e sviluppare algoritmi per l'intelligenza artificiale, la verifica formale e la progettazione dei circuiti. 
 
-Questo metodo consiste nell'applicare più volte una sola regola: la regola di risoluzione. Il difetto è che essa opera soltanto su formule espresse in \textbf{Forma normale congiuntiva (CNF)}, ovvero come congiunzione di clausole. Prima di vedere il metodo di risoluzione è bene capire in che cosa consiste la \emph{CNF}.
+Questo metodo consiste nell'applicare più volte una sola regola: la regola di risoluzione. Il difetto è che essa opera soltanto su formule espresse in \textbf{Forma normale congiuntiva (CNF)}. Prima di vedere il metodo di risoluzione è bene capire in che cosa consiste la \emph{CNF}.
 
 \section{Forma normale congiuntiva}
 \label{CNF}
 \subsection{Letterali}
-Un letterale è una formula atomica, oppure la sua negazione. Ad esempio ``$a$'' e ``$\lnot b$'' sono dei letterali, essi rappresentano l'elemento fondamentale delle clausole.
+
+\begin{definition}
+    Un letterale è una formula atomica, oppure la sua negazione. Un letterale può quindi essere positivo o negativo.
+\end{definition}
+Ad esempio, ``$a$'' e ``$\lnot b$'' sono dei letterali.
 
 \subsubsection{Opposto di un letterale}
-Dato un letterale $L$, il suo \emph{opposto} $\overline{L}$ è la sua negazione, ad esempio: se $L = p$ allora $\overline{L} = \lnot p$ e se $L = \lnot p$ allora $\overline{L} = p$.
+\begin{definition}
+    Dato un letterale $L$, il suo \textbf{opposto} (o \textbf{complemento}) $\overline{L}$ è la sua negazione.
+\end{definition}
+Ad esempio, se $L = p$ allora $\overline{L} = \lnot p$ e se $L = \lnot p$ allora $\overline{L} = p$.
 
 \subsection{Clausole}
-Una clausola è una disgiunzione di letterali. Consideriamo il seguente esempio:
+\begin{definition}
+    Una clausola è una disgiunzione di uno o più letterali.
+\end{definition}
+Consideriamo il seguente esempio:
 \[ a \lor \lnot b \lor \lnot c \lor d \] 
 questa è una clausola formata dai letterali ``$a$'', ``$\lnot b$'', ``$\lnot c$'', ``$d$''.
 
@@ -156,20 +181,28 @@ che come si può notare, il simbolo di disgiunzione logica non è più presente,
 L'interpretazione delle clausole è semplice: una clausola è vera se e solo se almeno un letterale appartenente ad essa è vero in una data interpretazione (a causa della disgiunzione).
 
 \subsubsection{Clausola tautologica}
-Una clausola è una tautologia se e solo se contiene un letterale ed il suo opposto. Ad esempio: ``$\{ a, b, c, \lnot a \}$'' è una tautologia, perché contiene il letterale ``$a$'' ed il suo opposto. Infatti questo tipo di clausola risulta essere sempre vera, qualunque sia l'interpretazione dei suoi letterali (si veda la sezione \ref{taut-contr}).
+\begin{definition}
+    Una clausola è tautologica se e solo se contiene almeno un letterale ed il suo opposto.
+\end{definition}
+Ad esempio: ``$\{ a, b, c, \lnot a \}$'' è una tautologia, perché contiene il letterale ``$a$'' ed il suo opposto. Questo tipo di clausola risulta essere sempre vera, qualunque sia l'interpretazione dei suoi letterali (si veda la sezione \ref{taut-contr}).
 
 \subsubsection{Clausola vuota}
 è importante notare che una clausola può non contenere alcun letterale, in tal caso si parla di \emph{clausola vuota}. La clausola vuota rappresenta la \textbf{contraddizione} (si veda la sezione \ref{taut-contr}) e si può indicare con ``$\{ \}$''.
 
 \subsection{Insiemi di clausole}
-La \emph{CNF} consiste in una congiunzione di clausole. Seguendo lo stesso approccio per le clausole, la \emph{CNF} può essere rappresentata anch'essa in notazione insiemistica come \textbf{insieme di clausole}, quindi ad esempio la seguente \emph{CNF}:
+\begin{definition}
+    La Forma Normale Congiuntiva (CNF) è una forma standard delle formule proposizionali in logica matematica. Una formula è in CNF se è una congiunzione di clausole.
+\end{definition}
+Seguendo lo stesso approccio per le clausole, la \emph{CNF} può essere rappresentata anch'essa in notazione insiemistica come \textbf{insieme di clausole}, quindi ad esempio la seguente \emph{CNF}:
 \[ (a \lor b) \land (\lnot a \lor c) \land (\lnot b \lor c) \]
 diventa
 \[\{ \; \{a, b\}, \{\lnot a, c\}, \{\lnot b, c\} \; \}\]
 anche in questo caso la congiunzione è sottintesa. Possiamo quindi considerare la \emph{CNF} e gli insiemi di clausole come lo stesso oggetto semantico.
 
 \subsubsection{Soddisfacibilità di un insieme di clausole}
-Un insieme di clausole $S$ è \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che rende vere \textbf{tutte} le clausole appartenenti a $S$ (a causa della congiunzione).
+\begin{definition}
+    Un insieme di clausole $S$ è \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che rende vere \textbf{tutte} le clausole appartenenti a $S$.
+\end{definition}
 
 \section{Regola di risoluzione}
 \label{Res}
@@ -960,6 +993,19 @@ Vediamo ora una descrizione dei metodi usati per la clausificazione.
 \subsubsection{Il metodo \texttt{toClauseSet}}
 Questo metodo è il primo ad essere richiamato per la clausificazione, ed è l'unico ad essere pubblico. Esso controlla se la formula \texttt{this} da clausificare è classica, in tal caso richiama il metodo \texttt{classicClausification}. Se invece non è classica, procede con la parte iniziale della clausificazione con $\eta$: crea una nuova istanza del campo statico \texttt{Eta} (della \emph{superclasse} \texttt{Formula}), e crea un nuovo \texttt{ClauseSet} vuoto nel quale aggiunge la clausola locale $\{\eta(this)\}$, ed infine restituisce l'unione con il \texttt{ClauseSet} ottenuto da $R(G(\eta(this) \tto this))$. Il codice \ref{toClauseSet} mostra questo metodo.
 
+\subsubsection{Il metodo \texttt{R}}
+Il metodo \texttt{R} prende in input l'oggetto \texttt{PropAtom t} corrispondente alla rinominazione della formula sulla quale viene richiamato il metodo, ad esempio: scrivere \texttt{this.R(t)} equivale ad applicare $R(G(t \tto this))$, dove $t = \eta(this)$. Il metodo applica la funzione \textbf{R} in maniera ricorsiva come abbiamo visto, tenendo conto anche dei casi di doppia negazione (questo capita quando si calcola $R(G(t \tto \lnot \lnot \psi))$) con $p$ atomica, ed evita di calcolare $R(G(p \tto p))$ fermandosi alla chiamata ricorsiva precedente. Inoltre considera come caso base il calcolo di $R(G(t \tto F))$ dove $F$ è una formula della logica classica (richiamando in questo caso il metodo \texttt{classicClausification} su $t \tto F$). Siccome questo metodo è lungo, il codice \ref{R} riporta soltanto il caso in cui viene calcolato $R(G(t \tto \lnot \psi))$; in questo codice la variabile \texttt{psi} è il figlio sinistro della formula \texttt{this} (si noti che \texttt{this} è $\lnot \psi$), la variabile \texttt{etaPsi} è il valore $\eta(psi)$ ed infine la variabile \texttt{res} è un \texttt{ClauseSet} inizialmente vuoto.
+
+\subsubsection{Il metodo \texttt{classicClausification}}
+\label{classicClausification}
+Questo metodo esegue la clausificazione classica, applicando le regole di inferenza riportate nella sezione \ref{clausification}. Quindi il metodo \texttt{classicClausification} è uguale al metodo \texttt{toCnf} per la logica classica, con la differenza che tutte le clausole restituite sono globali; inoltre, gestisce anche le formule che contengono il connettivo \emph{box} solo se compare davanti alle atomiche (ad esempio se contengono $\Box p$ e/o $\lnot \Box q$).
+
+Ad esempio, se dobbiamo clausificare la formula $\lnot(\Box p \lor \lnot \Box q)$ viene eseguito il metodo \texttt{classicClausification}, che restituisce il seguente insieme di clausole:
+\[
+    \{ \; G(\lnot \Box p), G(\Box q) \; \}
+\]
+In questo modo si evita di utilizzare le funzioni $\eta$ e \emph{R}, rendendo più semplice la clausificazione.
+
 \begin{minipage}{\linewidth}
     % \small
     \begin{lstlisting}[caption={Metodo \texttt{toClauseSet} della classe \texttt{CompoundFormula}}, label={toClauseSet}]
@@ -977,31 +1023,48 @@ Questo metodo è il primo ad essere richiamato per la clausificazione, ed è l'u
     \end{lstlisting}
 \end{minipage}
 
-
-
-\subsubsection{Il metodo \texttt{R}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\subsubsection{Il metodo \texttt{classicClausification}}
-
-
+\begin{minipage}{\linewidth}
+    \small
+    \begin{lstlisting}[caption={Parte del metodo \texttt{R} della classe \texttt{CompoundFormula}}, label={R}]
+        switch (this.mainConnective) {
+            case NOT:
+                GlobalClause gc1 = new GlobalClause();
+                gc1.add(t.getOpposite());
+                gc1.add(etaPsi.getOpposite());
+                res.add(gc1);
+                GlobalClause gc2 = new GlobalClause();
+                gc2.add(t);
+                gc2.add(etaPsi);
+                res.add(gc2);
+                if (psi instanceof CompoundFormula) {
+                    CompoundFormula cf_psi = (CompoundFormula) psi;
+                    if (cf_psi.isClassic()) {
+                        CompoundFormula f = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+                        return res.union(f.classicClausification());
+                    }
+                    return res.union(cf_psi.R(etaPsi));
+                }
+                return res;
+            case OR:
+                ...
+        }
+    \end{lstlisting}
+\end{minipage}
 
 \section*{Parsing di formule modali}
+Il parsing di formule modali viene fatto nello stesso modo che abbiamo visto nella sezione \ref{parsing}, in questo caso però si deve considerare il connettivo \emph{box}. Per farlo, bisogna modificare la grammatica presente nel codice \ref{grammar}, aggiungendo nella definizione dei token la riga:
+\begin{center}
+    \textbf{BOX} : '$\#$';
+\end{center}
+e modificando la regola \emph{unary$\_$connective} nel seguente modo:
+\begin{center}
+    \textbf{unary\_connective} : NOT $|$  BOX;
+\end{center}
+In questo modo l'\emph{AST} terrà conto anche del connettivo \emph{box}.
 
 \section{Implementazione del metodo di risoluzione}
 \label{impl_res_modal}
+
 
 
 
