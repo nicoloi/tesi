@@ -396,6 +396,7 @@ Questa classe rappresenta la \emph{CNF} in notazione insiemistica, ovvero gli in
 Questo codice esegue la rimozione delle clausole tautologiche: prepara una lista \texttt{tautologies} vuota, esegue un loop sul campo \texttt{clauses} per aggiungere alla lista le tautologie, ed infine esegue un loop sulla lista \texttt{tautologies} per rimuovere le tautologie contenute in \texttt{clauses}.
 
 \section{La classe Resolution}
+\label{class:Resolution}
 La classe \emph{Resolution} è una classe senza costruttori che contiene alcuni campi statici e metodi statici per l'implementazione del metodo di risoluzione. I campi della classe sono tre:
 \begin{itemize}
     \item \texttt{visited}: è di tipo \texttt{Map<Integer, Set<Integer>>} e consiste in una mappa che associa una clausola ad un insieme di clausole (utilizzando i loro indici). Essa memorizza tutte le clausole alle quali è stata applicata la regola di risoluzione con la clausola rappresentata dalla chiave della mappa (si veda la sottosezione \ref{visited}).
@@ -423,7 +424,7 @@ A questo punto vengono eseguiti due cicli for innestati su \texttt{listCl}; il c
     
 \begin{minipage}{\linewidth}
 \small 
-\begin{lstlisting}[caption={Metodo ``isSatisfiable'' della classe Resolution}, label={double-for}]
+\begin{lstlisting}[caption={Parte del metodo ``isSatisfiable'' della classe Resolution}, label={double-for}]
         for (int i = 0; i < listCl.size(); i++) {
             Clause c1 = listCl.get(i);
             int index1 = c1.getIndex();
@@ -472,6 +473,7 @@ A questo punto vengono eseguiti due cicli for innestati su \texttt{listCl}; il c
 Una volta entrato nel secondo ciclo, il metodo esegue la regola di risoluzione (metodo \texttt{resolRule}) su \texttt{c1} e \texttt{c2}, se e solo se le due clausole non sono uguali, non sono già state visitate in precedenza, e contengono almeno un letterale complementare in comune (metodo \texttt{getComplementaryLiteral}). Una volta eseguita la regola sulle due clausole, viene controllato se la clausola \texttt{resolvent} è vuota (metodo \texttt{isEmpty}); in tal caso il metodo restituisce \texttt{false} e termina la sua esecuzione, altrimenti la continua e aggiunge la risolvente a \texttt{listCl} se e solo se \texttt{resolvent} non è tautologica e non è già presente nella lista. A questo punto si esegue la successiva iterazione del \texttt{for} interno.
 
 \subsubsection{Il metodo ``getComplementaryLiteral''}
+\label{getComplementaryLiteral}
 Questo metodo controlla se nella clausola \texttt{c1} è presente un letterale \texttt{l1}, ed il suo opposto \texttt{l2} nella clausola \texttt{c2}. Se lo trova lo restituisce, altrimenti restituisce \texttt{null}. Il codice \ref*{gcl} mostra questo metodo. 
 
 \begin{minipage}{\linewidth}
@@ -811,9 +813,9 @@ Gli assiomi della logica minimale \textbf{E} comprendono gli assiomi della logic
 
 \section{Forma clausale}
 La forma clausale di una formula $\phi$ consiste nell'esprimere $\phi$ come un insieme di clausole, come nel caso della logica classica.
-\subsection{Letterali}
+\subsection*{Letterali}
 I letterali possono essere di due tipi: \emph{proposizionali} o \emph{modali}. I letterali proposizionali sono i medesimi della logica classica (si veda sezione \ref{CNF}); i letterali modali sono della forma $\Box p$ oppure $\lnot \Box p$, dove $p$ è una variabile proposizionale.
-\subsection{Clausole}
+\subsection*{Clausole}
 Le clausole, come nella logica classica, sono una disgiunzione di letterali. Questa volta però le clausole possono essere di due tipi: 
 \begin{itemize}
     \item \textbf{Clausola locale}: \[ l_1 \lor l_2 \lor \ldots \lor l_n \]
@@ -837,7 +839,7 @@ R(G(t \tto \Box \psi)) &= \{ G(\lnot t \lor \Box \eta(\psi)), G(t \lor \lnot \Bo
 \]
 Essa è una funzione ricorsiva, in cui il caso base è rappresentato da $R(G(t \tto p))$. La clausola $\{\eta(\phi)\}$ è una clausola locale che contiene soltanto la variabile proposizionale associata alla formula $\phi$, ossia $\eta(\phi)$. L'insieme di clausole che contiene solo questa clausola viene unito ad un altro insieme di clausole ottenuto ricorsivamente dalla funzione \textbf{R} applicata alla formula globale $G(\eta(\phi) \tto \phi)$. Si noti che questa funzione è definita solamente per formule $\phi$ che contengono i connettivi \emph{not}, \emph{or} e \emph{box}. Gli altri connettivi binari possono essere ottenuti utilizzando i connettivi \emph{or} e \emph{not}.
 
-\subsection{Esempio di clausificazione}
+\subsection*{Esempio di clausificazione}
 Consideriamo la seguente formula $\phi$:
 \[
     \phi = \Box(\lnot a \lor b)
@@ -959,7 +961,7 @@ Di seguito viene riportata la descrizione di ogni regola:
 \end{itemize}
 Nella sezione \ref{impl_res_modal} vedremo un esempio di applicazione di queste regole.
 
-\section{Implementazione in Java}
+\section*{Implementazione in Java}
 Ora vediamo la seconda parte di questo capitolo, che si concentra sull'implementare in Java i concetti che abbiamo visto finora nel capitolo. La struttura del progetto Java è simile a quella del progetto per la logica classica (si veda sezione \ref{project_structure}), e anche alcune classi sono simili a quelle della logica classica.
 
 \section{Implementazione della forma clausale}
@@ -1002,7 +1004,7 @@ Questo metodo esegue la clausificazione classica, applicando le regole di infere
 
 Ad esempio, se dobbiamo clausificare la formula $\lnot(\Box p \lor \lnot \Box q)$ viene eseguito il metodo \texttt{classicClausification}, che restituisce il seguente insieme di clausole:
 \[
-    \{ \; G(\lnot \Box p), G(\Box q) \; \}
+    \{ \; G(\lnot \Box p), \; G(\Box q) \; \}
 \]
 In questo modo si evita di utilizzare le funzioni $\eta$ e \emph{R}, rendendo più semplice la clausificazione.
 
@@ -1064,8 +1066,77 @@ In questo modo l'\emph{AST} terrà conto anche del connettivo \emph{box}.
 
 \section{Implementazione del metodo di risoluzione}
 \label{impl_res_modal}
+L'implementazione del metodo di risoluzione viene svolta, come nel caso della logica classica, all'interno della classe \texttt{Resolution}; essa è una classe senza costruttori dove sono presenti dei campi statici e metodi statici. I campi statici sono quelli descritti nella sezione \ref{class:Resolution}, ossia \texttt{visited}, \texttt{enableSteps} e \texttt{trace}. i metodi della classe sono i seguenti:
+\begin{itemize}
+    \item \texttt{isSatisfiable}
+    \item \texttt{getComplementaryLiteral}
+    \item \texttt{getModalLiterals}
+    \item \texttt{addCoupleInMap}
+    \item \texttt{alreadyVisited}
+    \item \texttt{setEnableSteps}
+    \item \texttt{printTrace}
+    \item \texttt{G2L}
+    \item \texttt{LRES}
+    \item \texttt{GRES}
+    \item \texttt{LERES}
+    \item \texttt{GERES}
+\end{itemize}
+Il metodo \texttt{isSatisfiable} è il metodo principale che implementa l'algoritmo di risoluzione ed è l'unico ad essere pubblico. Questo metodo prende in input un oggetto \texttt{ClauseSet s} e restituisce \texttt{true} se \texttt{s} è soddisfacibile, \texttt{false} altrimenti. Inizialmente, Dopo aver controllato che \texttt{s} non sia \texttt{null} e non sia vuoto, elimina tutte le eventuali clausole tautologiche e crea la lista di clausole \texttt{listCl} dove aggiunge tutte le clausole rimaste in \texttt{s}. Lo svolgimento del metodo \texttt{isSatisfiable} può essere diviso in tre parti:
 
+\begin{enumerate}
+    \item \textbf{Applicazione della regola G2L}: ad ogni clausola globale contenuta in \texttt{listCl} viene applicata la regola \emph{G2L} (tramite il metodo \texttt{G2L}), e le nuove clausole ottenute vengono aggiunte a \texttt{listCl}.
+    
+    \item \textbf{Applicazione delle regole LRES e GRES}: vengono eseguiti due cicli \emph{for} innestati sulla lista \texttt{listCl} in modo da applicare (dove possibile) la regola \emph{LRES} su tutte le coppie di clausole locali, e la regola \emph{GRES} su tutte le coppie di clausole globali (tramite i metodi \texttt{LRES} e \texttt{GRES}). Per verificare il tipo di clausola si utilizza l'operatore \texttt{instanceof}, per ottenere il letterale $l$ (oppure $\lnot l$), si usa il metodo \texttt{getComplementaryLiteral}, il cui funzionamento è il medesimo dell'omonimo metodo spiegato nella sezione \ref{getComplementaryLiteral}. Ogni volta che vengono eseguite le regole \emph{LRES} e \emph{GRES} viene restituito \texttt{false} se la risolvente è vuota, altrimenti la risolvente viene aggiunta a \texttt{listCl} se e solo se essa non è tautologica oppure non è già presente nella lista.
+    
+    \item \textbf{Applicazione delle regole LERES e GERES}: viene eseguito un altro paio di \emph{for} innestati sulla lista \texttt{listCl}, questa volta cercando di applicare (dove possibile) la regola \emph{LERES} su tutte le coppie di clausole locali, e la regola \emph{GERES} su tutte le coppie di clausole globali; infine esegue sulla risolvente le stesse operazioni del caso precedente ogni volta che viene applicata una delle due regole. Per poter ottenere i letterali modali $\Box p$ e $\lnot \Box p'$ necessari per attuare le regole \emph{LERES} e \emph{GERES}, si utilizza il metodo \texttt{getModalLiterals}.
+\end{enumerate}
 
+\subsubsection{Il metodo \texttt{getModalLiterals}}
+Questo metodo verifica se è possibile applicare le regole \emph{LERES} e \emph{GERES} all'interno del metodo \texttt{isSatisfiable}, ed in caso affermativo restituisce i due letterali modali $\Box p$ e $\lnot \Box p'$. Esso prende in input due clausole, una lista di clausole (nel nostro caso \texttt{listCl}) e restituisce un array di letterali (\texttt{Literal[]}). Il metodo controlla se in una delle due clausole in input sia presente un letterale modale positivo (\texttt{ModalAtom}), ed un letterale modale negativo (\texttt{NegModalAtom}); se ciò dovesse capitare, allora ispeziona la lista di clausole fornita in input (\texttt{listCl}) con lo scopo di ricercare le clausole $G(C)$ e $G(C')$, ovvero le ultime due premesse delle regole \emph{LERES} e \emph{GERES}. Se vengono trovate, allora il metodo \texttt{getModalLiterals} restituisce l'array contenente i due letterali modali, in caso contrario restituisce un array vuoto.
+
+\subsection*{Implementazione delle regole di risoluzione}
+Le regole di risoluzione vengono implementate mediante gli omonimi metodi presenti nella classe Resolution.
+
+\subsubsection{Il metodo \texttt{G2L}}
+Il metodo \texttt{G2L} prende in input una clausola globale \texttt{gc}, e restituisce la corrispondente locale. Per farlo, istanza una clausola locale vuota, e la riempie aggiungendo tutti i letterali presenti in \texttt{gc}.
+
+\subsubsection{I metodi \texttt{LRES} e \texttt{GRES}}
+Questi metodi sono implementati nello stesso modo del metodo \texttt{resolRule} della logica classica, con la differenza che nel caso di \texttt{LRES}, le due clausole in input (le clausole di premessa) e la clausola restituita (risolvente) sono locali, e nel caso di \texttt{GRES} le clausole in input e la clausola restituita sono globali. il codice \ref{method:LRES} mostra l'implementazione del metodo \texttt{LRES}.
+
+\begin{minipage}{\linewidth}
+    \small
+    \begin{lstlisting}[caption={Metodo \texttt{LRES} della classe \texttt{Resolution}}, label={method:LRES}]
+    private static LocalClause LRES(LocalClause lc1, LocalClause lc2, Literal lit) {
+        LocalClause result = (LocalClause) lc1.union(lc2);
+        result.remove(lit);
+        result.remove(lit.getOpposite());
+        return result;
+    }
+    \end{lstlisting}
+\end{minipage}
+
+\subsubsection{I metodi \texttt{LERES} e \texttt{GERES}}
+Il metodo \texttt{LERES} prende in input due clausole locali e due letterali, e restituisce una clausola locale. Il metodo effettua l'unione delle due clausole, cancella i due letterali dal risultato, ed infine lo restituisce. Il metodo \texttt{GERES} effettua le stesse operazioni, ma le due clausole in input e la clausola restituita sono globali. il codice \ref{method:LERES} mostra l'implementazione del metodo \texttt{LERES}. Si noti che il metodo non controlla se i due letterali in input siano modali, questo perché ci si assicura che il metodo \texttt{isSatisfiable} richiami questo metodo con gli input corretti; inoltre, le due clausole $G(C)$ e $G(C')$ non vengono considerate, perché il metodo viene richiamato soltanto nel caso in cui \texttt{getModalLiterals} non restituisce un array vuoto.
+
+\begin{minipage}{\linewidth}
+    \small
+    \begin{lstlisting}[caption={Metodo \texttt{LERES} della classe \texttt{Resolution}}, label={method:LERES}]
+        private static LocalClause LERES(LocalClause lc1, LocalClause lc2, Literal ma, Literal nma) {
+            LocalClause result = (LocalClause) lc1.union(lc2);
+            result.remove(ma);
+            result.remove(nma);
+            return result;
+        }
+    \end{lstlisting}
+\end{minipage}
+
+\subsection*{Memorizzazione delle coppie di clausole visitate}
+La gestione delle coppie di clausole visitate viene fatta nello stesso modo in cui veniva svolto nell'implementazione per la logica classica (si veda la sezione \ref{visited}). Si utilizza quindi la mappa \texttt{visited}, che memorizza inizialmente le coppie di clausole sulle quali vengono applicate le regole \emph{LRES} e \emph{GRES} tramite i loro indici. Dopo che sono state applicate queste due regole su tutte le coppie possibili, la mappa \texttt{visited} viene svuotata, in questo modo sarà possibile eseguire le regole \emph{LERES} e \emph{GERES} anche sulle coppie di clausole alle quali sono state applicate in precedenza le altre due regole. Si noti che l'applicazione della regola \emph{G2L} non viene memorizzata.
+
+Come nell'implementazione per la logica classica, viene utilizzato il metodo \\ \texttt{alreadyVisited} per verificare se una coppia di clausole è già stata visitata in precedenza; inoltre, per aggiungere una coppia alla mappa \texttt{visited} viene utilizzato il metodo \texttt{addCoupleInMap}
+
+\subsection{Gestione degli step}
+La gestione degli step viene svolta come nel caso della logica classica (si veda sezione \ref{step}, in cui vengono spiegati anche i metodi \texttt{setEnableSteps} e \texttt{printTrace}). In questo caso nella classe \texttt{Step} viene aggiunto, tra gli altri, un campo che specifica il nome della regola di risoluzione applicata nello step, e poi nel caso delle regole \emph{LERES} e \emph{GERES}, vengono aggiunte anche le premesse $G(C)$ e $G(C')$.
 
 
 
