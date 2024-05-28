@@ -239,6 +239,7 @@ per ottenere $R$ è stato rimosso il letterale $a$ ed il suo opposto. Si può no
 
 \subsection{Esempio pratico del metodo di risoluzione}
 \subsubsection{Esempio su un insieme di clausole insoddisfacibile}
+\label{resolution_example}
 Consideriamo il seguente insieme di clausole $S$:
 \[ S = \{ \; \{a\}, \{\lnot a, b\}, \{\lnot b\} \; \} \]
 in questo caso la contraddizione si ricava applicando due volte \emph{Res}:
@@ -1098,7 +1099,7 @@ Questo metodo verifica se è possibile applicare le regole \emph{LERES} e \emph{
 Le regole di risoluzione vengono implementate mediante gli omonimi metodi presenti nella classe Resolution.
 
 \subsubsection{Il metodo \texttt{G2L}}
-Il metodo \texttt{G2L} prende in input una clausola globale \texttt{gc}, e restituisce la corrispondente locale. Per farlo, istanza una clausola locale vuota, e la riempie aggiungendo tutti i letterali presenti in \texttt{gc}.
+Il metodo \texttt{G2L} prende in input una clausola globale \texttt{gc}, e restituisce la corrispondente locale. Per farlo, istanzia una clausola locale vuota, e la riempie aggiungendo tutti i letterali presenti in \texttt{gc}.
 
 \subsubsection{I metodi \texttt{LRES} e \texttt{GRES}}
 Questi metodi sono implementati nello stesso modo del metodo \texttt{resolRule} della logica classica, con la differenza che nel caso di \texttt{LRES}, le due clausole in input (le clausole di premessa) e la clausola restituita (risolvente) sono locali, e nel caso di \texttt{GRES} le clausole in input e la clausola restituita sono globali. il codice \ref{method:LRES} mostra l'implementazione del metodo \texttt{LRES}.
@@ -1121,12 +1122,12 @@ Il metodo \texttt{LERES} prende in input due clausole locali e due letterali, e 
 \begin{minipage}{\linewidth}
     \small
     \begin{lstlisting}[caption={Metodo \texttt{LERES} della classe \texttt{Resolution}}, label={method:LERES}]
-        private static LocalClause LERES(LocalClause lc1, LocalClause lc2, Literal ma, Literal nma) {
-            LocalClause result = (LocalClause) lc1.union(lc2);
-            result.remove(ma);
-            result.remove(nma);
-            return result;
-        }
+    private static LocalClause LERES(LocalClause lc1, LocalClause lc2, Literal ma, Literal nma) {
+        LocalClause result = (LocalClause) lc1.union(lc2);
+        result.remove(ma);
+        result.remove(nma);
+        return result;
+    }
     \end{lstlisting}
 \end{minipage}
 
@@ -1136,16 +1137,46 @@ La gestione delle coppie di clausole visitate viene fatta nello stesso modo in c
 Come nell'implementazione per la logica classica, viene utilizzato il metodo \\ \texttt{alreadyVisited} per verificare se una coppia di clausole è già stata visitata in precedenza; inoltre, per aggiungere una coppia alla mappa \texttt{visited} viene utilizzato il metodo \texttt{addCoupleInMap}
 
 \subsection{Gestione degli step}
-La gestione degli step viene svolta come nel caso della logica classica (si veda sezione \ref{step}, in cui vengono spiegati anche i metodi \texttt{setEnableSteps} e \texttt{printTrace}). In questo caso nella classe \texttt{Step} viene aggiunto, tra gli altri, un campo che specifica il nome della regola di risoluzione applicata nello step, e poi nel caso delle regole \emph{LERES} e \emph{GERES}, vengono aggiunte anche le premesse $G(C)$ e $G(C')$.
+La gestione degli step viene svolta come nel caso della logica classica (si veda la sezione \ref{step}, nella quale vengono spiegati anche i metodi \texttt{setEnableSteps} e \texttt{printTrace}). In questo caso nella classe \texttt{Step} viene aggiunto, tra gli altri, un campo che specifica il nome della regola di risoluzione applicata nello step, e poi nel caso delle regole \emph{LERES} e \emph{GERES}, vengono aggiunte anche le premesse $G(C)$ e $G(C')$. La regola \emph{G2L} non viene presa in esame dagli step, perché è considerata sottintesa.
 
-
-
-
-
-
-
-
-
+\begin{minipage}{\linewidth}
+    \small
+    \begin{lstlisting}[caption={cicli for innestati per l'esecuzione delle regole LERES e GERES nel metodo \texttt{isSatisfiable}}, label={method:isSatisfiable}]
+    for (int i = 0; i < listCl.size(); i++) {
+        Clause c1 = listCl.get(i);
+        int index1 = c1.getIndex();
+        for (int j = 0; j < listCl.size(); j++) {
+            Clause c2 = listCl.get(j);
+            int index2 = c2.getIndex();
+            if ((i != j) && (c1.getClass().equals(c2.getClass())) && !alreadyVisited(c1, c2)) {
+                Literal[] literals = getModalLiterals(c1, c2, listCl);
+                if (literals.length != 0) {
+                    addCoupleInMap(index1, index2);
+                    Clause resolvent = null;
+                    if ((c1 instanceof GlobalClause) && (c2 instanceof GlobalClause)) {
+                        resolvent = GERES((GlobalClause) c1, (GlobalClause) c2, literals[0], literals[1]);
+                        //gestione step
+                    } else {
+                        resolvent = LERES((LocalClause) c1, (LocalClause) c2, literals[0], literals[1]);
+                        //gestione step
+                    } 
+                    if (resolvent.isEmpty()) {
+                        return false;
+                    }
+                    if (resolvent.isTautology()) {
+                        //gestione step
+                    } else if (listCl.contains(resolvent)) {
+                        //gestione step
+                    } else {
+                        visited.put(resolvent.getIndex(), new HashSet<>());
+                        listCl.add(resolvent);
+                    }
+                }
+            }
+        }
+    }
+    \end{lstlisting}
+\end{minipage}
 
 
 
@@ -1158,11 +1189,109 @@ La gestione degli step viene svolta come nel caso della logica classica (si veda
 %			CAPITOLO 6
 \chapter{Applicazioni pratiche del metodo di risoluzione}
 \label{app}
+Il metodo di risoluzione ha diverse applicazioni pratiche, come nei campi dell'intelligenza artificiale, della verifica formale e dell'informatica teorica. Può essere utilizzato per la dimostrazione automatica di teoremi matematici e logici. L'utilizzo pratico che viene implementato nel nostro caso è quello di verificare la validità di formule logiche.
+
+\begin{definition}
+    Una formula F è \textbf{valida} se e solo se è una tautologia, ossia è vera in ogni interpretazione di F.
+\end{definition}
 
 \section{Verificare la validità di una formula}
-\section{Dimostrazione di conseguenze logiche}
-\section{Dimostrazione di equivalenze logiche}
+Per verificare la validità di una qualsiasi formula $F$, si considera $\lnot F$ e si controlla se è soddisfacibile o meno; se $\lnot F$ è \textbf{insoddisfacibile}, allora $F$ è valida. Questo perché, come spiegato nel capitolo \ref{intro}, se applichiamo la negazione logica ad una tautologia otteniamo una contraddizione, e viceversa.
 
+\subsection{Dimostrazione di conseguenze logiche}
+
+\begin{definition}
+    Siano $F_1$ e $F_2$ due formule. Si dice che $F_2$ è conseguenza logica di $F_1$ se e solo se per ogni interpretazione i, se i rende vera $F_1$, allora rende vera anche $F_2$. La conseguenza logica si può scrivere con $F_1 \models F_2$.
+\end{definition}
+Con la verifica della validità delle formule, è possibile dimostrare la conseguenza logica di due formule $F_1$ e $F_2$ utilizzando l'implicazione logica, ovvero il connettivo $\to$. Infatti, se $F_2$ è conseguenza logica di $F_1$, allora la formula:
+\[
+    F_1 \to F_2
+\]
+è valida.
+\subsubsection{Esempio di conseguenza logica}
+Un esempio che possiamo considerare è quello del \emph{modus ponens}: siano $a, b$ due formule, se la formula $a \to b$ è vera, e anche $a$ è vera, allora la conseguenza $b$ è vera.
+
+\[
+    \AXC{$a$}
+    \AXC{$a \to b$}
+    \RightLabel{Modus ponens}
+    \BIC{$b$}
+    \DP
+\]
+Per dimostrare il modus ponens, Possiamo creare una formula $F$ utilizzando la congiunzione logica per mettere insieme le due premesse ($a$ e $a \to b$), e l'implicazione logica per rappresentare la conseguenza logica con $b$. La formula $F$ ottenuta è la seguente:
+\[
+    F \; = \; (a \land (a \to b)) \to b
+\]
+A questo punto, bisogna verificare che la formula $\lnot F$ sia insoddisfacibile. Per farlo, dobbiamo clausificare $\lnot F$ ed eseguire il metodo di risoluzione sull'insieme di clausole ottenuto. La clausificazione di $\lnot F$ produce il seguente insieme di clausole:
+\[
+    \{\quad \{a\}; \{\lnot a, b\}; \{\lnot b\} \quad\}
+\]
+applicando due volte la regola \emph{Res} si trova facilmente la clausola vuota. Questo dimostra che il modus ponens è valido nella logica classica.
+
+\subsection{Dimostrazione di equivalenze logiche}
+\begin{definition}
+    Due formule $F_1$ e $F_2$ sono logicamente equivalenti se e solo se $F_1 \models F_2$ e $F_2 \models F_1$, ossia entrambe sono conseguenza logica l'una dell'altra. 
+\end{definition}
+In questo caso, per dimostrare l'equivalenza logica tra due formule $F_1$ e $F_2$ si usa la doppia implicazione, ovvero il connettivo $\tto$. Infatti se $F_1$ e $F_2$ sono logicamente equivalenti, allora la seguente formula:
+\[
+    F_1 \tto F_2
+\] 
+è valida.
+\subsubsection{Esempio di equivalenza logica}
+Consideriamo la dimostrazione di una delle leggi di De Morgan, in altre parole, dimostriamo che la formula $\lnot(a \land b)$ è logicamente equivalente alla formula $\lnot a \lor \lnot b$. Per farlo dobbiamo verificare la validità della seguente formula $F$:
+\[
+    F \; = \; \lnot(a \land b) \tto (\lnot a \lor \lnot b)
+\]
+Procediamo ora con la clausificazione di $\lnot F$ ed ottieniamo il seguente insieme di clausole $S$:
+\[
+    S \; = \; \{\quad \{a, b\}; \{\lnot a, \lnot b\}; \{a\}; \{b\} \quad\}
+\]
+A questo punto applichiamo il metodo di risoluzione su $S$, che ricava facilmente la clausola vuota. Questo dimostra che $\lnot F$ è insoddisfacibile, e quindi $F$ è valida.
+
+
+\section{La classe App}
+\label{class:App}
+L'implementazione di quanto visto in questo capitolo, viene fatto nella classe \texttt{App} del progetto Java per la logica classica e per le logiche modali. Come spiegato nella sezione \ref{project_structure}, la classe \texttt{App} contiene soltanto il metodo \texttt{main}. Il metodo \texttt{main} calcola la validità di una formula presa da \emph{Standard input}; esso esegue le seguenti operazioni:
+
+\begin{itemize}
+    \item Prende da \emph{Stdin} una formula in formato testuale, ed effettua il \emph{parsing} su di essa, ottenendo così l'istanza di \texttt{Formula f}.
+    \item Applica la negazione logica su \texttt{f}, ottenendo l'istanza di \texttt{CompoundFormula not$\_$f}.
+    \item esegue la clausificazione della formula \texttt{not$\_$f}, ottenendo l'istanza di \texttt{ClauseSet cnf}, e la stampa su \emph{Standard Output}.
+    \item se sulla riga di comando è presente il comando ``\textbf{-v}'', abilita la stampa degli step di risoluzione, richiamando il metodo \texttt{setEnableSteps} della classe \texttt{Resolution}, passandogli come parametro \texttt{true}.
+    \item applica il metodo di risoluzione su \texttt{cnf}, tramite il metodo \texttt{isSatisfiable} della classe \texttt{Resolution}. Se il metodo restituisce \texttt{true}, allora stampa su \emph{Stdout} la stringa ``\emph{The formula is NOT a tautology}''; se restituisce \texttt{false}, stampa la stringa ``\emph{The formula is a tautology}''.
+\end{itemize}
+Il codice \ref{method:main} mostra il metodo \texttt{main}.
+
+\begin{minipage}{\linewidth}
+    \small
+    \begin{lstlisting}[caption={Metodo \texttt{main} della classe \texttt{App}}, label={method:main}]
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String formulaStr = sc.nextLine();
+        sc.close();
+        Formula f = ParseFormula.parse(formulaStr);
+        if (f == null) {
+            System.out.println("\nYour formula in input is not a well-formed formula");
+            return;
+        }
+        System.out.println("\nYour formula in input:");
+        System.out.println(f);
+        Formula not_f = new CompoundFormula(NOT, f);
+        ClauseSet cnf = not_f.toCnf();  
+        System.out.println("\nThe corresponding clause set of the negation is:");
+        System.out.println(cnf);
+        System.out.println();
+        if (args.length != 0 && args[0].equals("-v")) {
+            Resolution.setEnableSteps(true);
+        }
+        if (Resolution.isSatisfiable(cnf)) {
+            System.out.println("The formula is not a tautology");
+        } else {
+            System.out.println("The formula is a tautology");
+        }
+    }
+    \end{lstlisting}
+\end{minipage}
 % 
 % 
 %			CAPITOLO 7
