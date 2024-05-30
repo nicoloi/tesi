@@ -75,8 +75,7 @@
 %			PREFAZIONE
 %
 \prefacesection{Prefazione}
-...
-
+Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione e sulla sua implementazione mediante il linguaggio di programmazione Java. Inizialmente, affronteremo il metodo di risoluzione per la logica classica, ossia la logica proposizionale; successivamente, verrà trattato il metodo di risoluzione per le logiche modali non-normali, che rappresentano un'estensione della logica proposizionale.
 %
 %
 %			ORGANIZZAZIONE
@@ -94,9 +93,7 @@
 %			CAPITOLO 1
 \chapter{Introduzione}
 \label{intro}
-
-\section{Panoramica generale}
-Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione per la logica classica, ovvero la logica proposizionale. Nel capitolo \ref{modal} verrà trattato il metodo di risoluzione per le logiche modali non-normali, che rappresentano un'estensione di quella proposizionale. Di seguito viene presentata una breve introduzione della logica proposizionale, utile a capire il funzionamento del metodo di risoluzione, trattato nel capitolo \ref{resol}.
+Iniziamo presentando una breve introduzione della logica proposizionale, che espone i concetti utili a capire il funzionamento del metodo di risoluzione, trattato nel capitolo \ref{resol}. L'introduzione delle logiche modali sarà illustrata nel capitolo \ref{modal}.
 
 \section{Logica proposizionale}
 La logica proposizionale è un sistema formale per la rappresentazione e l'analisi del ragionamento, essa si basa su proposizioni. La sua sintassi comprende l'utilizzo di formule.
@@ -107,7 +104,7 @@ La logica proposizionale è un sistema formale per la rappresentazione e l'anali
 La semantica della logica proposizionale stabilisce come valutare le formule, associando loro valori di verità in base a interpretazioni che specificano lo stato di verità di ogni proposizione atomica. Le formule possono essere \emph{atomiche} o \emph{composte}.
 
 \subsection{Formule atomiche}
-Le formule atomiche rappresentano il caso più semplice di formula, nelle quali non vengono usati gli operatori logici. Una formula atomica è una variabile proposizionale, che può essere identificata tramite una lettera dell'alfabeto, ad esempio ``$p$''; essa viene valutata come vera (\emph{true}) o falsa (\emph{false}) in base all'interpretazione considerata. 
+Le formule atomiche rappresentano il caso più semplice di formula, nelle quali non vengono usati i connettivi logici. Una formula atomica è una variabile proposizionale, che può essere identificata tramite una lettera dell'alfabeto, ad esempio ``$p$''; essa viene valutata come vera (\emph{true}) o falsa (\emph{false}) in base all'interpretazione considerata. 
 
 \subsection{Formule composte}
 Le formule composte sono costruite mediante i connettivi logici a partire dalle formule atomiche. I connettivi della logica proposizionale sono:
@@ -119,28 +116,28 @@ Le formule composte sono costruite mediante i connettivi logici a partire dalle 
     \item $\tto\;$ è la doppia implicazione (\textbf{se e solo se})
 \end{itemize}
 Consideriamo il seguente esempio di formula composta: 
-\[ \lnot p \land q\] essa è ottenuta a partire dalla atomica ``$p$'' che viene negata tramite la negazione logica ($\lnot$), e successivamente messa in congiunzione logica ($\land$) con l'atomica ``$q$''. 
+\[ \lnot p \land q\] essa è ottenuta a partire dalla formula atomica $p$ che viene negata tramite la negazione logica ($\lnot$), e successivamente messa in congiunzione logica ($\land$) con l'atomica $q$. 
 Si possono creare formule composte più complicate, in tal caso si usano le parentesi tonde per evitare ambiguità tra i connettivi.
 
 L'interpretazione di una formula composta dipende dai connettivi usati e dall'interpretazione delle sue atomiche.
 
 \subsection{Soddisfacibilità di una formula}
 \begin{definition}
-    Una formula $F$ si dice \textbf{soddisfacibile} se e solo se ammette almeno un'interpretazione che la rende vera, ossia esiste almeno un assegnamento di valori di verità alle atomiche che rende vera $F$. Se tutte le interpretazioni possibili la rendono falsa, allora $F$ si dice \textbf{insoddisfacibile}.
+    Una formula $F$ si dice \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che la soddisfa, cioè esiste almeno un assegnamento di valori di verità alle atomiche che rende vera $F$. Se tutte le interpretazioni possibili la rendono falsa, allora $F$ si dice \textbf{insoddisfacibile}.
 \end{definition}
-Ad esempio, la formula $p \land q$ è soddisfacibile, perché è vera quando le atomiche $p$ e $q$ sono entrambe vere.
+Ad esempio, la formula $p \land q$ è soddisfacibile, perché l'interpretazione che assegna i valori $p = true$ e $q = true$ la soddisfa.
 
 \subsection{Tautologie e contraddizioni}
 \label{taut-contr}
 \begin{definition}
-    Una formula è una \textbf{tautologia} se e solo se ogni interpretazione della formula la rende vera.
+    Una formula $F$ è una \textbf{tautologia} se e solo se ogni interpretazione di $F$ la soddisfa.
 \end{definition}
 Quindi una tautologia è una formula sempre vera, che come vedremo, può essere ridondante in alcuni casi. Ad esempio, la formula ``$p \, \lor \, \lnot p$'' è il caso più semplice di tautologia.
 
 \begin{definition}
     Una formula è una \textbf{contraddizione} se e solo se è insoddisfacibile.
 \end{definition}
-Dunque, una contraddizione è una formula in cui tutte le sue interpretazioni la rendono falsa. Ad esempio, la formula ``$p \, \land \, \lnot p$'' è una contraddizione. \`E bene notare che se si applica la negazione logica ad una contraddizione si ottiene una tautologia, e viceversa.
+Dunque, una contraddizione è una formula in cui tutte le sue interpretazioni la rendono falsa. Ad esempio, la formula $p \, \land \, \lnot p$ è una contraddizione. \`E bene notare che se si applica la negazione logica ad una contraddizione si ottiene una tautologia, e viceversa.
 
 % 
 % 
@@ -149,7 +146,7 @@ Dunque, una contraddizione è una formula in cui tutte le sue interpretazioni la
 \label{resol}
 Il metodo di risoluzione è un sistema di calcolo logico per inferire la soddisfacibilità di una formula, esso ha avuto un impatto significativo in vari settori della matematica, dell'informatica e dell'ingegneria. È stato utilizzato per dimostrare teoremi importanti, risolvere problemi pratici e sviluppare algoritmi per l'intelligenza artificiale, la verifica formale e la progettazione dei circuiti. 
 
-Questo metodo consiste nell'applicare più volte una sola regola: la regola di risoluzione. Il difetto è che essa opera soltanto su formule espresse in \textbf{Forma normale congiuntiva (CNF)}. Prima di vedere il metodo di risoluzione è bene capire in che cosa consiste la \emph{CNF}.
+Questo metodo consiste nell'applicare (una o più volte) una sola regola: la regola di risoluzione. Il difetto è che essa opera soltanto su formule espresse in \textbf{Forma normale congiuntiva (CNF)}. Prima di vedere il metodo di risoluzione è bene capire in che cosa consiste la \emph{CNF}.
 
 \section{Forma normale congiuntiva}
 \label{CNF}
@@ -158,7 +155,7 @@ Questo metodo consiste nell'applicare più volte una sola regola: la regola di r
 \begin{definition}
     Un letterale è una formula atomica, oppure la sua negazione. Un letterale può quindi essere positivo o negativo.
 \end{definition}
-Ad esempio, ``$a$'' e ``$\lnot b$'' sono dei letterali.
+Ad esempio, ``$a$'' è un letterale positivo, ``$\lnot b$'' è un letterale negativo.
 
 \subsubsection{Opposto di un letterale}
 \begin{definition}
@@ -184,7 +181,7 @@ L'interpretazione delle clausole è semplice: una clausola è vera se e solo se 
 \begin{definition}
     Una clausola è tautologica se e solo se contiene almeno un letterale ed il suo opposto.
 \end{definition}
-Ad esempio: ``$\{ a, b, c, \lnot a \}$'' è una tautologia, perché contiene il letterale ``$a$'' ed il suo opposto. Questo tipo di clausola risulta essere sempre vera, qualunque sia l'interpretazione dei suoi letterali (si veda la sezione \ref{taut-contr}).
+Ad esempio: ``$\{ a, b, c, \lnot a \}$'' è una clausola tautologica, perché contiene il letterale ``$a$'' ed il suo opposto. Questo tipo di clausola risulta essere sempre vera qualunque sia l'interpretazione dei suoi letterali, quindi essa rappresenta una tautologia (si veda la sezione \ref{taut-contr}).
 
 \subsubsection{Clausola vuota}
 è importante notare che una clausola può non contenere alcun letterale, in tal caso si parla di \emph{clausola vuota}. La clausola vuota rappresenta la \textbf{contraddizione} (si veda la sezione \ref{taut-contr}) e si può indicare con ``$\{ \}$''.
@@ -196,12 +193,12 @@ Ad esempio: ``$\{ a, b, c, \lnot a \}$'' è una tautologia, perché contiene il 
 Seguendo lo stesso approccio per le clausole, la \emph{CNF} può essere rappresentata anch'essa in notazione insiemistica come \textbf{insieme di clausole}, quindi ad esempio la seguente \emph{CNF}:
 \[ (a \lor b) \land (\lnot a \lor c) \land (\lnot b \lor c) \]
 diventa
-\[\{ \; \{a, b\}, \{\lnot a, c\}, \{\lnot b, c\} \; \}\]
+\[\{ \quad \{a, b\}, \{\lnot a, c\}, \{\lnot b, c\} \quad \}\]
 anche in questo caso la congiunzione è sottintesa. Possiamo quindi considerare la \emph{CNF} e gli insiemi di clausole come lo stesso oggetto semantico.
 
 \subsubsection{Soddisfacibilità di un insieme di clausole}
 \begin{definition}
-    Un insieme di clausole $S$ è \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che rende vere \textbf{tutte} le clausole appartenenti a $S$.
+    Un insieme di clausole $S$ è \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che soddisfa \textbf{tutte} le clausole appartenenti a $S$.
 \end{definition}
 
 \section{Regola di risoluzione}
@@ -221,12 +218,12 @@ Per poter ottenere la clausola risolvente (\emph{R}) si rimuove il letterale $L$
 la risolvente \emph{R} è stata ottenuta cancellando il letterale ``$b$'' (da $C_1$) ed il suo opposto ``$\lnot b$'' (da $C_2$), e facendo l'unione.
 
 \section{Funzionamento del metodo di risoluzione}
-Il metodo di risoluzione opera su un insieme $S$ di clausole, e applica (dove possibile) \emph{Res} su tutte le coppie di clausole appartenenti a $S$ con lo scopo di trovare la contraddizione (clausola vuota). Ogni volta che il metodo applica \emph{Res}, la risolvente viene aggiunta a $S$, la quale potrà poi essere considerata come clausola di premessa per una successiva applicazione di \emph{Res}. Se il metodo riesce a trovare la clausola vuota, allora prova che $S$ è \textbf{insoddisfacibile}; se invece, dopo aver applicato \emph{Res} su tutte le possibili coppie di clausole non la trova, allora il metodo prova che $S$ è \textbf{soddisfacibile}.
+Il metodo di risoluzione opera su un insieme $S$ di clausole, e applica (dove possibile) \emph{Res} su tutte le coppie di clausole appartenenti a $S$ con lo scopo di trovare la contraddizione (clausola vuota). Ogni volta che il metodo applica \emph{Res}, la risolvente viene aggiunta a $S$ (se non è già presente), la quale potrà poi essere considerata come clausola di premessa per una successiva applicazione di \emph{Res}. Se il metodo riesce a trovare la clausola vuota, allora inferisce che $S$ è \textbf{insoddisfacibile}; se invece, dopo aver applicato \emph{Res} su tutte le possibili coppie di clausole non la trova, allora il metodo inferisce che $S$ è \textbf{soddisfacibile}.
 
 \subsection{Gestione delle clausole tautologiche}
-Nella \emph{CNF} le clausole tautologiche rappresentano una ridondanza, perché essendo la \emph{CNF} una congiunzione di clausole, esse non indicano alcun valore informativo. Questo si traduce col fatto che nel metodo di risoluzione si possono ignorare questo tipo di clausole, rendendo più semplice l'esecuzione del metodo anche da un punto di vista computazionale (come vedremo nel capitolo \ref{impl}).
+Nella \emph{CNF} le clausole tautologiche rappresentano una ridondanza, poiché essendo la \emph{CNF} una congiunzione di clausole, esse non indicano alcun valore informativo. Questo si traduce col fatto che nel metodo di risoluzione si possono ignorare le clausole tautologiche, rendendo più semplice l'esecuzione del metodo anche da un punto di vista computazionale (come vedremo nel capitolo \ref{impl}).
 
-Un altro aspetto da tenere in considerazione è che applicando \emph{Res} è possibile che la risolvente sia una tautologia, in tal caso la risolvente viene scartata (non viene aggiunta a $S$). Vediamo un esempio di clausole $C_1$ e $C_2$ che generano una risolvente $R$ tautologica:
+Un altro aspetto da tenere in considerazione è che applicando \emph{Res} è possibile che la risolvente sia una clausola tautologica, in tal caso la risolvente viene scartata (non viene aggiunta a $S$). Vediamo un esempio di clausole $C_1$ e $C_2$ che generano una risolvente $R$ tautologica:
 
 \[
     \AXC{$\overbrace{\{ a, \lnot b \}}^{C_1}$}
@@ -235,13 +232,13 @@ Un altro aspetto da tenere in considerazione è che applicando \emph{Res} è pos
     \BIC{$\underbrace{\{ \lnot b, b \}}_{R}$}
     \DP
 \]
-per ottenere $R$ è stato rimosso il letterale $a$ ed il suo opposto. Si può notare che in questo caso si poteva anche considerare il letterale $\lnot b \in C_1$ ed il suo opposto $b \in C_2$ ed ottenere $R^{'} = \{ \lnot a, a \}$, ma dal punto di vista del metodo di risoluzione non cambia nulla perché $R$ e $R^{'}$ sono entrambe tautologie, e quindi scartate.
+per ottenere $R$ è stato rimosso il letterale $a$ ed il suo opposto. Si può notare che in questo caso si poteva anche considerare il letterale $\lnot b \in C_1$ ed il suo opposto $b \in C_2$ ed ottenere $R' = \{ \lnot a, a \}$, ma dal punto di vista del metodo di risoluzione non cambia nulla perché $R$ e $R'$ sono entrambe tautologiche, e quindi scartate.
 
 \subsection{Esempio pratico del metodo di risoluzione}
 \subsubsection{Esempio su un insieme di clausole insoddisfacibile}
 \label{resolution_example}
 Consideriamo il seguente insieme di clausole $S$:
-\[ S = \{ \; \{a\}, \{\lnot a, b\}, \{\lnot b\} \; \} \]
+\[ S = \{ \quad \{a\}, \{\lnot a, b\}, \{\lnot b\} \quad \} \]
 in questo caso la contraddizione si ricava applicando due volte \emph{Res}:
 
 \begin{itemize}
@@ -262,11 +259,11 @@ in questo caso la contraddizione si ricava applicando due volte \emph{Res}:
     \DP
     \]
 \end{itemize}
-nello \emph{Step 2} la regola \emph{Res} ha trovato la clausola vuota, questo dimostra che $S$ è \textbf{insoddisfacibile}. Si noti che la clausola $C_1$ dello \emph{Step 2} è la risolvente $R$ dello \emph{Step 1}.
+nello Step 2, la regola \emph{Res} ha trovato la clausola vuota, questo dimostra che $S$ è \textbf{insoddisfacibile}. Si noti che la clausola $C_1$ dello Step 2 è la risolvente $R$ dello Step 1.
 
 \subsubsection{Esempio su un insieme di clausole soddisfacibile}
-Consideriamo ora il seguente insieme di clausole $S^{'}$:
-\[ S^{'} = \{ \; \{a\}, \{\lnot a, b\}, \{\lnot c\} \; \} \]
+Consideriamo ora il seguente insieme di clausole $S'$:
+\[ S' = \{ \quad \{a\}, \{\lnot a, b\}, \{\lnot c\} \quad \} \]
 in questo caso il metodo di risoluzione applica una sola volta \emph{Res}:
 \[
     \AXC{$\overbrace{\{ a \}}^{C_1}$}
@@ -275,8 +272,7 @@ in questo caso il metodo di risoluzione applica una sola volta \emph{Res}:
     \BIC{$\underbrace{\{ b \}}_{R}$}
     \DP
 \]
-% \[ C_1 = \{a\} \] \[ C_2 = \{\lnot a, b\} \] \[ \rule{4cm}{0.2pt} \] \[R = \{b \}\]
-stavolta, il metodo non riesce più ad andare avanti, perché \emph{Res} non è più applicabile in nessun'altra coppia di clausole presenti in $S^{'}$, anche tenendo conto della clausola $R$ appena generata. Questo significa che la contraddizione non può essere ricavata, e quindi $S^{'}$ è \textbf{soddisfacibile}.
+stavolta il metodo non riesce più ad andare avanti, perché \emph{Res} non è più applicabile in nessun'altra coppia di clausole presenti in $S'$, anche tenendo conto della clausola $R$ appena generata. Questo significa che la contraddizione non può essere ricavata, e che quindi $S'$ è \textbf{soddisfacibile}.
 
 % 
 % 
@@ -284,7 +280,7 @@ stavolta, il metodo non riesce più ad andare avanti, perché \emph{Res} non è 
 \chapter{Implementazione in Java del metodo di risoluzione}
 \label{impl}
 
-Questo capitolo si concentra sull'implementazione pratica del metodo di risoluzione per la logica classica in linguaggio Java. Esploreremo come tradurre i concetti teorici esaminati nei capitoli precedenti in codice eseguibile, analizzando le classi, i metodi e le strutture dati necessari per realizzare efficacemente il metodo di risoluzione. Partiremo con una panoramica generale dell'architettura del progetto Java, identificando le principali classi per rappresentare le strutture dati necessarie per il metodo di risoluzione. Successivamente, affronteremo la classe che implementa l'algoritmo di risoluzione. Nel capitolo \ref{formulas} vedremo l'implementazione delle formule della logica proposizionale e la loro conversione in \emph{CNF}.
+Questo capitolo si concentra sull'implementazione del metodo di risoluzione per la logica classica in linguaggio Java. Esploreremo come tradurre i concetti teorici esaminati nei capitoli precedenti in codice eseguibile, analizzando le classi, i metodi e le strutture dati necessari per realizzare efficacemente il metodo di risoluzione. Partiremo con una panoramica generale dell'architettura del progetto Java, identificando le principali classi per rappresentare le strutture dati necessarie per il metodo di risoluzione. Successivamente, affronteremo la classe che implementa l'algoritmo di risoluzione. Nel capitolo \ref{formulas} vedremo l'implementazione delle formule della logica proposizionale e la loro conversione in \emph{CNF}.
 
 \section{Struttura del progetto Java}
 \label{project_structure}
@@ -334,74 +330,74 @@ Di seguito viene mostrato l'elenco dei package contenuti nella directory \emph{s
         \end{itemize}
     \item \emph{App.java}
 \end{itemize}
-In questo capitolo ci concentriamo sui primi tre package dell'elenco, che sono i principali per l'implementazione del metodo di risoluzione. Gli altri package contengono le classi per rappresentare le formule, eseguire il parsing delle formule, effettuare il testing, ed infine è presente file \emph{App.java} che contiene il metodo \emph{main} (si noti che la classe \texttt{App} non è contenuta in alcun package).
+In questo capitolo ci concentriamo sui primi tre package dell'elenco, che sono i principali per l'implementazione del metodo di risoluzione. Gli altri package contengono le classi per rappresentare le formule, eseguire il parsing delle formule, effettuare il testing, ed infine è presente file \emph{App.java} che contiene il metodo \emph{main} (si noti che la classe \texttt{App} non è contenuta in alcun package). I package \emph{formula}, \emph{connective} e \emph{antlr4} verranno trattati nel capitolo \ref{formulas}, la classe \texttt{App} verrà discussa nel capitolo \ref{app}, ed infine il package \emph{test} verrà esaminato nel capitolo \ref{testing}.
 
 
 \section{Strutture dati per la CNF}
-I package ``\textbf{literal}'' e ``\textbf{cnf}'' contengono le classi per rappresentare la CNF, fondamentali per il metodo di risoluzione.
+I package \emph{literal} e \emph{cnf} contengono le classi per rappresentare la \emph{CNF}, fondamentale per il metodo di risoluzione.
 
-\subsection{La classe astratta Literal e le classi Atom e NegAtom}
+\subsection{La classe astratta \texttt{Literal} e le classi \texttt{Atom} e \texttt{NegAtom}}
 \label{literal}
-La classe \texttt{Literal} permette di rappresentare i letterali. Essa è una classe astratta che fornisce un'interfaccia comune per le classi \texttt{Atom} e \texttt{NegAtom}, che la estendono per rappresentare rispettivamente una variabile atomica e la negazione di essa. Questo approccio consente una gestione modulare dei letterali, facilitando l'estensione e il mantenimento del codice. La classe \texttt{Literal} contiene una stringa come campo privato che identifica il nome del letterale, e il corrispettivo metodo \texttt{getName()} che lo restituisce; inoltre, ha un metodo astratto \texttt{getOpposite()} sovrascritto dalle due classi che la estendono, che permette di restituire l'opposto del letterale sul quale viene chiamato (se chiamato su un'istanza di \texttt{Atom} restituisce l'istanza corrispondente di \texttt{NegAtom}, e viceversa). Il metodo \texttt{toString} della classe \texttt{NegAtom} usa il carattere ``\textbf{$\sim $}'' per rappresentare testualmente la negazione logica in un atomo negato (ad esempio ``\emph{$\sim p$}'').
+La classe \texttt{Literal} permette di rappresentare i letterali. Essa è una classe astratta che fornisce un'interfaccia comune per le classi \texttt{Atom} e \texttt{NegAtom}, che la estendono per rappresentare rispettivamente un letterale positivo e uno negativo. Questo approccio consente una gestione modulare dei letterali, facilitando l'estensione e il mantenimento del codice. La classe \texttt{Literal} contiene una stringa come campo privato che identifica il nome del letterale, e il corrispettivo metodo \texttt{getName()} che lo restituisce; inoltre, ha un metodo astratto \texttt{getOpposite()} sovrascritto dalle due classi che la estendono, che permette di restituire l'opposto del letterale sul quale viene chiamato (se chiamato su un'istanza di \texttt{Atom} restituisce l'istanza corrispondente di \texttt{NegAtom}, e viceversa). Il metodo \texttt{toString} della classe \texttt{NegAtom} usa il carattere ``\textbf{$\sim $}'' per rappresentare testualmente la negazione logica in un letterale negativo (ad esempio ``$\sim\!p$''). Il codice \ref{method:getOpposite} mostra il metodo \texttt{getOpposite()} nella classe \texttt{Atom}.
 
 \begin{minipage}{\linewidth}
-    \begin{lstlisting}[title={metodo getOpposite sovrascritto dalla classe Atom}]
-        @Override
-        public Literal getOpposite() {
-            return new NegAtom(this.getName());
-        }
-    \end{lstlisting}
+\begin{lstlisting}[caption={metodo astratto \texttt{getOpposite()} sovrascritto dalla classe \texttt{Atom}}, label={method:getOpposite}]
+@Override
+public Literal getOpposite() {
+    return new NegAtom(this.getName());
+}
+\end{lstlisting}
 \end{minipage}
 
-\subsection{La classe Clause}
+\subsection{La classe \texttt{Clause}}
 \label{Clause}
-Questa classe permette di rappresentare le clausole della \emph{CNF}, tenendo conto della loro notazione insiemistica. La classe contiene il campo \texttt{literals} di tipo \texttt{Set<Literal>} che consiste nell'insieme di letterali, inoltre contiene anche il campo \texttt{index} che rappresenta un indice numerico che identifica la clausola istanziata.
+Questa classe permette di rappresentare le clausole della \emph{CNF}, tenendo conto della notazione insiemistica. La classe contiene il campo \texttt{literals} di tipo \texttt{Set<Literal>} che consiste in un insieme di letterali, inoltre contiene anche il campo \texttt{index} che specifica un indice numerico che identifica la clausola istanziata.
 
-All'interno della classe \emph{Clause} sono presenti i classici metodi per gli insiemi (\texttt{add}, \texttt{remove}, \texttt{contains}, ecc.), in aggiunta al metodo \texttt{union} che permette di eseguire l'unione insiemistica con un'altra clausola specificata come parametro. Un altro importante metodo è \texttt{isTautology} che restituisce \emph{true} se e solo se la clausola è una tautologia (si veda il codice \ref{istaut}). La classe \emph{Clause} segue il design pattern ``iterator'', che permette di iterare facilmente sui letterali di una clausola tramite il ciclo \emph{for-each} di Java.
+All'interno della classe \texttt{Clause} sono presenti i classici metodi per gli insiemi (\texttt{add}, \texttt{remove}, \texttt{contains}, ecc.), in aggiunta al metodo \texttt{union} che permette di eseguire l'unione insiemistica con un'altra clausola specificata come parametro. Un altro importante metodo è \texttt{isTautology} che restituisce \texttt{true} se e solo se la clausola è una tautologia (si veda il codice \ref{istaut}). La classe \texttt{Clause} segue il design pattern \emph{iterator}, che permette di iterare facilmente sui letterali di una clausola tramite il ciclo \emph{for-each} di Java.
 
 \begin{minipage}{\linewidth}
-    % \small
-    \begin{lstlisting}[caption={Metodo isTautology della classe Clause}, label={istaut}]
-        public boolean isTautology() {
-            for (Literal l1 : this.literals) {
-                for (Literal l2 : this.literals) { 
-                    if (l1.equals(l2.getOpposite())) return true;
-                }
-            }
-            return false;
+\small
+\begin{lstlisting}[caption={Metodo \texttt{isTautology} della classe \texttt{Clause}}, label={istaut}]
+public boolean isTautology() {
+    for (Literal l1 : this.literals) {
+        for (Literal l2 : this.literals) { 
+            if (l1.equals(l2.getOpposite())) return true;
         }
-    \end{lstlisting}
+    }
+    return false;
+}
+\end{lstlisting}
 \end{minipage}
-Questo codice mostrato esegue un doppio loop sulla clausola (utilizzando il campo \texttt{literals}) per verificare la presenza di un letterale ed il suo opposto all'interno di essa. Se questo dovesse capitare, allora la clausola è una tautologia e il metodo restituisce \emph{true}; altrimenti restituisce \emph{false} dopo aver terminato il doppio loop.
+Questo codice mostrato esegue un doppio loop sulla clausola (utilizzando il campo \texttt{literals}) per verificare la presenza di un letterale ed il suo opposto all'interno di essa. Se questo dovesse capitare, allora la clausola è tautologica e il metodo restituisce \texttt{true}; altrimenti restituisce \texttt{false} dopo aver terminato il doppio loop.
 
-\subsection{La classe ClauseSet}
+\subsection{La classe \texttt{ClauseSet}}
 \label{ClauseSet}
-Questa classe rappresenta la \emph{CNF} in notazione insiemistica, ovvero gli insiemi di clausole. Nella classe è presente il campo \texttt{clauses} di tipo \texttt{Set<Clause>}, che contiene le clausole dell'istanza di \emph{ClauseSet}. Anche in questo caso ci sono i metodi per gestire gli elementi dell'insieme come nella classe \emph{Clause}, ed il metodo \texttt{union} per fare l'unione insiemistica dell'oggetto con un'altra istanza di \emph{ClauseSet}. Importante è il metodo \texttt{removeTautologies} che rimuove le clausole tautologiche dall'oggetto, in questo modo si tolgono le ridondanze, rendendo più semplice la \emph{CNF} (si veda il codice \ref{remtaut}). Anche la classe \emph{ClauseSet} segue il design pattern ``iterator''.
+Questa classe rappresenta la \emph{CNF} in notazione insiemistica, ovvero gli insiemi di clausole. Nella classe è presente il campo \texttt{clauses} di tipo \texttt{Set<Clause>}, che contiene le clausole dell'istanza di \texttt{ClauseSet}. Anche in questo caso ci sono i metodi per gestire gli elementi dell'insieme come nella classe \texttt{Clause}, ed il metodo \texttt{union} per fare l'unione insiemistica dell'oggetto con un'altra istanza di \texttt{ClauseSet}. Importante è il metodo \texttt{removeTautologies} che rimuove le clausole tautologiche dall'oggetto, in questo modo si tolgono le ridondanze, rendendo più semplice la \emph{CNF} (si veda il codice \ref{method:removeTautologies}). Anche la classe \texttt{ClauseSet} segue il design pattern ``\emph{iterator}''.
 
 \begin{minipage}{\linewidth}
-    \small
-    \begin{lstlisting}[caption={Metodo ``removeTautologies'' della classe ClauseSet}, label={remtaut}]
-        public void removeTautologies() {
-            List<Clause> tautologies = new ArrayList<>();
-            for (Clause c : this.clauses) {
-                if (c.isTautology()) {
-                    tautologies.add(c);
-                }
-            }
-            for (Clause taut : tautologies) {
-                this.clauses.remove(taut);
-            }
+\small
+\begin{lstlisting}[caption={Metodo \texttt{removeTautologies} della classe \texttt{ClauseSet}}, label={method:removeTautologies}]
+public void removeTautologies() {
+    List<Clause> tautologies = new ArrayList<>();
+    for (Clause c : this.clauses) {
+        if (c.isTautology()) {
+            tautologies.add(c);
         }
-    \end{lstlisting}
+    }
+    for (Clause taut : tautologies) {
+        this.clauses.remove(taut);
+    }
+}
+\end{lstlisting}
 \end{minipage}
 Questo codice esegue la rimozione delle clausole tautologiche: prepara una lista \texttt{tautologies} vuota, esegue un loop sul campo \texttt{clauses} per aggiungere alla lista le tautologie, ed infine esegue un loop sulla lista \texttt{tautologies} per rimuovere le tautologie contenute in \texttt{clauses}.
 
-\section{La classe Resolution}
+\section{La classe \texttt{Resolution}}
 \label{class:Resolution}
-La classe \emph{Resolution} è una classe senza costruttori che contiene alcuni campi statici e metodi statici per l'implementazione del metodo di risoluzione. I campi della classe sono tre:
+La classe \texttt{Resolution} è una classe senza costruttori che contiene alcuni campi statici e metodi statici per l'implementazione del metodo di risoluzione. I campi della classe sono tre:
 \begin{itemize}
     \item \texttt{visited}: è di tipo \texttt{Map<Integer, Set<Integer>>} e consiste in una mappa che associa una clausola ad un insieme di clausole (utilizzando i loro indici). Essa memorizza tutte le clausole alle quali è stata applicata la regola di risoluzione con la clausola rappresentata dalla chiave della mappa (si veda la sottosezione \ref{visited}).
-    \item \texttt{enableSteps}: è un campo booleano che, se impostato a \texttt{true}, permette di abilitare i passaggi del metodo di risoluzione quando viene eseguito (si veda la sottosezione \ref{step}).
+    \item \texttt{enableSteps}: è un campo booleano che, se impostato a \texttt{true}, permette di abilitare gli step del metodo di risoluzione quando viene eseguito (si veda la sottosezione \ref{step}).
     \item \texttt{trace}: è una lista di \texttt{Step}, che memorizza tutti i passaggi del metodo di risoluzione se il campo \texttt{enableSteps} è impostato a \texttt{true} (si veda la sottosezione \ref{step}).
 \end{itemize}
 
@@ -415,79 +411,75 @@ I metodi statici della classe sono:
     \item \texttt{printTrace} (spiegato nella sottosezione \ref{step})
 \end{itemize}
 
-\subsection{Il metodo ``isSatisfiable''}
+\subsection{Il metodo \texttt{isSatisfiable}}
 \label{isSat}
-Questo è il metodo più importante della classe \emph{Resolution}. Esso ha come parametro in input un oggetto ClauseSet \texttt{s} e restituisce \texttt{true} se \texttt{s} è soddisfacibile, \texttt{false} altrimenti. Di seguito viene mostrato il codice. Il metodo \emph{isSatisfiable} dopo aver controllato che \texttt{s} non sia \texttt{null} o un insieme vuoto, elimina tutte le clausole tautologiche appartenenti a \texttt{s} richiamando il metodo \texttt{removeTautologies} sull'oggetto \texttt{s}. Successivamente controlla che sia vuoto (in tal caso viene restituito \texttt{true} perché \texttt{s} è una tautologia), e in caso negativo continua l'esecuzione inizializzando i campi \texttt{visited} e \texttt{trace}; inoltre, le clausole in \texttt{s} vengono inserite nella lista di clausole \texttt{listCl} per poter consentire la modifica della lista durante il suo scorrimento (eseguito dal ciclo \emph{for}). 
+Questo è il metodo più importante della classe \texttt{Resolution}. Esso ha come parametro in input un oggetto \texttt{ClauseSet s} e restituisce \texttt{true} se \texttt{s} è soddisfacibile, \texttt{false} altrimenti. Il metodo \texttt{isSatisfiable} dopo aver controllato che \texttt{s} non sia \texttt{null} o un insieme vuoto, elimina tutte le clausole tautologiche appartenenti a \texttt{s} richiamando il metodo \texttt{removeTautologies} sull'oggetto \texttt{s}. Successivamente controlla se è vuoto (in tal caso viene restituito \texttt{true}), e in caso negativo continua l'esecuzione inizializzando i campi \texttt{visited} e \texttt{trace}; inoltre, tutte le clausole in \texttt{s} vengono inserite nella lista di clausole \texttt{listCl}, in questo modo le clausole risolventi ottenute con la regola \texttt{Res} saranno aggiunte a \texttt{listCl}, così da evitare che l'oggetto in input \texttt{s} venga modificato.
 
 A questo punto vengono eseguiti due cicli for innestati su \texttt{listCl}; il ciclo esterno itera la lista utilizzando la clausola \texttt{c1}, il ciclo interno utilizza la clausola \texttt{c2}. Il codice \ref{double-for} mostra l'esecuzione dei due cicli. 
-
-% \begin{figure}[]
     
 \begin{minipage}{\linewidth}
 \small 
-\begin{lstlisting}[caption={Parte del metodo ``isSatisfiable'' della classe Resolution}, label={double-for}]
-        for (int i = 0; i < listCl.size(); i++) {
-            Clause c1 = listCl.get(i);
-            int index1 = c1.getIndex();
-            for (int j = 0; j < listCl.size(); j++) {
-                Clause c2 = listCl.get(j);
-                int index2 = c2.getIndex();
-                if ((i != j) && !alreadyVisited(c1, c2)) {
-                    Literal complemLit = getComplementaryLiteral(c1, c2);
-                    if (complemLit != null) {
-                        if (index1 < index2) {
-                            (visited.get(index1)).add(index2);
-                        } else {
-                            (visited.get(index2)).add(index1);
-                        }
-                        Clause resolvent = resolRule(c1, c2, complemLit);
-                        Step step = null;
-                        if (enableSteps) {
-                            step = new Step(c1, c2, resolvent, complemLit);
-                            trace.add(step);
-                        }
-                        if (resolvent.isEmpty()) {
-                            if (enableSteps) printTrace();
-                            return false;
-                        } 
-                        if (resolvent.isTautology()) {
-                            if (enableSteps)
-                                step.setTautology();
-                        } else if (listCl.contains(resolvent)) {
-                            if (enableSteps)
-                                step.setAlreadyPresent();
-                        } else {
-                            visited.put(resolvent.getIndex(), new HashSet<>());
-                            listCl.add(resolvent);
-                        }
-                    }
+\begin{lstlisting}[caption={Esecuzione dei cicli \texttt{for} innestati, all'interno del metodo \texttt{isSatisfiable} della classe \texttt{Resolution}}, label={double-for}]
+for (int i = 0; i < listCl.size(); i++) {
+    Clause c1 = listCl.get(i);
+    int index1 = c1.getIndex();
+    for (int j = 0; j < listCl.size(); j++) {
+        Clause c2 = listCl.get(j);
+        int index2 = c2.getIndex();
+        if ((i != j) && !alreadyVisited(c1, c2)) {
+            Literal complemLit = getComplementaryLiteral(c1, c2);
+            if (complemLit != null) {
+                if (index1 < index2) {
+                    (visited.get(index1)).add(index2);
+                } else {
+                    (visited.get(index2)).add(index1);
+                }
+                Clause resolvent = resolRule(c1, c2, complemLit);
+                Step step = null;
+                if (enableSteps) {
+                    step = new Step(c1, c2, resolvent, complemLit);
+                    trace.add(step);
+                }
+                if (resolvent.isEmpty()) {
+                    if (enableSteps) printTrace();
+                    return false;
+                } 
+                if (resolvent.isTautology()) {
+                    if (enableSteps)
+                        step.setTautology();
+                } else if (listCl.contains(resolvent)) {
+                    if (enableSteps)
+                        step.setAlreadyPresent();
+                } else {
+                    visited.put(resolvent.getIndex(), new HashSet<>());
+                    listCl.add(resolvent);
                 }
             }
         }
-        if (enableSteps) printTrace();
-        return true;
     }
+}
+if (enableSteps) printTrace();
+return true;
 \end{lstlisting}
 \end{minipage}
-% \end{figure}
-
 Una volta entrato nel secondo ciclo, il metodo esegue la regola di risoluzione (metodo \texttt{resolRule}) su \texttt{c1} e \texttt{c2}, se e solo se le due clausole non sono uguali, non sono già state visitate in precedenza, e contengono almeno un letterale complementare in comune (metodo \texttt{getComplementaryLiteral}). Una volta eseguita la regola sulle due clausole, viene controllato se la clausola \texttt{resolvent} è vuota (metodo \texttt{isEmpty}); in tal caso il metodo restituisce \texttt{false} e termina la sua esecuzione, altrimenti la continua e aggiunge la risolvente a \texttt{listCl} se e solo se \texttt{resolvent} non è tautologica e non è già presente nella lista. A questo punto si esegue la successiva iterazione del \texttt{for} interno.
 
-\subsubsection{Il metodo ``getComplementaryLiteral''}
+\subsubsection{Il metodo \texttt{getComplementaryLiteral}}
 \label{getComplementaryLiteral}
-Questo metodo controlla se nella clausola \texttt{c1} è presente un letterale \texttt{l1}, ed il suo opposto \texttt{l2} nella clausola \texttt{c2}. Se lo trova lo restituisce, altrimenti restituisce \texttt{null}. Il codice \ref*{gcl} mostra questo metodo. 
+Questo metodo controlla se nella clausola \texttt{c1} è presente un letterale \texttt{l1}, ed il suo opposto \texttt{l2} nella clausola \texttt{c2}. Se lo trova lo restituisce, altrimenti restituisce \texttt{null}. Il codice \ref{gcl} mostra questo metodo. 
 
 \begin{minipage}{\linewidth}
-    \begin{lstlisting}[caption={Metodo ``getComplementaryLiteral'' della classe Resolution}, label={gcl}]
-        private static Literal getComplementaryLiteral(Clause c1, Clause c2) { 
-            for (Literal l1 : c1) {
-                for (Literal l2 : c2) { 
-                    if (l1.equals(l2.getOpposite())) return l1;
-                }
-            }
-            return null;
+\small
+\begin{lstlisting}[caption={Metodo \texttt{getComplementaryLiteral} della classe \texttt{Resolution}}, label={gcl}]
+private static Literal getComplementaryLiteral(Clause c1, Clause c2) { 
+    for (Literal l1 : c1) {
+        for (Literal l2 : c2) { 
+            if (l1.equals(l2.getOpposite())) return l1;
         }
-    \end{lstlisting}
+    }
+    return null;
+}
+\end{lstlisting}
 \end{minipage}
 
 \subsection{Memorizzazione delle coppie di clausole visitate}
@@ -541,41 +533,42 @@ Nella situazione finale la mappa visited avrà la seguente struttura:
 \vspace{10pt}
 La prima riga dice che la clausola \textbf{0} è stata visitata con le clausole \textbf{1} e \textbf{2} (infatti le clausole \textbf{3} e \textbf{4} sono state ottenute dalle coppie \textbf{0 - 1} e \textbf{0 - 2}). La seconda riga dice che la clausola \textbf{1} è stata visitata con la clausola \textbf{4} (per ottenere la clausola \textbf{5}); infine, la terza riga dice che la clausola \textbf{2} è stata visitata con la clausola \textbf{3} (in quest'ultimo caso viene generata la clausola \textbf{6} che è uguale alla clausola \textbf{5}, quindi viene scartata).
 
-\subsubsection{Il metodo ``alreadyVisited''}
-Questo metodo utilizza la mappa \texttt{visited} per verificare se una coppia di clausole è gia stata visitata in precedenza, ossia la regola di risoluzione è già stata applicata su di essa. Per farlo controlla se nell'insieme ottenuto dall'indice più piccolo è presente l'indice più grande (utilizzando il metodo \texttt{contains}). Questo garantisce che l'algoritmo possa terminare. Il codice \ref{alreadyVisited} mostra questo metodo.
+\subsubsection{Il metodo \texttt{alreadyVisited}}
+Questo metodo utilizza la mappa \texttt{visited} per verificare se una coppia di clausole è gia stata visitata in precedenza, ossia la regola \emph{Res} è già stata applicata su di essa. Per farlo controlla se nell'insieme ottenuto a partire dall'indice più piccolo è presente l'indice più grande (utilizzando il metodo \texttt{contains}). Questo garantisce che l'algoritmo possa terminare. Il codice \ref{alreadyVisited} mostra questo metodo.
 
 \begin{minipage}{\linewidth}
-    % \small
-    \begin{lstlisting}[caption={Metodo ``alreadyVisited'' della classe Resolution}, label={alreadyVisited}]
-        private static boolean alreadyVisited(Clause c1, Clause c2) {
-            int i1 = c1.getIndex();
-            int i2 = c2.getIndex();
-            if (i1 < i2) {
-                return (visited.get(i1)).contains(i2);
-            }
-            return (visited.get(i2)).contains(i1);
-        }
+    \small
+    \begin{lstlisting}[caption={Metodo \texttt{alreadyVisited} della classe \texttt{Resolution}}, label={alreadyVisited}]
+private static boolean alreadyVisited(Clause c1, Clause c2) {
+    int i1 = c1.getIndex();
+    int i2 = c2.getIndex();
+    if (i1 < i2) {
+        return (visited.get(i1)).contains(i2);
+    }
+    return (visited.get(i2)).contains(i1);
+}
     \end{lstlisting}
 \end{minipage}
 
-\subsection{Implementazione della regola di risoluzione}
+\subsection{Implementazione della regola di risoluzione \emph{Res}}
 \label{resolRule}
-La regola \emph{Res} viene implementata dal metodo \texttt{resolRule}; esso prende in input le clausole \texttt{c1} e \texttt{c2}, insieme al letterale \texttt{lit}. Il metodo esegue l'unione delle due clausole (tramite il metodo \texttt{union} della classe \texttt{Clause}), e successivamente rimuove il letterale \texttt{lit} ed il suo opposto dalla clausola risultante; infine restituisce il risultato. Il codice \ref{rr} mostra questo metodo.
+La regola \emph{Res} viene implementata dal metodo \texttt{resolRule}, esso prende in input le clausole \texttt{c1} e \texttt{c2}, insieme al letterale \texttt{lit}. Il metodo esegue l'unione delle due clausole (tramite il metodo \texttt{union} della classe \texttt{Clause}), e successivamente rimuove il letterale \texttt{lit} ed il suo opposto dalla clausola risultante (con il metodo \texttt{remove}); infine restituisce il risultato. Il codice \ref{rr} mostra questo metodo.
 
 \begin{minipage}{\linewidth}
-    \begin{lstlisting}[caption={Metodo ``resolRule'' della classe Resolution}, label={rr}]
-        private static Clause resolRule(Clause c1, Clause c2, Literal lit) {
-            Clause result = c1.union(c2);
-            result.remove(lit);
-            result.remove(lit.getOpposite());
-            return result;
-        }
+    % \small
+    \begin{lstlisting}[caption={Metodo \texttt{resolRule} della classe Resolution}, label={rr}]
+private static Clause resolRule(Clause c1, Clause c2, Literal lit) {
+    Clause result = c1.union(c2);
+    result.remove(lit);
+    result.remove(lit.getOpposite());
+    return result;
+}
     \end{lstlisting}
 \end{minipage}
 
 \subsection{Gestione degli step}
 \label{step}
-Per verificare la correttezza dell'implementazione del metodo di risoluzione è possibile tenere traccia di tutti gli step che vengono eseguiti dal metodo \texttt{isSatisfiable}, ovvero di tutte le applicazioni della regola di risoluzione. Per farlo è stata scritta la classe \texttt{Step}, le cui istanze memorizzano il numero di step attuale, le due clausole di premessa, la clausola risolvente, il letterale da considerare per la regola, ed infine le informazioni che dicono che la risolvente viene scartata perché è tautologica oppure già presente nella lista di clausole.
+Per verificare la correttezza dell'implementazione del metodo di risoluzione è possibile tenere traccia di tutti gli step che vengono eseguiti dal metodo \texttt{isSatisfiable}, ovvero di tutte le applicazioni della regola \emph{Res}. Per farlo è stata scritta la classe \texttt{Step}, le cui istanze memorizzano il numero di step attuale, le due clausole di premessa, la clausola risolvente, il letterale da considerare per la regola, ed infine le informazioni che dicono che la risolvente viene scartata perché è tautologica oppure già presente nella lista di clausole.
 
 Nella classe \texttt{Resolution} è presente il metodo \texttt{setEnableSteps} che prende in input un valore booleano che viene impostato sul campo statico \texttt{enableSteps}. Se questo campo è impostato a \texttt{true}, verrà stampata su Standard Output (\emph{Stdout}) la lista degli step quando viene chiamato il metodo \texttt{isSatisfiable}.
 
@@ -583,13 +576,13 @@ Gli step vengono memorizzati nel campo statico \texttt{trace} (di tipo \texttt{L
 
 \subsubsection{Esempio di funzionamento degli step}
 Supponendo che il campo \texttt{enableSteps} sia impostato a \texttt{true}, consideriamo l'esecuzione del metodo \texttt{isSatisfiable} con il seguente insieme di clausole \texttt{s} in input:
-\[\texttt{s} = \{\; \{a\}; \{\lnot a, b\}; \{\lnot b\} \;\}\]
+\[\texttt{s} = \{\quad \{a\}; \{\lnot a, b\}; \{\lnot b\} \quad\}\]
 La lista degli step che verrà stampata su \emph{Stdout} è la seguente:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth, height=0.4\textheight]{img/step.png}
 \end{figure} 
-Come si può notare, nello \emph{step 3} viene trovata la clausola vuota, quindi in questo caso il metodo restituisce \texttt{false} (\texttt{s} è \emph{insoddisfacibile}).
+Come si può notare, nello step 3 viene trovata la clausola vuota, quindi in questo caso il metodo restituisce \texttt{false} (\texttt{s} è \textbf{insoddisfacibile}).
 
 
 % 
@@ -597,18 +590,18 @@ Come si può notare, nello \emph{step 3} viene trovata la clausola vuota, quindi
 %			CAPITOLO 4
 \chapter{Implementazione in Java di formule generiche}
 \label{formulas}
-Finora ci siamo concentrati soltanto su formule espresse in \emph{CNF} rappresentate mediante la classe \texttt{ClauseSet}. Se volessimo implementare una formula qualsiasi della logica proposizionale sono necessari altri elementi. I package \emph{formula} e \emph{connective} del progetto java visto nella sezione \ref{project_structure} contengono i file necessari per rappresentare le formule della logica proposizionale. Se si volesse verificare la soddisfacibilità di una formula, è necessario convertire prima la formula in \emph{CNF} (ottenendo così l'istanza di \texttt{ClauseSet} associata), e poi richiamare il metodo \texttt{isSatisfiable} della classe \texttt{Resolution} dando in input quella istanza. Questo aspetto viene affrontato nella sezione \ref{clausification}.
+Finora ci siamo concentrati soltanto su formule espresse in \emph{CNF} rappresentate mediante la classe \texttt{ClauseSet}. Se volessimo implementare una formula qualsiasi della logica proposizionale sono necessari altri elementi. I package \emph{formula} e \emph{connective} del progetto Java visto nella sezione \ref{project_structure} contengono i file necessari per rappresentare le formule della logica proposizionale. Se si volesse verificare la soddisfacibilità di una formula, è necessario convertire prima la formula in \emph{CNF} (ottenendo così l'istanza di \texttt{ClauseSet} associata), e poi richiamare il metodo \texttt{isSatisfiable} della classe \texttt{Resolution} dando in input quella istanza. Questo aspetto viene affrontato nella sezione \ref{clausification}.
 
-\section{La classe astratta Formula}
+\section{La classe astratta \texttt{Formula}}
 Come visto nel capitolo \ref{intro}, una formula può essere \emph{atomica} o \emph{composta}, perciò nell'implementazione in Java è stata scritta la classe astratta \texttt{Formula}, che viene estesa dalle classi concrete \texttt{AtomicFormula} e \texttt{CompoundFormula}.
 
 La classe \texttt{Formula} contiene soltanto il metodo astratto \texttt{toCnf} che permette di convertire la formula in \emph{CNF}, restituendo l'istanza di \texttt{ClauseSet} corrispondente (si veda la sezione \ref{clausification}).
 
-\section{La classe AtomicFormula}
+\section{La classe \texttt{AtomicFormula}}
 \label{AtomicFormula}
 Questa classe estende \texttt{Formula} ed istanzia una formula atomica. Essa contiene un campo \texttt{atm} di tipo \texttt{Atom} che lo identifica, e alcuni semplici metodi per la sua gestione: il metodo per ottenere il nome (\texttt{getName}), il metodo per ottenere il letterale associato (\texttt{toLiteral}), e i classici metodi \texttt{equals} e \texttt{toString}.
 
-\section{L'enumerazione Connective}
+\section{L'enumerazione \texttt{Connective}}
 Prima di considerare la classe \texttt{CompoundFormula} è bene vedere prima l'enumerazione \texttt{Connective}. Essa si trova nel package \emph{connective} e definisce delle costanti enumerative che descrivono i connettivi della logica proposizionale usati dalle formule composte. La seguente tabella mostra le costanti associate alla loro rappresentazione testuale (ottenute dal metodo \texttt{toString}):
 \begin{table}[H]
     \centering
@@ -622,14 +615,14 @@ Prima di considerare la classe \texttt{CompoundFormula} è bene vedere prima l'e
         \hline
         OR & $|$ \\
         \hline
-        IMPLIES & $->$ \\
+        IMPLIES & $-\!>$ \\
         \hline
-        IFF & $<->$ \\
+        IFF & $<\!-\!>$ \\
         \hline
     \end{tabular}
 \end{table}
 
-\section{La classe CompoundFormula}
+\section{La classe \texttt{CompoundFormula}}
 Questa classe estende \texttt{Formula} ed istanzia una formula composta, utilizzando le costanti dell'enumerazione \texttt{Connective}. Per la rappresentazione interna di una formula composta si usa un albero binario, che definisce la sua struttura ricorsiva. La radice dell'albero contiene il connettivo principale della formula, i nodi interni contengono i connettivi delle sue sottoformule, ed infine le foglie contengono le sue formule atomiche. I nodi che contengono i connettivi binari hanno due figli, mentre i nodi che contengono i connettivi unari hanno un solo figlio (il figlio sinistro).
 
 Consideriamo il seguente esempio di formula:
@@ -639,7 +632,7 @@ La sua rappresentazione ad albero è la seguente:
     \centering
     \includegraphics[width=0.7\textwidth, height=0.4\textheight]{img/albero.png}
 \end{figure}
-In questo albero, la radice è il nodo ``$->$'', perché è il connettivo principale della formula dell'esempio. I nodi ``$\thicksim$'' hanno solo il figlio sinistro perché rappresentano la negazione, e le foglie sono le atomiche \emph{a, b, c, d}.
+In questo albero, la radice è il nodo ``$-\!>$'', perché è il connettivo principale della formula dell'esempio. I nodi ``$\thicksim$'' hanno solo il figlio sinistro perché rappresentano la negazione, e le foglie sono le atomiche \emph{a, b, c, d}.
 
 La classe \texttt{CompoundFormula} ha quindi come attributi il campo \texttt{mainConnective} che definisce il connettivo principale, e il campo \texttt{subFormulas} che consiste in un array di formule che contiene i nodi figli. La classe contiene dei metodi getter per ottenere il connettivo, il figlio destro ed il figlio sinistro, e sovrascrive i metodi \texttt{toString} e \texttt{toCnf}.
 
@@ -675,7 +668,7 @@ Come spiegato all'inizio di questo capitolo, se volessimo verificare la soddisfa
     \lnot(p \lor q) \quad \equiv \quad (\lnot p \land \lnot q)
     \]
 \end{itemize}
-Le regole appena mostrate vengono applicate nel metodo astratto \texttt{toCnf} della classe \texttt{Formula}, che restituisce un \texttt{ClauseSet}. Questo metodo ha quindi due diverse implementazioni: una per le formule atomiche e una per le formule composte.
+Le regole appena mostrate vengono applicate in una delle implementazioni del metodo astratto \texttt{toCnf} della classe \texttt{Formula}. Questo metodo restituisce un \texttt{ClauseSet} e ha due diverse implementazioni: una per le formule atomiche e una per le formule composte.
 
 L'implementazione del metodo \texttt{toCnf} nella classe \texttt{AtomicFormula} è molto semplice: esso restituisce un \texttt{ClauseSet} contenente una sola clausola, tale clausola contiene soltanto il letterale associato a quella formula atomica.
  
@@ -694,13 +687,12 @@ la clausificazione viene fatta in tre passaggi:
     \item Proprietà distributiva:
     \[ (\lnot a \lor c) \land (\lnot b \lor c) \]
 \end{itemize}
-
 La formula ricavata nell'ultimo passaggio è in \emph{CNF}, ed essa corrisponde all'insieme di clausole:
-\[ \{ \; \{\lnot a, c\}; \{\lnot b, c\} \; \} \]
+\[ \{ \quad \{\lnot a, c\}, \{\lnot b, c\} \quad \} \]
 
 \section{Parsing di formule}
 \label{parsing}
-Se volessimo utilizzare un programma che legge da un flusso di input una formula in formato testuale (ad esempio da \emph{Stdin} o da un file di testo), è necessario interpretare la stringa di testo in modo tale da ottenere la formula. La trasformazione di rappresentazioni testuali in strutture dati utilizzabili da un programma è un processo noto come \emph{parsing}. Nel nostro sistema, implementiamo un parser per convertire le formule da stringhe di testo in oggetti di tipo \texttt{Formula}. Per eseguire il parsing, bisogna definire prima una grammatica che descrive il linguaggio utilizzato per le formule. A partire dalla grammatica vengono generati il \emph{lexer}, il \emph{parser} e il \emph{listener}.
+Se volessimo utilizzare un programma che legge da un flusso di input una formula in formato testuale (ad esempio da \emph{Stdin} o da un file di testo), è necessario interpretare la stringa di testo in modo tale da ottenere la formula. La trasformazione di rappresentazioni testuali in strutture dati utilizzabili da un programma è un processo noto come \emph{parsing}. Nel nostro sistema, implementiamo un parser per convertire le formule da stringhe di testo in oggetti di tipo \texttt{Formula}. Per eseguire il parsing, bisogna definire prima di tutto una grammatica che descrive il linguaggio utilizzato per le formule. A partire dalla grammatica vengono generati il \emph{lexer}, il \emph{parser} e il \emph{listener}.
 
 
 \subsection{Utilizzo del parser ANTLR4}
@@ -711,7 +703,7 @@ Il parser utilizzato nel nostro sistema è \emph{ANTLR4}. Nella struttura del pr
     \item \textbf{FormulaExpressionParser.java}:
     esso consiste nel parser, che esegue l'analisi sintattica della stringa in input generando un \textbf{albero sintattico} (\emph{AST}), fondamentale per la costruzione della formula.
     \item \textbf{FormulaExpressionListener.java}:
-    è un interfaccia che definisce i metodi che vengono richiamati durante l'attraversamento dell'\emph{AST}.
+    è un'interfaccia che definisce i metodi che vengono richiamati durante l'attraversamento dell'\emph{AST}.
     \item \textbf{FormulaExpressionBaseListener.java}:
     è una classe che implementa l'interfaccia \texttt{FormulaExpressionListener}, dove ogni metodo sovrascritto non esegue alcuna operazione.
 \end{itemize}
@@ -729,71 +721,72 @@ Oltre a questi file, ne sono presenti altri due:
 Nel codice \ref{grammar} è presente il contenuto del file \emph{FormulaExpression.g4} che descrive la grammatica.
 
 \begin{minipage}{\linewidth}
+    \small
     \begin{lstlisting}[label=grammar, caption={file FormulaExpression.g4}]
-        grammar FormulaExpression;
+grammar FormulaExpression;
 
-        start : formula EOF;
+start : formula EOF;
 
-        formula : atomic_formula
-                | '(' formula ')' 
-                | unary_connective formula
-                | formula binary_connective formula
-                ;
+formula : atomic_formula
+        | '(' formula ')' 
+        | unary_connective formula
+        | formula binary_connective formula
+        ;
 
-        atomic_formula : LITERAL ;
+atomic_formula : LITERAL ;
 
-        unary_connective : NOT ;
+unary_connective : NOT ;
 
-        binary_connective : AND | OR | IMPLIES | IFF;
+binary_connective : AND | OR | IMPLIES | IFF;
 
-        //token
-        AND : '&' ;
-        OR : '|' ;
-        IMPLIES : '->' ;
-        NOT : '~' ;
-        IFF : '<->';
+//token
+AND : '&' ;
+OR : '|' ;
+IMPLIES : '->' ;
+NOT : '~' ;
+IFF : '<->';
 
-        LITERAL : [a-z]+ ;
-        WS : [ \t\r\n]+ -> skip ;
+LITERAL : [a-z]+ ;
+WS : [ \t\r\n]+ -> skip ;
     \end{lstlisting}
 \end{minipage}
-In questa grammatica ci sono le regole che definiscono le formule atomiche e composte, e le regole che descrivono i connettivi unari e binari; le sottoformule sono distinguibili grazie alle parentesi tonde, che specificano anche la precedenza tra i vari connettivi della formula. in fondo al file è presente la definizione dei token. È bene notare che la rappresentazione testuale dei connettivi in questa grammatica è la medesima utilizzata dall'enumerazione \texttt{Connective}.
+In questa grammatica ci sono le regole che definiscono le formule atomiche e composte, e le regole che descrivono i connettivi unari e binari. Le sottoformule sono distinguibili grazie alle parentesi tonde, che specificano anche la precedenza tra i vari connettivi della formula. in fondo al file è presente la definizione dei token. È bene notare che la rappresentazione testuale dei connettivi in questa grammatica è la medesima utilizzata dall'enumerazione \texttt{Connective}.
 
 \subsubsection{Esempio di \emph{AST}}
-Consideriamo la seguente stringa:
-\[ (a \; \& \; \sim b) \quad -> \quad c \]
+Consideriamo la seguente formula rappresentata mediante una stringa:
+\[ (a \; \& \; \sim\!b) \quad -\!> \quad c \]
 se eseguiamo il parsing di questa stringa otteniamo il seguente \emph{AST}:
 \begin{figure}[H]
     % \centering
     \includegraphics[width=0.7\textwidth, height=0.5\textheight]{img/antlr4_parse_tree.png}
 \end{figure}
-Durante l'attraversamento di questo albero vengono eseguiti i metodi \\ \texttt{ExitAtomic\_formula} e \texttt{exitFormula} della classe che estende il Base Listener; essi vengono richiamati rispettivamente quando si esce da un nodo \emph{atomic\_formula} e da un nodo \emph{formula}. Nel primo caso si crea una formula atomica e la si aggiunge allo \emph{stack} (tramite l'operazione di \emph{push}), nel secondo caso si controlla la presenza di un figlio che contiene un connettivo unario o binario, e si crea una formula composta applicando quel connettivo alla formula in cima allo stack (nel caso di connettivo unario) oppure alle prime due formule in cima allo stack (nel caso di connettivo binario). Infine viene inserita nello stack la formula appena creata. Per ottenere l'elemento in cima allo stack viene usata l'operazione di \emph{pop} su di esso.
+Durante l'attraversamento di questo albero vengono eseguiti i metodi \\ \texttt{ExitAtomic\_formula} e \texttt{exitFormula} della classe \texttt{FormulaListenerImplementation}; essi vengono richiamati rispettivamente quando si esce da un nodo \emph{atomic\_formula} e da un nodo \emph{formula}. Nel primo caso si crea una formula atomica e la si aggiunge allo \emph{stack} (tramite l'operazione di \emph{push}), nel secondo caso si controlla la presenza di un figlio che contiene un connettivo unario o binario, e si crea una formula composta applicando quel connettivo alla formula in cima allo stack (nel caso di connettivo unario) oppure alle prime due formule in cima allo stack (nel caso di connettivo binario). Infine viene inserita nello stack la formula appena creata. Per ottenere l'elemento in cima allo stack viene usata l'operazione di \emph{pop} su di esso.
 
 Alla fine della visita dell'\emph{AST}, in cima allo stack ci sarà la formula associata alla stringa di partenza, che viene ottenuta dal metodo \texttt{getFormula} e a sua volta restituita dal metodo \texttt{parse} (si veda il codice \ref{parse}). Nell'esempio visto in precedenza la formula ottenuta è:
 \[ (a \land \lnot b) \to c \]
 
 \begin{minipage}{\linewidth}
     \begin{lstlisting}[caption={Metodo \texttt{parse} della classe \texttt{ParseFormula}}, label={parse}]
-        public static Formula parse(String formulaStr) {
-            CharStream input = CharStreams.fromString(formulaStr);
-            FormulaExpressionLexer lexer = new FormulaExpressionLexer(input);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            FormulaExpressionParser parser = new FormulaExpressionParser(tokens);
+public static Formula parse(String formulaStr) {
+    CharStream input = CharStreams.fromString(formulaStr);
+    FormulaExpressionLexer lexer = new FormulaExpressionLexer(input);
+    CommonTokenStream tokens = new CommonTokenStream(lexer);
+    FormulaExpressionParser parser = new FormulaExpressionParser(tokens);
 
-            //create listener
-            FormulaListenerImplementation listener = new FormulaListenerImplementation();
+    //create listener
+    FormulaListenerImplementation listener = new FormulaListenerImplementation();
 
-            //adds the listener to the parser
-            parser.addParseListener(listener);
+    //adds the listener to the parser
+    parser.addParseListener(listener);
 
-            try {
-                //analyze the input and get the corresponding formula
-                parser.start();
-                return listener.getFormula();
-            } catch (Exception e) {
-                return null;
-            }
-        }
+    try {
+        //analyze the input and get the corresponding formula
+        parser.start();
+        return listener.getFormula();
+    } catch (Exception e) {
+        return null;
+    }
+}
     \end{lstlisting}
 \end{minipage}
 
@@ -974,7 +967,7 @@ Per quanto riguarda le clausole, è presente la classe astratta \texttt{Clause}.
 
 La classe \texttt{Clause} viene estesa dalle due classi \texttt{LocalClause} e \texttt{GlobalClause}, che rappresentano rispettivamente le clausole locali e globali. Queste due classi forniscono un'implementazione del metodo \texttt{union}, infatti una clausola di un tipo (locale o globale) può essere unita soltanto con un'altra clausola dello stesso tipo. Inoltre le due classi sovrascrivono i metodi \texttt{equals} e \texttt{toString} (nella rappresentazione testuale delle clausole globali viene usato ``G($\cdot$)'').
 
-\subsection*{La classe ClauseSet}
+\subsection*{La classe \texttt{ClauseSet}}
 La classe \texttt{ClauseSet} rappresenta la forma clausale di una formula, espressa come insieme di clausole. Questa classe è la medesima utilizzata nella logica classica (si veda sezione \ref{ClauseSet}). La differenza sostanziale è che le clausole all'interno di un'istanza di \texttt{ClauseSet} possono essere indistintamente locali o globali, e i letterali contenuti in ciascuna clausola possono essere indistintamente proposizionali o modali.
 
 
@@ -983,7 +976,7 @@ Per l'implementazione delle formule modali generiche si segue lo stesso approcci
 
 \subsection{Implementazione della clausificazione}
 \label{clausification_impl}
-\subsubsection{La classe Eta}
+\subsubsection{La classe \texttt{Eta}}
 La clausificazione viene fatta utilizzando la classe \texttt{Eta}, essa gestisce l'esecuzione della funzione di rinominazione $\eta$. Questa classe ha come campo una mappa che associa istanze di \texttt{Formula} a istanze di \texttt{PropAtom}; il costruttore della classe prende in input un oggetto \texttt{Formula} $f$ e crea ricorsivamente la mappa associando ad ogni sottoformula di $f$ una nuova variabile proposizionale (\texttt{PropAtom}), i nomi che vengono dati alle variabili atomiche sono $\$p1, \$p2, \dots, \$pi$.
 
 La classe \emph{Eta} ha il metodo \texttt{getPropVariable} che prende in input un oggetto \texttt{Formula} $f$ e restituisce il valore $\eta(f)$. Un'istanza di \texttt{Eta} viene usata come campo statico all'interno della classe \texttt{Formula}.
@@ -1012,45 +1005,45 @@ In questo modo si evita di utilizzare le funzioni $\eta$ e \emph{R}, rendendo pi
 \begin{minipage}{\linewidth}
     % \small
     \begin{lstlisting}[caption={Metodo \texttt{toClauseSet} della classe \texttt{CompoundFormula}}, label={toClauseSet}]
-        @Override
-        public ClauseSet toClauseSet() {
-            if (this.isClassic()) {
-                return this.classicClausification();
-            } else {
-                eta = new Eta(this); //eta e' il campo statico della classe Formula.
-                PropAtom t = eta.getPropVariable(this);
-                ClauseSet cs = new ClauseSet(new LocalClause(t));
-                return cs.union(this.R(t));
-            }
-        }
+@Override
+public ClauseSet toClauseSet() {
+    if (this.isClassic()) {
+        return this.classicClausification();
+    } else {
+        eta = new Eta(this); //eta e' il campo statico della classe Formula.
+        PropAtom t = eta.getPropVariable(this);
+        ClauseSet cs = new ClauseSet(new LocalClause(t));
+        return cs.union(this.R(t));
+    }
+}
     \end{lstlisting}
 \end{minipage}
 
 \begin{minipage}{\linewidth}
     \small
     \begin{lstlisting}[caption={Parte del metodo \texttt{R} della classe \texttt{CompoundFormula}}, label={R}]
-        switch (this.mainConnective) {
-            case NOT:
-                GlobalClause gc1 = new GlobalClause();
-                gc1.add(t.getOpposite());
-                gc1.add(etaPsi.getOpposite());
-                res.add(gc1);
-                GlobalClause gc2 = new GlobalClause();
-                gc2.add(t);
-                gc2.add(etaPsi);
-                res.add(gc2);
-                if (psi instanceof CompoundFormula) {
-                    CompoundFormula cf_psi = (CompoundFormula) psi;
-                    if (cf_psi.isClassic()) {
-                        CompoundFormula f = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
-                        return res.union(f.classicClausification());
-                    }
-                    return res.union(cf_psi.R(etaPsi));
-                }
-                return res;
-            case OR:
-                ...
+switch (this.mainConnective) {
+    case NOT:
+        GlobalClause gc1 = new GlobalClause();
+        gc1.add(t.getOpposite());
+        gc1.add(etaPsi.getOpposite());
+        res.add(gc1);
+        GlobalClause gc2 = new GlobalClause();
+        gc2.add(t);
+        gc2.add(etaPsi);
+        res.add(gc2);
+        if (psi instanceof CompoundFormula) {
+            CompoundFormula cf_psi = (CompoundFormula) psi;
+            if (cf_psi.isClassic()) {
+                CompoundFormula f = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+                return res.union(f.classicClausification());
+            }
+            return res.union(cf_psi.R(etaPsi));
         }
+        return res;
+    case OR:
+        ...
+}
     \end{lstlisting}
 \end{minipage}
 
@@ -1095,7 +1088,7 @@ Il metodo \texttt{isSatisfiable} è il metodo principale che implementa l'algori
 \subsubsection{Il metodo \texttt{getModalLiterals}}
 Questo metodo verifica se è possibile applicare le regole \emph{LERES} e \emph{GERES} all'interno del metodo \texttt{isSatisfiable}, ed in caso affermativo restituisce i due letterali modali $\Box p$ e $\lnot \Box p'$. Esso prende in input due clausole, una lista di clausole (nel nostro caso \texttt{listCl}) e restituisce un array di letterali (\texttt{Literal[]}). Il metodo controlla se in una delle due clausole in input sia presente un letterale modale positivo (\texttt{ModalAtom}), ed un letterale modale negativo (\texttt{NegModalAtom}); se ciò dovesse capitare, allora ispeziona la lista di clausole fornita in input (\texttt{listCl}) con lo scopo di ricercare le clausole $G(C)$ e $G(C')$, ovvero le ultime due premesse delle regole \emph{LERES} e \emph{GERES}. Se vengono trovate, allora il metodo \texttt{getModalLiterals} restituisce l'array contenente i due letterali modali, in caso contrario restituisce un array vuoto.
 
-\subsection*{Implementazione delle regole di risoluzione}
+\subsection{Implementazione delle regole di risoluzione}
 Le regole di risoluzione vengono implementate mediante gli omonimi metodi presenti nella classe Resolution.
 
 \subsubsection{Il metodo \texttt{G2L}}
@@ -1107,12 +1100,12 @@ Questi metodi sono implementati nello stesso modo del metodo \texttt{resolRule} 
 \begin{minipage}{\linewidth}
     \small
     \begin{lstlisting}[caption={Metodo \texttt{LRES} della classe \texttt{Resolution}}, label={method:LRES}]
-    private static LocalClause LRES(LocalClause lc1, LocalClause lc2, Literal lit) {
-        LocalClause result = (LocalClause) lc1.union(lc2);
-        result.remove(lit);
-        result.remove(lit.getOpposite());
-        return result;
-    }
+private static LocalClause LRES(LocalClause lc1, LocalClause lc2, Literal lit) {
+    LocalClause result = (LocalClause) lc1.union(lc2);
+    result.remove(lit);
+    result.remove(lit.getOpposite());
+    return result;
+}
     \end{lstlisting}
 \end{minipage}
 
@@ -1122,16 +1115,16 @@ Il metodo \texttt{LERES} prende in input due clausole locali e due letterali, e 
 \begin{minipage}{\linewidth}
     \small
     \begin{lstlisting}[caption={Metodo \texttt{LERES} della classe \texttt{Resolution}}, label={method:LERES}]
-    private static LocalClause LERES(LocalClause lc1, LocalClause lc2, Literal ma, Literal nma) {
-        LocalClause result = (LocalClause) lc1.union(lc2);
-        result.remove(ma);
-        result.remove(nma);
-        return result;
-    }
+private static LocalClause LERES(LocalClause lc1, LocalClause lc2, Literal ma, Literal nma) {
+    LocalClause result = (LocalClause) lc1.union(lc2);
+    result.remove(ma);
+    result.remove(nma);
+    return result;
+}
     \end{lstlisting}
 \end{minipage}
 
-\subsection*{Memorizzazione delle coppie di clausole visitate}
+\subsection{Memorizzazione delle coppie di clausole visitate}
 La gestione delle coppie di clausole visitate viene fatta nello stesso modo in cui veniva svolto nell'implementazione per la logica classica (si veda la sezione \ref{visited}). Si utilizza quindi la mappa \texttt{visited}, che memorizza inizialmente le coppie di clausole sulle quali vengono applicate le regole \emph{LRES} e \emph{GRES} tramite i loro indici. Dopo che sono state applicate queste due regole su tutte le coppie possibili, la mappa \texttt{visited} viene svuotata, in questo modo sarà possibile eseguire le regole \emph{LERES} e \emph{GERES} anche sulle coppie di clausole alle quali sono state applicate in precedenza le altre due regole. Si noti che l'applicazione della regola \emph{G2L} non viene memorizzata.
 
 Come nell'implementazione per la logica classica, viene utilizzato il metodo \\ \texttt{alreadyVisited} per verificare se una coppia di clausole è già stata visitata in precedenza; inoltre, per aggiungere una coppia alla mappa \texttt{visited} viene utilizzato il metodo \texttt{addCoupleInMap}
@@ -1142,47 +1135,41 @@ La gestione degli step viene svolta come nel caso della logica classica (si veda
 \begin{minipage}{\linewidth}
     \small
     \begin{lstlisting}[caption={cicli for innestati per l'esecuzione delle regole LERES e GERES nel metodo \texttt{isSatisfiable}}, label={method:isSatisfiable}]
-    for (int i = 0; i < listCl.size(); i++) {
-        Clause c1 = listCl.get(i);
-        int index1 = c1.getIndex();
-        for (int j = 0; j < listCl.size(); j++) {
-            Clause c2 = listCl.get(j);
-            int index2 = c2.getIndex();
-            if ((i != j) && (c1.getClass().equals(c2.getClass())) && !alreadyVisited(c1, c2)) {
-                Literal[] literals = getModalLiterals(c1, c2, listCl);
-                if (literals.length != 0) {
-                    addCoupleInMap(index1, index2);
-                    Clause resolvent = null;
-                    if ((c1 instanceof GlobalClause) && (c2 instanceof GlobalClause)) {
-                        resolvent = GERES((GlobalClause) c1, (GlobalClause) c2, literals[0], literals[1]);
-                        //gestione step
-                    } else {
-                        resolvent = LERES((LocalClause) c1, (LocalClause) c2, literals[0], literals[1]);
-                        //gestione step
-                    } 
-                    if (resolvent.isEmpty()) {
-                        return false;
-                    }
-                    if (resolvent.isTautology()) {
-                        //gestione step
-                    } else if (listCl.contains(resolvent)) {
-                        //gestione step
-                    } else {
-                        visited.put(resolvent.getIndex(), new HashSet<>());
-                        listCl.add(resolvent);
-                    }
+for (int i = 0; i < listCl.size(); i++) {
+    Clause c1 = listCl.get(i);
+    int index1 = c1.getIndex();
+    for (int j = 0; j < listCl.size(); j++) {
+        Clause c2 = listCl.get(j);
+        int index2 = c2.getIndex();
+        if ((i != j) && (c1.getClass().equals(c2.getClass())) && !alreadyVisited(c1, c2)) {
+            Literal[] literals = getModalLiterals(c1, c2, listCl);
+            if (literals.length != 0) {
+                addCoupleInMap(index1, index2);
+                Clause resolvent = null;
+                if ((c1 instanceof GlobalClause) && (c2 instanceof GlobalClause)) {
+                    resolvent = GERES((GlobalClause) c1, (GlobalClause) c2, literals[0], literals[1]);
+                    //gestione step
+                } else {
+                    resolvent = LERES((LocalClause) c1, (LocalClause) c2, literals[0], literals[1]);
+                    //gestione step
+                } 
+                if (resolvent.isEmpty()) {
+                    return false;
+                }
+                if (resolvent.isTautology()) {
+                    //gestione step
+                } else if (listCl.contains(resolvent)) {
+                    //gestione step
+                } else {
+                    visited.put(resolvent.getIndex(), new HashSet<>());
+                    listCl.add(resolvent);
                 }
             }
         }
     }
+}
     \end{lstlisting}
 \end{minipage}
-
-
-
-
-
-
 
 % 
 % 
@@ -1208,7 +1195,7 @@ Per verificare la validità di una qualsiasi formula $F$, si considera la sua ne
 \subsection{Dimostrazione di conseguenze logiche}
 
 \begin{definition}
-    Siano $F_1$ e $F_2$ due formule. Si dice che $F_2$ è conseguenza logica di $F_1$ se e solo se per ogni interpretazione i, se i rende vera $F_1$, allora rende vera anche $F_2$. La conseguenza logica si può scrivere con $F_1 \models F_2$.
+    Siano $F_1$ e $F_2$ due formule. Si dice che $F_2$ è conseguenza logica di $F_1$ se e solo se per ogni interpretazione i, se i soddisfa $F_1$, allora soddisfa anche $F_2$. La conseguenza logica si può scrivere con $F_1 \models F_2$.
 \end{definition}
 Applicando la verifica della validità di formule, è possibile dimostrare la conseguenza logica di due formule $F_1$ e $F_2$ utilizzando l'implicazione logica, ovvero il connettivo $\to$. Infatti, se $F_2$ è conseguenza logica di $F_1$, allora la formula:
 \[
@@ -1258,7 +1245,7 @@ A questo punto applichiamo il metodo di risoluzione su $S$, che ricava facilment
 
 \section{La classe \texttt{App}}
 \label{class:App}
-L'implementazione di quanto visto in questo capitolo, viene svolta nella classe \texttt{App}. Questa classe è presente sia nel caso della logica classica, che in quello per le logiche modali. Come spiegato nella sezione \ref{project_structure}, la classe \texttt{App} contiene soltanto il metodo \texttt{main}; esso calcola la validità di una formula presa da \emph{Standard input}.
+L'implementazione di quanto visto in questo capitolo, viene svolta nella classe \texttt{App}. Questa classe è presente sia nel sistema per la logica classica, che in quello per le logiche modali. Come spiegato nella sezione \ref{project_structure}, la classe \texttt{App} contiene soltanto il metodo \texttt{main}; esso calcola la validità di una formula presa da \emph{Standard input}. Il codice \ref{method:main} mostra questo metodo.
 
 Il metodo \texttt{main} esegue le seguenti operazioni:
 
@@ -1267,38 +1254,37 @@ Il metodo \texttt{main} esegue le seguenti operazioni:
     \item Applica la negazione logica su \texttt{f}, ottenendo l'istanza di \texttt{CompoundFormula not$\_$f}.
     \item Esegue la clausificazione della formula \texttt{not$\_$f}, ottenendo l'istanza di \texttt{ClauseSet cnf}, e la stampa su \emph{Standard Output}.
     \item Se sulla riga di comando è presente il comando ``\textbf{-v}'', abilita la stampa degli step di risoluzione, richiamando il metodo \texttt{setEnableSteps} della classe \texttt{Resolution}, passandogli come parametro \texttt{true}.
-    \item Applica il metodo di risoluzione su \texttt{cnf}, tramite il metodo \texttt{isSatisfiable} della classe \texttt{Resolution}. Se il metodo restituisce \texttt{true}, allora stampa su \emph{Stdout} la stringa ``\emph{The formula is NOT a tautology}''; se restituisce \texttt{false}, stampa la stringa ``\emph{The formula is a tautology}''.
+    \item Applica il metodo di risoluzione sull'insieme di clausole \texttt{cnf}, tramite il metodo \texttt{isSatisfiable} della classe \texttt{Resolution}. Se il metodo restituisce \texttt{true}, allora stampa su \emph{Stdout} la stringa ``\emph{The formula is NOT a tautology}''; se restituisce \texttt{false}, stampa la stringa ``\emph{The formula is a tautology}''.
 \end{itemize}
-Il codice \ref{method:main} mostra il metodo \texttt{main}.
 
 \begin{minipage}{\linewidth}
     \small
     \begin{lstlisting}[caption={Metodo \texttt{main} della classe \texttt{App}}, label={method:main}]
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String formulaStr = sc.nextLine();
-        sc.close();
-        Formula f = ParseFormula.parse(formulaStr);
-        if (f == null) {
-            System.out.println("\nYour formula in input is not a well-formed formula");
-            return;
-        }
-        System.out.println("\nYour formula in input:");
-        System.out.println(f);
-        Formula not_f = new CompoundFormula(NOT, f);
-        ClauseSet cnf = not_f.toCnf();  
-        System.out.println("\nThe corresponding clause set of the negation is:");
-        System.out.println(cnf);
-        System.out.println();
-        if (args.length != 0 && args[0].equals("-v")) {
-            Resolution.setEnableSteps(true);
-        }
-        if (Resolution.isSatisfiable(cnf)) {
-            System.out.println("The formula is not a tautology");
-        } else {
-            System.out.println("The formula is a tautology");
-        }
+public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    String formulaStr = sc.nextLine();
+    sc.close();
+    Formula f = ParseFormula.parse(formulaStr);
+    if (f == null) {
+        System.out.println("\nYour formula in input is not a well-formed formula");
+        return;
     }
+    System.out.println("\nYour formula in input:");
+    System.out.println(f);
+    Formula not_f = new CompoundFormula(NOT, f);
+    ClauseSet cnf = not_f.toCnf();  
+    System.out.println("\nThe corresponding clause set of the negation is:");
+    System.out.println(cnf);
+    System.out.println();
+    if (args.length != 0 && args[0].equals("-v")) {
+        Resolution.setEnableSteps(true);
+    }
+    if (Resolution.isSatisfiable(cnf)) {
+        System.out.println("The formula is not a tautology");
+    } else {
+        System.out.println("The formula is a tautology");
+    }
+}
     \end{lstlisting}
 \end{minipage}
 % 
@@ -1313,24 +1299,24 @@ La classe \texttt{ResolutionTest} contiene i metodi di test, ed il metodo \textt
 
 Il metodo \texttt{readFile} prende in input una stringa che identifica il nome di un file \emph{txt} e restituisce il contenuto di quel file.
 
-I metodi di test verificano che le formule valide contenute nei file \emph{txt}, siano effettivamente valide, e che le formule non valide siano effettivamente tali. Il codice \ref{method:testTaut1} mostra il metodo che testa la validità della formula presente nel file \emph{taut1.txt}. Il metodo legge il file \emph{taut1.txt} ed esegue il \emph{parsing} sul suo contenuto, in modo da ottenere la formula \texttt{f}, successivamente applica la negazione logica su \texttt{f} memorizzandola sulla variabile \texttt{not$\_$f}, ed infine asserisce che il metodo \texttt{isSatisfiable} applicato sulla clausificazione di \texttt{not$\_$f} restituisca \texttt{false}. Per fare questa asserzione viene utilizzato il metodo \texttt{assertFalse} di \emph{Junit}; se nel metodo \texttt{assertFalse} viene passato un parametro \texttt{true}, il test fallisce, altrimenti il test ha successo. Il test della classe \texttt{ResolutionTest} ha successo se e solo se tutti i suoi metodi di test hanno successo. Il codice \ref{method:testNonTaut1} mostra invece il metodo che testa la non validità della formula contenuta nel file \emph{non-taut1.txt} (si noti che in questo caso viene usato il metodo \texttt{assertTrue}).
+I metodi di test verificano che le formule valide contenute nei file \emph{txt}, siano effettivamente valide, e che le formule non valide siano effettivamente tali. Il codice \ref{method:testTaut1} mostra il metodo che testa la validità della formula presente nel file \emph{taut1.txt}. Il metodo legge il file \emph{taut1.txt} ed esegue il \emph{parsing} sul suo contenuto, in modo da ottenere la formula \texttt{f}, successivamente applica la negazione logica su \texttt{f} memorizzandola sulla variabile \texttt{not$\_$f}, ed infine asserisce che il metodo \texttt{isSatisfiable} applicato sulla clausificazione di \texttt{not$\_$f} restituisca \texttt{false}. Per fare questa asserzione viene utilizzato il metodo \texttt{assertFalse} di \emph{Junit}; se nel metodo \texttt{assertFalse} viene passato il parametro \texttt{true}, il test fallisce, altrimenti il metodo di test ha successo. Il test della classe \texttt{ResolutionTest} ha successo se e solo se tutti i suoi metodi di test hanno successo. Il codice \ref{method:testNonTaut1} mostra invece il metodo che testa la non validità della formula contenuta nel file \emph{non-taut1.txt} (si noti che in questo caso viene usato il metodo \texttt{assertTrue}).
 
 \begin{minipage}{\linewidth}
     % \small
     \begin{lstlisting}[caption={Metodo che testa la validità della formula nel file \emph{taut1.txt}}, label={method:testTaut1}]
-    @Test
-    public void testTaut1() {
-        String taut1 = readFile("taut1.txt");
-        if (taut1 == null) {
-            fail("The file doesn't exist");
-        }
-        Formula f = ParseFormula.parse(taut1);
-        if (f == null) {
-            fail("Parsing error of formula f");
-        }
-        Formula not_f = new CompoundFormula(NOT, f);
-        assertFalse(Resolution.isSatisfiable(not_f.toCnf()));
+@Test
+public void testTaut1() {
+    String taut1 = readFile("taut1.txt");
+    if (taut1 == null) {
+        fail("The file doesn't exist");
     }
+    Formula f = ParseFormula.parse(taut1);
+    if (f == null) {
+        fail("Parsing error of formula f");
+    }
+    Formula not_f = new CompoundFormula(NOT, f);
+    assertFalse(Resolution.isSatisfiable(not_f.toCnf()));
+}
     \end{lstlisting}
 \end{minipage}
 
@@ -1339,19 +1325,19 @@ I metodi di test verificano che le formule valide contenute nei file \emph{txt},
 \begin{minipage}{\linewidth}
     % \small
     \begin{lstlisting}[caption={Metodo che testa la non validità della formula nel file \emph{non-taut1.txt}}, label={method:testNonTaut1}]
-    @Test
-    public void testNonTaut1() {
-        String nt = readFile("non-taut1.txt");
-        if (nt == null) {
-            fail("The file doesn't exist");
-        }
-        Formula f = ParseFormula.parse(nt);
-        if (f == null) {
-            fail("Parsing error of formula f");
-        }
-        Formula not_f = new CompoundFormula(NOT, f);
-        assertTrue(Resolution.isSatisfiable(not_f.toCnf()));
+@Test
+public void testNonTaut1() {
+    String nt = readFile("non-taut1.txt");
+    if (nt == null) {
+        fail("The file doesn't exist");
     }
+    Formula f = ParseFormula.parse(nt);
+    if (f == null) {
+        fail("Parsing error of formula f");
+    }
+    Formula not_f = new CompoundFormula(NOT, f);
+    assertTrue(Resolution.isSatisfiable(not_f.toCnf()));
+}
     \end{lstlisting}
 \end{minipage}
 
@@ -1410,8 +1396,10 @@ In conclusione, il metodo di risoluzione rimane un potente strumento per l'anali
 
 
 %
-\bibitem{esempio}
-...
+\bibitem{ANTLR2013}
+Terence Parr,
+\textit{The Definitive ANTLR 4 Reference},
+Pragmatic Bookshelf, 2013.
 %
 % \bibitem{gotti91}
 % M. Gotti, I linguaggi specialistici, Firenze, La Nuova Italia, 1991.
