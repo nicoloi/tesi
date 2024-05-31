@@ -796,12 +796,15 @@ public static Formula parse(String formulaStr) {
 %			CAPITOLO 5
 \chapter{Logiche modali non-normali ed estensione del metodo di risoluzione}
 \label{modal}
-Questo capitolo si concentra sulle logiche modali e su come estendere il metodo di risoluzione per questo tipo di logiche. La prima parte del capitolo illustra le nozioni teoriche, la seconda parte riguarda l'implementazione in Java di quello che viene spiegato nella parte teorica. 
+Questo capitolo si concentra sulle logiche modali, in particolare su quelle non-normali, e su come estendere il metodo di risoluzione per questo tipo di logiche. La prima parte del capitolo illustra le nozioni teoriche, la seconda parte riguarda l'implementazione in Java di quello che viene spiegato nella parte teorica. 
+
+\begin{definition}
+    Una logica modale è un'estensione della logica classica che introduce connettivi modali per esprimere modalità come necessità e possibilità. Questi connettivi permettono di ragionare non solo sulle proposizioni, ma anche su ciò che è possibile o necessario in vari mondi possibili.
+\end{definition}
+Il connettivo modale che noi consideriamo è il \emph{box} ($\Box$); esso viene utilizzato nelle formule delle logiche modali, insieme agli altri connettivi della logica classica. Questo connettivo è fondamentale nella formalizzazione di concetti come la necessità, l'obbligatorietà, la conoscenza o la verità assoluta, a seconda del contesto in cui viene utilizzato.
 
 \section{Panoramica sulle logiche modali non-normali}
 Le logiche modali \emph{non-normali} (\emph{NNML}) sono una classe di sistemi logici che estendono la logica modale normale introducendo concetti e assiomi che non sono presenti nella forma più basilare della logica modale. Queste logiche \emph{non-normali} si discostano dalle proprietà della logica modale \emph{normale} minima, \textbf{K}, che soddisfa tutti gli assiomi basilari della logica modale. Queste logiche sono organizzate gerarchicamente in un ``cubo'' di sistemi logici, che comprende la logica modale \textbf{E} come la più semplice e altre logiche ottenute aggiungendo assiomi come \textbf{C}, \textbf{M} e \textbf{N}. Il metodo di risoluzione che vediamo in questo capitolo si concentra soltanto sulla logica modale non-normale minimale \textbf{E}.
-
-Le formule delle logiche modali (normali e non-normali) utilizzano, oltre ai connettivi della logica classica, il connettivo \emph{box} ($\Box$); Questo connettivo è fondamentale nella formalizzazione di concetti come la necessità, l'obbligatorietà, la conoscenza o la verità assoluta, a seconda del contesto in cui viene utilizzato.
 
 Gli assiomi della logica minimale \textbf{E} comprendono gli assiomi della logica classica e la regola di congruenza \textbf{RE}: da $\phi \tto \psi$ si inferisce $\Box \phi \tto \Box \psi$, dove $\phi$ e $\psi$ sono due formule.
 
@@ -819,7 +822,7 @@ dove $l_i$ è un letterale proposizionale o modale. Una clausola globale è vera
 
 \section{Clausificazione di formule modali}
 \label{modal_claus}
-Per poter effettuare la clausificazione di una formula $\phi$ è necessario utilizzare una funzione $\eta$. Essa è una funzione iniettiva di rinominazione, il cui scopo è quello di mappare una nuova variabile proposizionale ad ogni sottoformula di $\phi$; è importante che questa nuova variabile non sia presente in $\phi$. La funzione $\eta$ viene utilizzata all'interno di un'altra funzione, chiamata \textbf{R}, ossia la funzione di \emph{riduzione}. La clausificazione della formula $\phi$ viene fatta nel seguente modo:
+Per poter effettuare la clausificazione di una formula $\phi$ è necessario utilizzare la funzione $\eta$. Essa è una funzione iniettiva di rinominazione, il cui scopo è quello di mappare una nuova variabile proposizionale ad ogni sottoformula di $\phi$; è importante che questa nuova variabile non sia presente in $\phi$. La funzione $\eta$ viene utilizzata all'interno di un'altra funzione, chiamata \textbf{R}, ossia la funzione di \emph{riduzione}. La clausificazione della formula $\phi$ viene fatta nel seguente modo:
 \[ \{ \eta(\phi) \} \cup R(G(\eta(\phi) \tto \phi)) \]
 dove \textbf{R} è così definita (si consideri $t$ e $p$ come variabili proposizionali):
 \[
@@ -831,7 +834,7 @@ R(G(t \tto \psi \lor \psi')) &= \{ G(\lnot t \lor \eta(\psi) \lor \eta(\psi')), 
 R(G(t \tto \Box \psi)) &= \{ G(\lnot t \lor \Box \eta(\psi)), G(t \lor \lnot \Box \eta(\psi)) \} \cup R(G(\eta(\psi) \tto \psi))
 \end{aligned}
 \]
-Essa è una funzione ricorsiva, in cui il caso base è rappresentato da $R(G(t \tto p))$. La clausola $\{\eta(\phi)\}$ è una clausola locale che contiene soltanto la variabile proposizionale associata alla formula $\phi$, ossia $\eta(\phi)$. L'insieme di clausole che contiene solo questa clausola viene unito ad un altro insieme di clausole ottenuto ricorsivamente dalla funzione \textbf{R} applicata alla formula globale $G(\eta(\phi) \tto \phi)$. Si noti che questa funzione è definita solamente per formule $\phi$ che contengono i connettivi \emph{not}, \emph{or} e \emph{box}. Gli altri connettivi binari possono essere ottenuti utilizzando i connettivi \emph{or} e \emph{not}.
+Essa è una funzione ricorsiva, in cui il caso base è rappresentato da $R(G(t \tto p))$. La clausola $\{\eta(\phi)\}$ è una clausola locale che contiene soltanto la variabile proposizionale associata alla formula $\phi$, ossia $\eta(\phi)$. L'insieme di clausole che contiene solo questa clausola viene unito ad un altro insieme di clausole ottenuto ricorsivamente dalla funzione \textbf{R} applicata alla formula globale $G(\eta(\phi) \tto \phi)$. Si noti che questa funzione è definita solamente per formule $\phi$ che contengono i connettivi \emph{not}, \emph{or} e \emph{box}. Gli altri connettivi binari possono essere ricavati utilizzando i connettivi \emph{or} e \emph{not}.
 
 \subsection*{Esempio di clausificazione}
 Consideriamo la seguente formula $\phi$:
@@ -860,8 +863,6 @@ Prima di procedere con la clausificazione dobbiamo vedere quali sono le nuove va
     \caption{Funzione $\eta$ applicata su tutte le sottoformule $\psi$ di $\phi$}
     \label{tab:eta}
 \end{table}
-
-
 Di seguito viene mostrato l'elenco degli step per effettuare la clausificazione.
 \begin{enumerate}
     \item Si ottiene la clausola locale $\{\eta(\phi)\}$: \[ \{\$p_0\} \]
@@ -882,13 +883,13 @@ Di seguito viene mostrato l'elenco degli step per effettuare la clausificazione.
     \[G(\{\lnot \$p_4, b\})\]
     \[G(\{\$p_4, \lnot b\})\]
 \end{enumerate}
-Nella sezione \ref{clausification_impl}, che riguarda l'implementazione, vedremo che è possibile semplificare la clausificazione di una formula in modo da ottenere meno clausole rispetto a quelle che si otterrebbero applicando la clausificazione come sopra riportato.
+Nella sezione \ref{clausification_impl}, che riguarda l'implementazione della clausificazione, vedremo che è possibile semplificare la clausificazione di una formula in modo da ottenere meno clausole rispetto a quelle che si otterrebbero applicando la clausificazione come sopra riportato.
 
 \section{Metodo di Risoluzione per logiche modali non-normali}
-Il metodo di risoluzione per le logiche modali non-normali è un approccio sistematico per determinare la soddisfacibilità delle formule (espresse in forma clausale) di queste logiche. Esso rappresenta un'estensione del metodo di risoluzione per la logica classica, che considera l'utilizzo di clausole locali e globali, e l'applicazione di regole di risoluzione adattate alla logica da considerare ($RES_L$). Come nella logica classica, si considerano tutte le coppie di clausole e si cerca di trovare la contraddizione applicando le regole. Qui ci concentriamo solo sulle regole per la logica modale minimale \textbf{E}, ovvero $RES_E$.
+Il metodo di risoluzione per le logiche modali non-normali è un approccio sistematico per determinare la soddisfacibilità delle formule (espresse in forma clausale) di queste logiche. Esso rappresenta un'estensione del metodo di risoluzione per la logica classica, che considera l'utilizzo di clausole locali e globali, e l'applicazione di regole di risoluzione adattate ad una logica $L$ presa in esame ($RES_L$). Come nella logica classica, si considerano tutte le coppie di clausole e si cerca di trovare la contraddizione applicando le regole. Qui ci concentriamo solo sulle regole per la logica modale minimale \textbf{E}, ovvero $RES_E$.
 
 \subsection{Regole di risoluzione per la logica modale \emph{E}}
-Nelle regole $RES_E$ che vediamo ora, $C$ e $D$ sono clausole, $l$ sono letterali, e $p$ sono variabili proposizionali. Le regole $RES_E$ sono le seguenti:
+Nelle regole $RES_E$ che vediamo ora, $C$ e $D$ sono clausole, $l$ è un letterale, e $p$ è una variabile proposizionale. Le regole $RES_E$ sono le seguenti:
 
 % \[
 %     \AXC{$(D \lor l)$}
@@ -950,10 +951,9 @@ Di seguito viene riportata la descrizione di ogni regola:
         \item quando $G(C) = G(\lnot p)$ e $G(C') = G(\lnot p')$, in questo caso $p$ e $p'$ sono entrambi globalmente falsi, e quindi semanticamente equivalenti.
         \item quando $G(C) = G(p')$ e $G(C') = G(p)$, in questo caso $p$ e $p'$ sono entrambi globalmente veri, e quindi semanticamente equivalenti.
     \end{enumerate}
-    Ogni volta che si rientra in uno di questi casi, si considera l'approccio classico della regola di risoluzione, ovvero si genera la risolvente cancellando i letterali modali $\Box p$ e $\lnot \Box p'$ dalle prime due premesse, e facendo l'unione. In questo caso le prime due premesse e la risolvente sono clausole locali.
+    Ogni volta che si rientra in uno di questi casi, si considera l'approccio classico della regola di risoluzione, ovvero si genera la risolvente cancellando i letterali modali $\Box p$ e $\lnot \Box p'$ dalle prime due premesse, e facendo l'unione. In questo caso le prime due premesse e la risolvente sono clausole locali (mentre le ultime due premesse devono essere sempre globali).
     \item \textbf{GERES}: Come \emph{LERES}, ma le prime due premesse e la risolvente sono clausole globali.
 \end{itemize}
-Nella sezione \ref{impl_res_modal} vedremo un esempio di applicazione di queste regole.
 
 \section*{Implementazione in Java}
 Ora vediamo la seconda parte di questo capitolo, che si concentra sull'implementare in Java i concetti che abbiamo visto finora nel capitolo. La struttura del progetto Java è simile a quella del progetto per la logica classica (si veda sezione \ref{project_structure}), e anche alcune classi sono simili a quelle della logica classica.
@@ -968,7 +968,7 @@ Per quanto riguarda le clausole, è presente la classe astratta \texttt{Clause}.
 La classe \texttt{Clause} viene estesa dalle due classi \texttt{LocalClause} e \texttt{GlobalClause}, che rappresentano rispettivamente le clausole locali e globali. Queste due classi forniscono un'implementazione del metodo \texttt{union}, infatti una clausola di un tipo (locale o globale) può essere unita soltanto con un'altra clausola dello stesso tipo. Inoltre le due classi sovrascrivono i metodi \texttt{equals} e \texttt{toString} (nella rappresentazione testuale delle clausole globali viene usato ``G($\cdot$)'').
 
 \subsection*{La classe \texttt{ClauseSet}}
-La classe \texttt{ClauseSet} rappresenta la forma clausale di una formula, espressa come insieme di clausole. Questa classe è la medesima utilizzata nella logica classica (si veda sezione \ref{ClauseSet}). La differenza sostanziale è che le clausole all'interno di un'istanza di \texttt{ClauseSet} possono essere indistintamente locali o globali, e i letterali contenuti in ciascuna clausola possono essere indistintamente proposizionali o modali.
+La classe \texttt{ClauseSet} rappresenta la forma clausale di una formula, espressa come insieme di clausole. Questa classe è la medesima utilizzata nella logica classica (si veda sezione \ref{ClauseSet}). La differenza sostanziale è che le clausole all'interno di un'istanza di \texttt{ClauseSet} possono essere indistintamente locali o globali, e i letterali contenuti in ciascuna clausola possono essere parimenti proposizionali o modali.
 
 
 \section{implementazione delle formule modali}
@@ -987,10 +987,10 @@ La classe \texttt{CompoundFormula} permette di eseguire la clausificazione trami
 Vediamo ora una descrizione dei metodi usati per la clausificazione.
 
 \subsubsection{Il metodo \texttt{toClauseSet}}
-Questo metodo è il primo ad essere richiamato per la clausificazione, ed è l'unico ad essere pubblico. Esso controlla se la formula \texttt{this} da clausificare è classica, in tal caso richiama il metodo \texttt{classicClausification}. Se invece non è classica, procede con la parte iniziale della clausificazione con $\eta$: crea una nuova istanza del campo statico \texttt{Eta} (della \emph{superclasse} \texttt{Formula}), e crea un nuovo \texttt{ClauseSet} vuoto nel quale aggiunge la clausola locale $\{\eta(this)\}$, ed infine restituisce l'unione con il \texttt{ClauseSet} ottenuto da $R(G(\eta(this) \tto this))$. Il codice \ref{toClauseSet} mostra questo metodo.
+Questo metodo è il primo ad essere richiamato per la clausificazione, ed è l'unico dei tre ad essere pubblico. Esso controlla se la formula \texttt{this} da clausificare è classica, in tal caso richiama il metodo \texttt{classicClausification}. Se invece non è classica, procede con la parte iniziale della clausificazione con $\eta$: crea una nuova istanza del campo statico \texttt{Eta} (della \emph{superclasse} \texttt{Formula}), e crea un nuovo \texttt{ClauseSet} vuoto nel quale aggiunge la clausola locale $\{\eta(this)\}$, ed infine restituisce l'unione con il \texttt{ClauseSet} ottenuto da $R(G(\eta(this) \tto this))$. Il codice \ref{toClauseSet} mostra questo metodo.
 
 \subsubsection{Il metodo \texttt{R}}
-Il metodo \texttt{R} prende in input l'oggetto \texttt{PropAtom t} corrispondente alla rinominazione della formula sulla quale viene richiamato il metodo, ad esempio: scrivere \texttt{this.R(t)} equivale ad applicare $R(G(t \tto this))$, dove $t = \eta(this)$. Il metodo applica la funzione \textbf{R} in maniera ricorsiva come abbiamo visto, tenendo conto anche dei casi di doppia negazione (questo capita quando si calcola $R(G(t \tto \lnot \lnot \psi))$) con $p$ atomica, ed evita di calcolare $R(G(p \tto p))$ fermandosi alla chiamata ricorsiva precedente. Inoltre considera come caso base il calcolo di $R(G(t \tto F))$ dove $F$ è una formula della logica classica (richiamando in questo caso il metodo \texttt{classicClausification} su $t \tto F$). Siccome questo metodo è lungo, il codice \ref{R} riporta soltanto il caso in cui viene calcolato $R(G(t \tto \lnot \psi))$; in questo codice la variabile \texttt{psi} è il figlio sinistro della formula \texttt{this} (si noti che \texttt{this} è $\lnot \psi$), la variabile \texttt{etaPsi} è il valore $\eta(psi)$ ed infine la variabile \texttt{res} è un \texttt{ClauseSet} inizialmente vuoto.
+Il metodo \texttt{R} prende in input l'oggetto \texttt{PropAtom t} corrispondente alla rinominazione della formula sulla quale viene richiamato il metodo, ad esempio: scrivere \texttt{this.R(t)} equivale ad applicare $R(G(t \tto this))$, dove $t = \eta(this)$. Il metodo applica la funzione \textbf{R} in maniera ricorsiva come abbiamo visto, tenendo conto anche dei casi di doppia negazione (questo capita quando si calcola $R(G(t \tto \lnot \lnot \psi))$), ed evita di calcolare $R(G(p \tto p))$ (dove $p$ è atomica) fermandosi alla chiamata ricorsiva precedente. Inoltre considera come caso base il calcolo di $R(G(t \tto F))$ dove $F$ è una formula della logica classica (richiamando in questo caso il metodo \texttt{classicClausification} su $t \tto F$). Siccome questo metodo è lungo, il codice \ref{R} riporta soltanto il caso in cui viene calcolato $R(G(t \tto \lnot \psi))$; in questo codice la variabile \texttt{psi} è il figlio sinistro della formula \texttt{this} (si noti che \texttt{this} è $\lnot \psi$), la variabile \texttt{etaPsi} è il valore $\eta(\texttt{psi})$ ed infine la variabile \texttt{res} è un \texttt{ClauseSet} inizialmente vuoto.
 
 \subsubsection{Il metodo \texttt{classicClausification}}
 \label{classicClausification}
@@ -1075,27 +1075,33 @@ L'implementazione del metodo di risoluzione viene svolta, come nel caso della lo
     \item \texttt{LERES}
     \item \texttt{GERES}
 \end{itemize}
+\subsection*{Il metodo \texttt{isSatisfiable}}
 Il metodo \texttt{isSatisfiable} è il metodo principale che implementa l'algoritmo di risoluzione ed è l'unico ad essere pubblico. Questo metodo prende in input un oggetto \texttt{ClauseSet s} e restituisce \texttt{true} se \texttt{s} è soddisfacibile, \texttt{false} altrimenti. Inizialmente, Dopo aver controllato che \texttt{s} non sia \texttt{null} e non sia vuoto, elimina tutte le eventuali clausole tautologiche e crea la lista di clausole \texttt{listCl} dove aggiunge tutte le clausole rimaste in \texttt{s}. Lo svolgimento del metodo \texttt{isSatisfiable} può essere diviso in tre parti:
 
 \begin{enumerate}
     \item \textbf{Applicazione della regola G2L}: ad ogni clausola globale contenuta in \texttt{listCl} viene applicata la regola \emph{G2L} (tramite il metodo \texttt{G2L}), e le nuove clausole ottenute vengono aggiunte a \texttt{listCl}.
     
-    \item \textbf{Applicazione delle regole LRES e GRES}: vengono eseguiti due cicli \emph{for} innestati sulla lista \texttt{listCl} in modo da applicare (dove possibile) la regola \emph{LRES} su tutte le coppie di clausole locali, e la regola \emph{GRES} su tutte le coppie di clausole globali (tramite i metodi \texttt{LRES} e \texttt{GRES}). Per verificare il tipo di clausola si utilizza l'operatore \texttt{instanceof}, per ottenere il letterale $l$ (oppure $\lnot l$), si usa il metodo \texttt{getComplementaryLiteral}, il cui funzionamento è il medesimo dell'omonimo metodo spiegato nella sezione \ref{getComplementaryLiteral}. Ogni volta che vengono eseguite le regole \emph{LRES} e \emph{GRES} viene restituito \texttt{false} se la risolvente è vuota, altrimenti la risolvente viene aggiunta a \texttt{listCl} se e solo se essa non è tautologica oppure non è già presente nella lista.
+    \item \textbf{Applicazione delle regole LRES e GRES}: vengono eseguiti due cicli \emph{for} innestati sulla lista \texttt{listCl} in modo da applicare (dove possibile) la regola \emph{LRES} su tutte le coppie di clausole locali, e la regola \emph{GRES} su tutte le coppie di clausole globali (tramite i metodi \texttt{LRES} e \texttt{GRES}). Per verificare il tipo di clausola si utilizza l'operatore \texttt{instanceof}, per ottenere il letterale $l$ (oppure $\lnot l$), si usa il metodo \texttt{getComplementaryLiteral}, il cui funzionamento è il medesimo dell'omonimo metodo spiegato nella sezione \ref{getComplementaryLiteral}. Ogni volta che vengono eseguite le regole \emph{LRES} e \emph{GRES} viene fatto un controllo sulla risolvente: se è vuota, il metodo restituisce \texttt{false}, altrimenti la risolvente viene aggiunta a \texttt{listCl} (se e solo se non è tautologica oppure non è già presente nella lista) e il metodo continua la sua esecuzione.
     
-    \item \textbf{Applicazione delle regole LERES e GERES}: viene eseguito un altro paio di \emph{for} innestati sulla lista \texttt{listCl}, questa volta cercando di applicare (dove possibile) la regola \emph{LERES} su tutte le coppie di clausole locali, e la regola \emph{GERES} su tutte le coppie di clausole globali; infine esegue sulla risolvente le stesse operazioni del caso precedente ogni volta che viene applicata una delle due regole. Per poter ottenere i letterali modali $\Box p$ e $\lnot \Box p'$ necessari per attuare le regole \emph{LERES} e \emph{GERES}, si utilizza il metodo \texttt{getModalLiterals}.
+    \item \textbf{Applicazione delle regole LERES e GERES}: viene eseguito un altro paio di \emph{for} innestati sulla lista \texttt{listCl}, questa volta cercando di applicare (dove possibile) la regola \emph{LERES} su tutte le coppie di clausole locali, e la regola \emph{GERES} su tutte le coppie di clausole globali; infine esegue sulla risolvente le stesse operazioni del caso precedente ogni volta che viene applicata una delle due regole. Per poter ottenere i letterali modali $\Box p$ e $\lnot \Box p'$ necessari per attuare le regole \emph{LERES} e \emph{GERES}, si utilizza il metodo \texttt{getModalLiterals}. Il codice \ref{method:isSatisfiable} mostra la parte del metodo \texttt{isSatisfiable} dove sono presenti i due cicli \texttt{for} innestati per effettuare le regole \emph{LERES} e \emph{GERES}.
 \end{enumerate}
 
 \subsubsection{Il metodo \texttt{getModalLiterals}}
 Questo metodo verifica se è possibile applicare le regole \emph{LERES} e \emph{GERES} all'interno del metodo \texttt{isSatisfiable}, ed in caso affermativo restituisce i due letterali modali $\Box p$ e $\lnot \Box p'$. Esso prende in input due clausole, una lista di clausole (nel nostro caso \texttt{listCl}) e restituisce un array di letterali (\texttt{Literal[]}). Il metodo controlla se in una delle due clausole in input sia presente un letterale modale positivo (\texttt{ModalAtom}), ed un letterale modale negativo (\texttt{NegModalAtom}); se ciò dovesse capitare, allora ispeziona la lista di clausole fornita in input (\texttt{listCl}) con lo scopo di ricercare le clausole $G(C)$ e $G(C')$, ovvero le ultime due premesse delle regole \emph{LERES} e \emph{GERES}. Se vengono trovate, allora il metodo \texttt{getModalLiterals} restituisce l'array contenente i due letterali modali, in caso contrario restituisce un array vuoto.
 
 \subsection{Implementazione delle regole di risoluzione}
-Le regole di risoluzione vengono implementate mediante gli omonimi metodi presenti nella classe Resolution.
+Le regole di risoluzione vengono implementate mediante gli omonimi metodi presenti nella classe \texttt{Resolution}.
 
 \subsubsection{Il metodo \texttt{G2L}}
 Il metodo \texttt{G2L} prende in input una clausola globale \texttt{gc}, e restituisce la corrispondente locale. Per farlo, istanzia una clausola locale vuota, e la riempie aggiungendo tutti i letterali presenti in \texttt{gc}.
 
 \subsubsection{I metodi \texttt{LRES} e \texttt{GRES}}
 Questi metodi sono implementati nello stesso modo del metodo \texttt{resolRule} della logica classica, con la differenza che nel caso di \texttt{LRES}, le due clausole in input (le clausole di premessa) e la clausola restituita (risolvente) sono locali, e nel caso di \texttt{GRES} le clausole in input e la clausola restituita sono globali. il codice \ref{method:LRES} mostra l'implementazione del metodo \texttt{LRES}.
+
+\subsubsection{I metodi \texttt{LERES} e \texttt{GERES}}
+Il metodo \texttt{LERES} prende in input due clausole locali e due letterali, e restituisce una clausola locale. Il metodo effettua l'unione delle due clausole, cancella i due letterali dal risultato, ed infine lo restituisce. Il metodo \texttt{GERES} effettua le stesse operazioni, ma le due clausole in input e la clausola restituita sono globali. il codice \ref{method:LERES} mostra l'implementazione del metodo \texttt{LERES}. Si noti che il metodo non controlla se i due letterali in input siano modali, questo perché ci si assicura che il metodo \texttt{isSatisfiable} richiami questo metodo con gli input corretti; inoltre, le due clausole $G(C)$ e $G(C')$ non vengono considerate, perché il metodo viene richiamato soltanto nel caso in cui \texttt{getModalLiterals} non restituisce un array vuoto.
+
+\vspace{20pt}
 
 \begin{minipage}{\linewidth}
     \small
@@ -1108,9 +1114,6 @@ private static LocalClause LRES(LocalClause lc1, LocalClause lc2, Literal lit) {
 }
     \end{lstlisting}
 \end{minipage}
-
-\subsubsection{I metodi \texttt{LERES} e \texttt{GERES}}
-Il metodo \texttt{LERES} prende in input due clausole locali e due letterali, e restituisce una clausola locale. Il metodo effettua l'unione delle due clausole, cancella i due letterali dal risultato, ed infine lo restituisce. Il metodo \texttt{GERES} effettua le stesse operazioni, ma le due clausole in input e la clausola restituita sono globali. il codice \ref{method:LERES} mostra l'implementazione del metodo \texttt{LERES}. Si noti che il metodo non controlla se i due letterali in input siano modali, questo perché ci si assicura che il metodo \texttt{isSatisfiable} richiami questo metodo con gli input corretti; inoltre, le due clausole $G(C)$ e $G(C')$ non vengono considerate, perché il metodo viene richiamato soltanto nel caso in cui \texttt{getModalLiterals} non restituisce un array vuoto.
 
 \begin{minipage}{\linewidth}
     \small
