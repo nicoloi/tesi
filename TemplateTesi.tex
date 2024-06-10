@@ -94,21 +94,24 @@ Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul m
 \chapter{Introduzione}
 \label{intro}
 
-Iniziamo presentando una breve introduzione della logica proposizionale, che espone i concetti utili a capire il funzionamento del metodo di risoluzione, trattato nel capitolo~\ref{resol}. L'introduzione delle logiche modali sarà illustrata nel capitolo~\ref{modal}.
+Iniziamo presentando una breve introduzione alla logica proposizionale, che espone i concetti utili a comprendere il funzionamento del metodo di risoluzione, trattato nel capitolo~\ref{resol}. L'introduzione alle logiche modali sarà illustrata nel capitolo~\ref{modal}.
+
 \section{Logica proposizionale}
-La logica proposizionale è un sistema formale per la rappresentazione e l'analisi del ragionamento, essa si basa su proposizioni; la sua sintassi comprende l'utilizzo di formule. Una formula è un'espressione sintattica che rappresenta una proposizione, esse sono costruite utilizzando gli operatori (o connettivi) logici e variabili proposizionali, e sono utilizzate per rappresentare relazioni, proprietà e regole all'interno di un sistema formale.
+La logica proposizionale è un sistema formale per la rappresentazione e l'analisi del ragionamento. Essa si basa su proposizioni e la sua sintassi comprende l'utilizzo di formule. Una formula è un'espressione sintattica che rappresenta una proposizione. Le formule sono costruite utilizzando gli operatori (o connettivi) logici e le variabili proposizionali, e sono utilizzate per rappresentare relazioni, proprietà e regole all'interno di un sistema formale.
+
 La semantica della logica proposizionale stabilisce come valutare le formule, associando loro valori di verità in base a interpretazioni che specificano lo stato di verità di ogni proposizione atomica. Le formule possono essere \emph{atomiche} o \emph{composte}.
 
 \subsection{Formule atomiche}
-Le formule atomiche rappresentano il caso più semplice di formula, nelle quali non vengono usati i connettivi logici. Una formula atomica è una variabile proposizionale, che può essere identificata tramite una lettera dell'alfabeto, ad esempio ``$p$''; essa viene valutata come vera (\emph{true}) o falsa (\emph{false}) in base all'interpretazione considerata. 
+Le formule atomiche rappresentano il caso più semplice di formula, in cui non vengono usati i connettivi logici. Una formula atomica è una variabile proposizionale, che può essere identificata tramite una lettera dell'alfabeto, ad esempio ``$p$''; essa viene valutata come vera (\emph{true}) o falsa (\emph{false}) in base all'interpretazione considerata.
 
 \begin{definition}
-    Sia $P$ un insieme di variabili proposizionali. Una \textbf{interpretazione} (o assegnamento) $I$ per $P$ è una funzione:
+    Sia $P$ un insieme di variabili proposizionali. Un'\textbf{interpretazione} (o assegnamento) $I$ per $P$ è una funzione:
     \[
         I: \quad P \to \{true, false\}
     \]
-    che assegna un valore di verità ad ogni variabile proposizionale appartenente a $P$.
+    che assegna un valore di verità a ogni variabile proposizionale appartenente a $P$.
 \end{definition}
+
 \emph{Esempio}: La variabile $p$ può rappresentare la proposizione ``\emph{piove}'', ed essere interpretata come vera se effettivamente piove, o falsa in caso contrario.
 
 \subsection{Formule composte}
@@ -122,19 +125,19 @@ Le formule composte sono ottenute mediante i connettivi logici a partire dalle f
 \end{itemize}
 
 \subsection*{Definizione formale di formula}
-Ora possiamo dare una definizione più formale di \emph{formula}.
+Ora abbiamo tutto l'occorrente per dare una definizione più formale di \emph{formula}, e della sua interpretazione.
 \begin{definition}
     Sia $P$ un insieme di variabili proposizionali. L'insieme delle formule ottenute da $P$ è definito induttivamente:
     \begin{itemize}
         \item ogni variabile proposizionale in $P$ è una formula.
         \item se $A$ è una formula, allora anche $\lnot A$ è una formula.
-        \item se $A$ e $B$ sono formule, allora anche $(A \land B), (A \lor B), (A \to B), (A \tto B)$ sono formule.
+        \item se $A$ e $B$ sono formule, allora anche $(A \land B)$, $(A \lor B)$, $(A \to B)$, $(A \tto B)$ sono formule.
         \item nient'altro è una formula.
-    \end{itemize} 
+    \end{itemize}
 \end{definition}
 \emph{Esempio}: Consideriamo la seguente formula: 
-\[ \lnot p \land q\] 
-essa è ottenuta a partire dalla formula atomica $p$ che viene negata tramite la negazione logica ($\lnot$), e successivamente messa in congiunzione logica ($\land$) con l'atomica $q$. 
+\[ \lnot p \land q \] 
+essa è una formula composta ottenuta a partire dall'atomica $p$ che viene negata tramite la negazione logica ($\lnot$), e successivamente messa in congiunzione logica ($\land$) con l'atomica $q$.
 
 Nelle formule più complesse, si usano le parentesi tonde per evitare ambiguità tra i connettivi.
 
@@ -142,48 +145,52 @@ Nelle formule più complesse, si usano le parentesi tonde per evitare ambiguità
 L'interpretazione di una formula dipende dall'interpretazione delle variabili proposizionali nell'insieme $P$ che occorrono in essa. Una volta fissata un'interpretazione $I$ per $P$, risulta comunque stabilita l'interpretazione di qualsiasi formula in base al significato delle lettere proposizionali che occorrono in essa e al significato dei connettivi logici. La funzione di interpretazione $I$ che abbiamo visto per le variabili proposizionali si può estendere alle formule.
 
 \begin{definition}
-    Sia $L$ un insieme di formule. Una \textbf{interpretazione} $I$ per $L$ è una funzione:
+    Sia $L$ un insieme di formule. Un'\textbf{interpretazione} $I$ per $L$ è una funzione:
     \[
         I: \quad L \to \{true, false\}
     \]
-    tale che per ogni coppia di formule $A, B \in L$ valgono le seguenti condizioni:
+    tale che, per ogni coppia di formule $A, B \in L$ valgono le seguenti condizioni:
     \begin{itemize}
-        \item $I(\lnot A) = true$ se $I(A) = false$
-        \item $I(\lnot A) = false$ se $I(A) = true$
-        \item $I(A \land B) = true$ se e solo se $I(A) = true$ \textbf{e} $I(B) = true$
-        \item $I(A \lor B) = true$ se e solo se $I(A) = true$ \textbf{oppure} $I(B) = true$
-        \item $I(A \to B) = true$ se e solo se $I(A) = false$ \textbf{oppure} $I(B) = true$
-        \item $I(A \tto B) = true$ se e solo se $I(A) = true$ \textbf{e} $I(B) = true$, \textbf{oppure} $I(A) = false$ \textbf{e} $I(B) = false$
+        \item $I(\lnot A) = true$, se $I(A) = false$
+        \item $I(\lnot A) = false$, se $I(A) = true$
+        \item $I(A \land B) = true$, se e solo se $I(A) = true$ \textbf{e} $I(B) = true$
+        \item $I(A \lor B) = true$, se e solo se $I(A) = true$ \textbf{oppure} $I(B) = true$
+        \item $I(A \to B) = true$, se e solo se $I(A) = false$ \textbf{oppure} $I(B) = true$
+        \item $I(A \tto B) = true$, se e solo se $I(A) = true$ \textbf{e} $I(B) = true$, \textbf{oppure} $I(A) = false$ \textbf{e} $I(B) = false$
     \end{itemize}
 \end{definition}
 Questa definizione stabilisce il significato dei connettivi logici.
 
 \subsection{Soddisfacibilità di una formula}
 \begin{definition}
-    Una formula $F$ si dice \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che la soddisfa, ossia esiste almeno un assegnamento di valori di verità alle atomiche che rende vera $F$. Se tutte le interpretazioni possibili la rendono falsa, allora $F$ si dice \textbf{insoddisfacibile}.
+    Una formula $F$ si dice \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che la soddisfa, ossia esiste almeno un'interpretazione $I$ tale che $I(F) = \text{true}$. Se non esiste alcuna interpretazione del genere, allora $F$ si dice \textbf{insoddisfacibile}.
 \end{definition}
-Ad esempio, la formula $p \, \land \, q$ è soddisfacibile, perché l'interpretazione $I$ che assegna i valori $I(p) = true$ e $I(q) = true$ la soddisfa.
+\emph{Esempio}: la formula $p \land q$ è soddisfacibile, perché l'interpretazione $I$ che assegna i valori $I(p) = true$ e $I(q) = true$ la soddisfa.
 
 \subsection{Tautologie e contraddizioni}
 \label{taut-contr}
 \begin{definition}
     Una formula $F$ è una \textbf{tautologia} se e solo se ogni interpretazione di $F$ la soddisfa.
 \end{definition}
-Quindi una tautologia è una formula sempre vera, che come vedremo, può essere ridondante in alcuni casi. Ad esempio, la formula $p \, \lor \, \lnot p$ è il caso più semplice di tautologia.
+Quindi una tautologia è una formula sempre vera, che come vedremo, può essere ridondante in alcuni casi.
+
+\emph{Esempio}: la formula $p \lor \lnot p$ è il caso più semplice di tautologia, perché qualunque sia l'interpretazione che diamo a $p$, la formula risulta essere sempre vera.
 
 \begin{definition}
     Una formula è una \textbf{contraddizione} se e solo se è insoddisfacibile.
 \end{definition}
-Dunque, una contraddizione è una formula in cui tutte le sue interpretazioni la rendono falsa. Ad esempio, la formula $p \, \land \, \lnot p$ è una contraddizione. \`E bene notare che se si applica la negazione logica ad una contraddizione si ottiene una tautologia, e viceversa.
+Dunque, una contraddizione è una formula nella quale tutte le sue interpretazioni la rendono falsa. \`E bene notare che se si applica la negazione logica a una contraddizione si ottiene una tautologia, e viceversa.
 
-Per ulteriori approfondimenti alla logica proposizionale si consulti \cite{logica_prop}.
+\emph{Esempio}: la formula $p \land \lnot p$ è una contraddizione, perché non è possibile renderla vera.
+
+Per ulteriori approfondimenti sulla logica proposizionale si consulti \cite{logica_prop}.
 
 % 
 % 
 %			CAPITOLO 2
 \chapter{Il metodo di risoluzione per la logica classica}
 \label{resol}
-Il metodo di risoluzione è un sistema di calcolo logico per inferire la soddisfacibilità di una formula, esso ha avuto un impatto significativo in vari settori della matematica, dell'informatica e dell'ingegneria. È stato utilizzato per dimostrare teoremi importanti, risolvere problemi pratici e sviluppare algoritmi per l'intelligenza artificiale, la verifica formale e la progettazione dei circuiti. ulteriori approfondimenti del metodo di risoluzione sono presenti in \cite{res_calculus}.
+Il metodo di risoluzione è un sistema di calcolo logico per inferire la soddisfacibilità di una formula, esso ha avuto un impatto significativo in vari settori della matematica, dell'informatica e dell'ingegneria. È stato utilizzato per dimostrare teoremi importanti, risolvere problemi pratici e sviluppare algoritmi per l'intelligenza artificiale, la verifica formale e la progettazione dei circuiti~\cite{res_calculus}.
 
 Questo metodo consiste nell'applicare (una o più volte) una sola regola: la regola di risoluzione. Il difetto è che essa opera soltanto su formule espresse in \textbf{Forma normale congiuntiva (CNF)}. Prima di vedere il metodo di risoluzione è bene capire in che cosa consiste la \emph{CNF}.
 
@@ -298,7 +305,7 @@ in questo caso la contraddizione si ricava applicando due volte \emph{Res}:
     \DP
     \]
 \end{itemize}
-nello Step 2, la regola \emph{Res} ha trovato la clausola vuota, questo dimostra che $S$ è \textbf{insoddisfacibile}. Si noti che la clausola $C_1$ dello Step 2 è la risolvente $R$ dello Step 1.
+nello Step 2, la regola \emph{Res} ha trovato la clausola vuota, questo dimostra che $S$ è \textbf{insoddisfacibile}. Si noti che la clausola $C_1$ dello Step 2 è la risolvente $R$ dello Step~1.
 
 \subsubsection{Esempio su un insieme di clausole soddisfacibile}
 Consideriamo ora il seguente insieme di clausole $S'$:
@@ -318,8 +325,9 @@ stavolta il metodo non riesce più ad andare avanti, perché \emph{Res} non è p
 %			CAPITOLO 3
 \chapter{Implementazione in Java del metodo di risoluzione}
 \label{impl}
+Questo capitolo si concentra sull'implementazione del metodo di risoluzione per la logica classica in linguaggio Java~\cite{Java}. Sfruttando la programmazione orientata agli oggetti del linguaggio Java, esploreremo come tradurre i concetti teorici esaminati nei capitoli precedenti in codice eseguibile, analizzando le classi, i metodi e le strutture dati necessari per realizzare efficacemente il metodo di risoluzione. Per approfondimenti sulla programmazione orientata agli oggetti si consulti \cite{Liskov}.
 
-Questo capitolo si concentra sull'implementazione del metodo di risoluzione per la logica classica in linguaggio Java (\cite{Java}). Esploreremo come tradurre i concetti teorici esaminati nei capitoli precedenti in codice eseguibile, analizzando le classi, i metodi e le strutture dati necessari per realizzare efficacemente il metodo di risoluzione. Partiremo con una panoramica generale dell'architettura del progetto Java, identificando le principali classi per rappresentare le strutture dati necessarie per il metodo di risoluzione. Successivamente, affronteremo la classe che implementa l'algoritmo di risoluzione. Nel capitolo \ref{formulas} vedremo l'implementazione delle formule della logica proposizionale e la loro conversione in \emph{CNF}.
+Partiremo con una panoramica generale dell'architettura del progetto Java, identificando le principali classi per rappresentare le strutture dati necessarie per il metodo di risoluzione. Successivamente, affronteremo la classe che implementa l'algoritmo di risoluzione. Nel capitolo \ref{formulas} vedremo l'implementazione delle formule della logica proposizionale e la loro conversione in \emph{CNF}.
 
 \section{Struttura del progetto Java}
 \label{project_structure}
@@ -735,7 +743,7 @@ Se volessimo utilizzare un programma che legge da un flusso di input una formula
 
 
 \subsection{Utilizzo del parser ANTLR4}
-Il parser utilizzato nel nostro sistema è \emph{ANTLR4}~(\cite{Parr13}). Nella struttura del progetto presente nella sezione \ref{project_structure}, nel package \emph{antlr4} è presente il file \emph{FormulaExpression.g4} che contiene la grammatica. Inoltre, sono presenti quattro file che sono stati generati automaticamente da \emph{ANTLR4} a partire dalla grammatica:
+Il parser utilizzato nel nostro sistema è \emph{ANTLR4}~\cite{antlr4, Parr13}. Nella struttura del progetto presente nella sezione \ref{project_structure}, nel package \emph{antlr4} è presente il file \emph{FormulaExpression.g4} che contiene la grammatica. Inoltre, sono presenti quattro file che sono stati generati automaticamente da \emph{ANTLR4} a partire dalla grammatica:
 \begin{itemize}
     \item \textbf{FormulaExpressionLexer.java}:
     esso consiste nel lexer, ovvero l'analizzatore lessicale; il suo scopo è quello di analizzare la stringa in input ed ottenere da esso un flusso di \emph{token}. In questo caso i token sono i connettivi, le variabili atomiche, e i caratteri di \emph{white space}.
@@ -834,12 +842,14 @@ public static Formula parse(String formulaStr) {
 %			CAPITOLO 5
 \chapter{Logiche modali non-normali ed estensione del metodo di risoluzione}
 \label{modal}
-Questo capitolo si concentra sulle logiche modali, in particolare su quelle non-normali presentate nell'articolo \cite{Articolo_resolution}; mostreremo l'implementazione di una di queste logiche ottenuta estendendo il metodo di risoluzione della logica classica. La prima parte del capitolo illustra le nozioni teoriche, la seconda parte riguarda l'implementazione in Java di quello che viene spiegato nella parte teorica. 
+Questo capitolo si concentra sulle logiche modali, in particolare sulle logiche non-normali presentate nell'articolo \cite{Articolo_resolution}; principalmente, mostreremo l'implementazione di una di queste logiche ottenuta estendendo il metodo di risoluzione della logica classica. La prima parte del capitolo illustra le nozioni teoriche, la seconda parte riguarda l'implementazione in Java di ciò che viene spiegato nella parte teorica. 
 
 \begin{definition}
     Una logica modale è un'estensione della logica classica che introduce connettivi modali per esprimere modalità come necessità e possibilità. Questi connettivi permettono di ragionare non solo sulle proposizioni, ma anche su ciò che è possibile o necessario in vari mondi possibili.
 \end{definition}
 Il connettivo modale che noi consideriamo è il \emph{box} ($\Box$); esso viene utilizzato nelle formule delle logiche modali, insieme agli altri connettivi della logica classica. Questo connettivo è fondamentale nella formalizzazione di concetti come la necessità, l'obbligatorietà, la conoscenza o la verità assoluta, a seconda del contesto in cui viene utilizzato.
+
+L'interpretazione delle formule in questo tipo di logiche è più complicata rispetto a quella nella logica classica che abbiamo visto nel capitolo \ref{intro}; per approfondire questo aspetto si consulti \cite{Articolo_resolution}.
 
 \section{Panoramica sulle logiche modali non-normali}
 Le logiche modali \emph{non-normali} (\emph{NNML}) sono una classe di sistemi logici che estendono la logica modale normale introducendo concetti e assiomi che non sono presenti nella forma più basilare della logica modale. Queste logiche \emph{non-normali} si discostano dalle proprietà della logica modale \emph{normale} minima, \textbf{K}, che soddisfa tutti gli assiomi basilari della logica modale. Queste logiche sono organizzate gerarchicamente in un ``cubo'' di sistemi logici, che comprende la logica modale \textbf{E} come la più semplice e altre logiche ottenute aggiungendo assiomi come \textbf{C}, \textbf{M} e \textbf{N}. Il metodo di risoluzione che vediamo in questo capitolo si concentra soltanto sulla logica modale non-normale minimale \textbf{E}.
@@ -1335,7 +1345,7 @@ public static void main(String[] args) {
 %			CAPITOLO 7
 \chapter{Testing}
 \label{testing}
-Per effettuare Il testing del metodo di risoluzione, è stato utilizzato il framework \emph{Junit} (\cite{junit5}), che consente di implementare test unitari in Java. Nella struttura del progetto presente nella sezione \ref{project_structure}, si trova il package \emph{test} che contiene la classe \texttt{ResolutionTest} e vari file di testo (\emph{txt}) che contengono formule, una per ogni file. I file di testo nel package \emph{test} si dividono in formule valide (\emph{taut}) e in formule non valide (\emph{non-taut}); ad esempio il file \emph{taut1.txt} contiene una formula valida, ed il file \emph{non-taut1.txt} contiene invece una formula non valida.
+Per effettuare Il testing del metodo di risoluzione, è stato utilizzato il framework \emph{Junit} \cite{junit5}, che consente di implementare test unitari in Java. Nella struttura del progetto presente nella sezione \ref{project_structure}, si trova il package \emph{test} che contiene la classe \texttt{ResolutionTest} e vari file di testo (\emph{txt}) che contengono formule, una per ogni file. I file di testo nel package \emph{test} si dividono in formule valide (\emph{taut}) e in formule non valide (\emph{non-taut}); ad esempio il file \emph{taut1.txt} contiene una formula valida, ed il file \emph{non-taut1.txt} contiene invece una formula non valida.
 
 \section{La classe \texttt{ResolutionTest}}
 La classe \texttt{ResolutionTest} contiene i metodi di test, ed il metodo \texttt{readFile}.
@@ -1413,20 +1423,12 @@ Il lavoro svolto in questo elaborato apre diverse direzioni per future ricerche:
 In conclusione, il metodo di risoluzione rimane un potente strumento per l'analisi e la dimostrazione di proprietà logiche. La sua implementazione in Java e l'estensione alle logiche modali rappresentano passi significativi verso l'automazione della logica e l'applicazione pratica di questi concetti teorici.
 
 
-
-\bibliographystyle{amsalpha}
-\bibliography{tesi}
-
 %
 %			BIBLIOGRAFIA
 %
-% \begin{thebibliography}{00}
+\bibliographystyle{amsalpha}
+\bibliography{tesi}
 
-% esempio di bibliografia:
-
-
-
-% \end{thebibliography}
 
 %
 %			RINGRAZIAMENTI
