@@ -97,11 +97,9 @@ Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul m
 Iniziamo presentando una breve introduzione alla logica proposizionale, che espone i concetti utili a comprendere il funzionamento del metodo di risoluzione, trattato nel capitolo~\ref{resol}. L'introduzione alle logiche modali sarà illustrata nel capitolo~\ref{modal}.
 
 \section{Logica proposizionale}
-La logica proposizionale è un sistema formale per la rappresentazione e l'analisi del ragionamento. Essa si basa su proposizioni e la sua sintassi comprende l'utilizzo di formule. Una formula è un'espressione sintattica che rappresenta una proposizione. Le formule sono costruite utilizzando gli operatori (o connettivi) logici e le variabili proposizionali, e sono utilizzate per rappresentare relazioni, proprietà e regole all'interno di un sistema formale.
+La logica proposizionale~\cite{logica_prop} è un sistema formale per la rappresentazione e l'analisi del ragionamento. Essa si basa su proposizioni e la sua sintassi comprende l'utilizzo di formule. Una formula è un'espressione sintattica che rappresenta una proposizione. Le formule sono costruite utilizzando gli operatori (o connettivi) logici e le variabili proposizionali, e sono utilizzate per rappresentare relazioni, proprietà e regole all'interno di un sistema formale. Nella sezione \ref{def_formula} è presente la definizione formale di \emph{formula}. Le formule possono essere \emph{atomiche} o \emph{composte}.
 
-La semantica della logica proposizionale stabilisce come valutare le formule, associando loro valori di verità in base a interpretazioni che specificano lo stato di verità di ogni proposizione atomica. Le formule possono essere \emph{atomiche} o \emph{composte}.
-
-\subsection{Formule atomiche}
+\subsection*{Formule atomiche}
 Le formule atomiche rappresentano il caso più semplice di formula, in cui non vengono usati i connettivi logici. Una formula atomica è una variabile proposizionale, che può essere identificata tramite una lettera dell'alfabeto, ad esempio ``$p$''; essa viene valutata come vera (\emph{true}) o falsa (\emph{false}) in base all'interpretazione considerata.
 
 \begin{definition}
@@ -114,18 +112,19 @@ Le formule atomiche rappresentano il caso più semplice di formula, in cui non v
 
 \emph{Esempio}: La variabile $p$ può rappresentare la proposizione ``\emph{piove}'', ed essere interpretata come vera se effettivamente piove, o falsa in caso contrario.
 
-\subsection{Formule composte}
+\subsection*{Formule composte}
 Le formule composte sono ottenute mediante i connettivi logici a partire dalle formule atomiche. I connettivi della logica proposizionale sono:
 \begin{itemize}
-    \item $\lnot \;$ è la negazione logica (\textbf{not})
-    \item $\land \;$ è la congiunzione logica (\textbf{and})
-    \item $\lor \;$ è la disgiunzione logica (\textbf{or})
+    \item $\lnot\;$ è la negazione logica (\textbf{not})
+    \item $\land\;$ è la congiunzione logica (\textbf{and})
+    \item $\lor\;$ è la disgiunzione logica (\textbf{or})
     \item $\to\;$ è l'implicazione logica (\textbf{implica})
     \item $\tto\;$ è la doppia implicazione (\textbf{se e solo se})
 \end{itemize}
 
-\subsection*{Definizione formale di formula}
-Ora abbiamo tutto l'occorrente per dare una definizione più formale di \emph{formula}, e della sua interpretazione.
+\subsection{Definizione formale di formula}
+\label{def_formula}
+Ora abbiamo tutto l'occorrente per dare una definizione formale di \emph{formula}, e della sua interpretazione.
 \begin{definition}
     Sia $P$ un insieme di variabili proposizionali. L'insieme delle formule ottenute da $P$ è definito induttivamente:
     \begin{itemize}
@@ -174,14 +173,18 @@ Questa definizione stabilisce il significato dei connettivi logici.
 \end{definition}
 Quindi una tautologia è una formula sempre vera, che come vedremo, può essere ridondante in alcuni casi.
 
-\emph{Esempio}: la formula $p \lor \lnot p$ è il caso più semplice di tautologia, perché qualunque sia l'interpretazione che diamo a $p$, la formula risulta essere sempre vera.
+\emph{Esempio}: la formula
+\[p \lor \lnot p\]
+è il caso più semplice di tautologia, perché qualunque sia l'interpretazione che diamo a $p$, la formula risulta essere sempre vera.
 
 \begin{definition}
     Una formula è una \textbf{contraddizione} se e solo se è insoddisfacibile.
 \end{definition}
 Dunque, una contraddizione è una formula nella quale tutte le sue interpretazioni la rendono falsa. \`E bene notare che se si applica la negazione logica a una contraddizione si ottiene una tautologia, e viceversa.
 
-\emph{Esempio}: la formula $p \land \lnot p$ è una contraddizione, perché non è possibile renderla vera.
+\emph{Esempio}: la formula
+\[p \land \lnot p\]
+è una contraddizione, perché non è possibile renderla vera.
 
 Per ulteriori approfondimenti sulla logica proposizionale si consulti \cite{logica_prop}.
 
@@ -866,13 +869,13 @@ Le clausole, come nella logica classica, sono una disgiunzione di letterali. Que
     \item \textbf{Clausola locale}: \[ l_1 \lor l_2 \lor \ldots \lor l_n \]
     \item \textbf{Clausola globale}: \[ G(l_1 \lor l_2 \lor \ldots \lor l_n) \]
 \end{itemize}
-dove $l_i$ è un letterale proposizionale o modale. Una clausola globale è vera in tutti i mondi di un modello, una clausola locale invece è vera soltanto in un mondo del modello. Per approfondire il concetto di ``mondo'' di un modello si faccia riferimento all'articolo \cite{Articolo_resolution}.
+dove $l_i$ è un letterale proposizionale o modale. Una clausola globale è vera in tutti i mondi di un modello, una clausola locale invece è vera soltanto in un mondo del modello. Per approfondire il concetto di ``mondo'' di un modello si faccia riferimento a \cite{Articolo_resolution}.
 
 Per rappresentare le clausole è possibile utilizzare la notazione insiemistica, come nella logica classica.
 
 \section{Clausificazione di formule modali}
 \label{modal_claus}
-Per poter effettuare la clausificazione di una formula $\phi$ è necessario utilizzare la funzione $\eta$. Essa è una funzione iniettiva di rinominazione, il cui scopo è quello di mappare una nuova variabile proposizionale ad ogni sottoformula di $\phi$; è importante che questa nuova variabile non sia presente in $\phi$. La funzione $\eta$ viene utilizzata all'interno di un'altra funzione, chiamata \textbf{R}, ossia la funzione di \emph{riduzione}. La clausificazione della formula $\phi$ viene fatta nel seguente modo:
+Per poter effettuare la clausificazione di una formula $\phi$ è necessario utilizzare la funzione $\eta$. Essa è una funzione iniettiva di rinominazione, il cui scopo è quello di mappare una nuova variabile proposizionale ad ogni sottoformula di $\phi$; è importante che questa nuova variabile non sia presente in $\phi$. La funzione $\eta$ viene utilizzata all'interno di un'altra funzione, chiamata \textbf{R}, ossia la funzione di \emph{riduzione}. Queste funzioni vengono descritte in \cite{Articolo_resolution}. La clausificazione della formula $\phi$ viene fatta nel seguente modo:
 \[ \{ \eta(\phi) \} \cup R(G(\eta(\phi) \tto \phi)) \]
 dove \textbf{R} è così definita (si consideri $t$ e $p$ come variabili proposizionali):
 \[
@@ -1248,7 +1251,7 @@ Per verificare la validità di una qualsiasi formula $F$, si considera la sua ne
 \subsection{Dimostrazione di conseguenze logiche}
 
 \begin{definition}
-    Siano $F_1$ e $F_2$ due formule. Si dice che $F_2$ è conseguenza logica di $F_1$ se e solo se per ogni interpretazione i, se i soddisfa $F_1$, allora soddisfa anche $F_2$. La conseguenza logica si può scrivere con $F_1 \models F_2$.
+    Siano $F_1$ e $F_2$ due formule. Si dice che $F_2$ è conseguenza logica di $F_1$ se e solo se per ogni interpretazione I, se I soddisfa $F_1$, allora soddisfa anche $F_2$. La conseguenza logica si può scrivere con $F_1 \models F_2$.
 \end{definition}
 Applicando la verifica della validità di formule, è possibile dimostrare la conseguenza logica di due formule $F_1$ e $F_2$ utilizzando l'implicazione logica, ovvero il connettivo $\to$. Infatti, se $F_2$ è conseguenza logica di $F_1$, allora la formula:
 \[
@@ -1298,12 +1301,12 @@ A questo punto applichiamo il metodo di risoluzione su $S$, che ricava facilment
 
 \section{La classe \texttt{App}}
 \label{class:App}
-L'implementazione di quanto visto in questo capitolo, viene svolta nella classe \texttt{App}. Questa classe è presente sia nel sistema per la logica classica, che in quello per le logiche modali. Come spiegato nella sezione \ref{project_structure}, la classe \texttt{App} contiene soltanto il metodo \texttt{main}; esso calcola la validità di una formula presa da \emph{Standard input}. Il codice \ref{method:main} mostra questo metodo.
+L'implementazione di quanto visto in questo capitolo, viene svolta nella classe \texttt{App}. Questa classe è presente sia nel sistema per la logica classica, che in quello per le logiche modali. Come spiegato nella sezione \ref{project_structure}, la classe \texttt{App} contiene soltanto il metodo \texttt{main}; esso calcola la validità di una formula letta da \emph{Standard input}. Il codice \ref{method:main} mostra questo metodo.
 
 Il metodo \texttt{main} esegue le seguenti operazioni:
 
 \begin{itemize}
-    \item Prende da \emph{Stdin} una formula in formato testuale, ed effettua il \emph{parsing} su di essa, ottenendo così l'istanza di \texttt{Formula f}.
+    \item Legge da \emph{Stdin} una formula in formato testuale, ed effettua il \emph{parsing} su di essa, ottenendo così l'istanza di \texttt{Formula f}.
     \item Applica la negazione logica su \texttt{f}, ottenendo l'istanza di \texttt{CompoundFormula not$\_$f}.
     \item Esegue la clausificazione della formula \texttt{not$\_$f}, ottenendo l'istanza di \texttt{ClauseSet cnf}, e la stampa su \emph{Standard Output}.
     \item Se sulla riga di comando è presente il comando ``\textbf{-v}'', abilita la stampa degli step di risoluzione, richiamando il metodo \texttt{setEnableSteps} della classe \texttt{Resolution}, passandogli come parametro \texttt{true}.
