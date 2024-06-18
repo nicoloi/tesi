@@ -69,22 +69,14 @@
 %			DEDICA
 %
 \beforepreface
-\prefacesection{Dediche}
-        {\hfill \Large {\sl dedicato a \dots}}
+% \prefacesection{Dediche}
+%         {\hfill \Large {\sl dedicato a \dots}}
+
 % 
 %			PREFAZIONE
 %
 \prefacesection{Prefazione}
 Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione e sulla sua implementazione mediante il linguaggio di programmazione Java. Inizialmente, affronteremo il metodo di risoluzione per la logica classica, ossia la logica proposizionale; successivamente, verrà trattato il metodo di risoluzione per le logiche modali non-normali, che rappresentano un'estensione della logica proposizionale.
-%
-%
-%			ORGANIZZAZIONE
-% \section*{Organizzazione della tesi}
-% \label{organizzazione}
-% La tesi \`e organizzata come segue:
-% \begin{itemize}
-% \item nel Capitolo \ref{intro} ....
-% \end{itemize}
 
 \afterpreface
 \pagestyle{mystyle} %togli questo per ripristinare la numerazione del template
@@ -93,7 +85,6 @@ Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul m
 %			CAPITOLO 1
 \chapter{Introduzione}
 \label{intro}
-
 Iniziamo presentando una breve introduzione alla logica proposizionale, che espone i concetti utili a comprendere il funzionamento del metodo di risoluzione, trattato nel capitolo~\ref{resol}. L'introduzione alle logiche modali sarà illustrata nel capitolo~\ref{modal}.
 
 \section{Logica proposizionale}
@@ -105,12 +96,12 @@ Le formule atomiche rappresentano il caso più semplice di formula, in cui non v
 \begin{definition}
     Sia $P$ un insieme di variabili proposizionali. Un'\textbf{interpretazione} (o assegnamento) $I$ per $P$ è una funzione:
     \[
-        I: \quad P \to \{true, false\}
+        I: \quad P \; \mapsto \; \{true, false\}
     \]
     che assegna un valore di verità a ogni variabile proposizionale appartenente a $P$.
 \end{definition}
 
-\emph{Esempio}: La variabile $p$ può rappresentare la proposizione ``\emph{piove}'', ed essere interpretata come vera se effettivamente piove, o falsa in caso contrario.
+\noindent \emph{Esempio}: La variabile $p$ può rappresentare la proposizione ``\emph{piove}'', ed essere interpretata come vera se effettivamente piove, o falsa in caso contrario.
 
 \subsection*{Formule composte}
 Le formule composte sono ottenute mediante i connettivi logici a partire dalle formule atomiche. I connettivi della logica proposizionale sono:
@@ -134,7 +125,7 @@ Ora abbiamo tutto l'occorrente per dare una definizione formale di \emph{formula
         \item nient'altro è una formula.
     \end{itemize}
 \end{definition}
-\emph{Esempio}: Consideriamo la seguente formula: 
+\noindent \emph{Esempio}: Consideriamo la seguente formula: 
 \[ \lnot p \land q \] 
 essa è una formula composta ottenuta a partire dall'atomica $p$ che viene negata tramite la negazione logica ($\lnot$), e successivamente messa in congiunzione logica ($\land$) con l'atomica $q$.
 
@@ -146,7 +137,7 @@ L'interpretazione di una formula dipende dall'interpretazione delle variabili pr
 \begin{definition}
     Sia $L$ un insieme di formule. Un'\textbf{interpretazione} $I$ per $L$ è una funzione:
     \[
-        I: \quad L \to \{true, false\}
+        I: \quad L \; \mapsto \; \{true, false\}
     \]
     tale che, per ogni coppia di formule $A, B \in L$ valgono le seguenti condizioni:
     \begin{itemize}
@@ -158,20 +149,20 @@ L'interpretazione di una formula dipende dall'interpretazione delle variabili pr
         \item $I(A \tto B) = true$, se e solo se $I(A) = true$ \textbf{e} $I(B) = true$, \textbf{oppure} $I(A) = false$ \textbf{e} $I(B) = false$
     \end{itemize}
 \end{definition}
-Questa definizione stabilisce il significato dei connettivi logici.
+\noindent Questa definizione stabilisce il significato dei connettivi logici.
 
 \subsection{Soddisfacibilità di una formula}
 \begin{definition}
     Una formula $F$ si dice \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che la soddisfa, ossia esiste almeno un'interpretazione $I$ tale che $I(F) = \text{true}$. Se non esiste alcuna interpretazione del genere, allora $F$ si dice \textbf{insoddisfacibile}.
 \end{definition}
-\emph{Esempio}: la formula $p \land q$ è soddisfacibile, perché l'interpretazione $I$ che assegna i valori $I(p) = true$ e $I(q) = true$ la soddisfa.
+\noindent \emph{Esempio}: la formula $p \land q$ è soddisfacibile, perché l'interpretazione $I$ che assegna i valori $I(p) = true$ e $I(q) = true$ la soddisfa.
 
 \subsection{Tautologie e contraddizioni}
 \label{taut-contr}
 \begin{definition}
     Una formula $F$ è una \textbf{tautologia} se e solo se ogni interpretazione di $F$ la soddisfa.
 \end{definition}
-Quindi una tautologia è una formula sempre vera, che come vedremo, può essere ridondante in alcuni casi.
+\noindent Quindi una tautologia è una formula sempre vera, che come vedremo, può essere ridondante in alcuni casi.
 
 \emph{Esempio}: la formula
 \[p \lor \lnot p\]
@@ -180,7 +171,7 @@ Quindi una tautologia è una formula sempre vera, che come vedremo, può essere 
 \begin{definition}
     Una formula è una \textbf{contraddizione} se e solo se è insoddisfacibile.
 \end{definition}
-Dunque, una contraddizione è una formula nella quale tutte le sue interpretazioni la rendono falsa. \`E bene notare che se si applica la negazione logica a una contraddizione si ottiene una tautologia, e viceversa.
+\noindent Dunque, una contraddizione è una formula nella quale tutte le sue interpretazioni la rendono falsa. \`E bene notare che se si applica la negazione logica a una contraddizione si ottiene una tautologia, e viceversa.
 
 \emph{Esempio}: la formula
 \[p \land \lnot p\]
@@ -204,13 +195,13 @@ Questo metodo consiste nell'applicare (una o più volte) una sola regola: la reg
 \begin{definition}
     Un letterale è una formula atomica, oppure la sua negazione. Un letterale può quindi essere positivo o negativo.
 \end{definition}
-Ad esempio, ``$a$'' è un letterale positivo, ``$\lnot b$'' è un letterale negativo.
+Esempio: ``$a$'' è un letterale positivo, ``$\lnot b$'' è un letterale negativo.
 
 \subsubsection{Opposto di un letterale}
 \begin{definition}
     Dato un letterale $L$, il suo \textbf{opposto} (o \textbf{complemento}) $\overline{L}$ è la sua negazione.
 \end{definition}
-Ad esempio, se $L = p$ allora $\overline{L} = \lnot p$ e se $L = \lnot p$ allora $\overline{L} = p$.
+Esempio: se $L = p$ allora $\overline{L} = \lnot p$ e se $L = \lnot p$ allora $\overline{L} = p$.
 
 \subsection{Clausole}
 \begin{definition}
@@ -230,7 +221,7 @@ L'interpretazione delle clausole è semplice: una clausola è vera se e solo se 
 \begin{definition}
     Una clausola è tautologica se e solo se contiene almeno un letterale ed il suo opposto.
 \end{definition}
-Ad esempio: ``$\{ a, b, c, \lnot a \}$'' è una clausola tautologica, perché contiene il letterale ``$a$'' ed il suo opposto. Questo tipo di clausola risulta essere sempre vera qualunque sia l'interpretazione dei suoi letterali, quindi essa rappresenta una tautologia (si veda la sezione \ref{taut-contr}).
+\noindent Esempio: ``$\{ a, b, c, \lnot a \}$'' è una clausola tautologica, perché contiene il letterale $a$ ed il suo opposto. Questo tipo di clausola risulta essere sempre vera qualunque sia l'interpretazione dei suoi letterali, quindi essa rappresenta una tautologia (si veda la sezione \ref{taut-contr}).
 
 \subsubsection{Clausola vuota}
 è importante notare che una clausola può non contenere alcun letterale, in tal caso si parla di \emph{clausola vuota}. La clausola vuota rappresenta la \textbf{contraddizione} (si veda la sezione \ref{taut-contr}) e si può indicare con ``$\{ \}$''.
@@ -239,16 +230,14 @@ Ad esempio: ``$\{ a, b, c, \lnot a \}$'' è una clausola tautologica, perché co
 \begin{definition}
     La Forma Normale Congiuntiva (CNF) è una forma standard delle formule proposizionali in logica matematica. Una formula è in CNF se è una congiunzione di clausole.
 \end{definition}
-Seguendo lo stesso approccio per le clausole, la \emph{CNF} può essere rappresentata anch'essa in notazione insiemistica come \textbf{insieme di clausole}, quindi ad esempio la seguente \emph{CNF}:
+\noindent Seguendo lo stesso approccio per le clausole, la \emph{CNF} può essere rappresentata anch'essa in notazione insiemistica come \textbf{insieme di clausole}, quindi ad esempio la seguente \emph{CNF}:
 \[ (a \lor b) \land (\lnot a \lor c) \land (\lnot b \lor c) \]
 diventa
 \[\{ \quad \{a, b\}, \{\lnot a, c\}, \{\lnot b, c\} \quad \}\]
 anche in questo caso la congiunzione è sottintesa. Possiamo quindi considerare la \emph{CNF} e gli insiemi di clausole come lo stesso oggetto semantico.
 
 \subsubsection{Soddisfacibilità di un insieme di clausole}
-\begin{definition}
-    Un insieme di clausole $S$ è \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che soddisfa \textbf{tutte} le clausole appartenenti a $S$.
-\end{definition}
+Un insieme di clausole $S$ è \textbf{soddisfacibile} se e solo se esiste almeno un'interpretazione che soddisfa \textbf{tutte} le clausole appartenenti a $S$.
 
 \section{Regola di risoluzione}
 \label{Res}
@@ -744,7 +733,6 @@ La formula ricavata nell'ultimo passaggio è in \emph{CNF}, ed essa corrisponde 
 \label{parsing}
 Se volessimo utilizzare un programma che legge da un flusso di input una formula in formato testuale (ad esempio da \emph{Stdin} o da un file di testo), è necessario interpretare la stringa di testo in modo tale da ottenere la formula. La trasformazione di rappresentazioni testuali in strutture dati utilizzabili da un programma è un processo noto come \emph{parsing}. Nel nostro sistema, implementiamo un parser per convertire le formule da stringhe di testo in oggetti di tipo \texttt{Formula}. Per eseguire il parsing, bisogna definire prima di tutto una grammatica che descrive il linguaggio utilizzato per le formule. A partire dalla grammatica vengono generati il \emph{lexer}, il \emph{parser} e il \emph{listener}.
 
-
 \subsection{Utilizzo del parser ANTLR4}
 Il parser utilizzato nel nostro sistema è \emph{ANTLR4}~\cite{antlr4, Parr13}. Nella struttura del progetto presente nella sezione \ref{project_structure}, nel package \emph{antlr4} è presente il file \emph{FormulaExpression.g4} che contiene la grammatica. Inoltre, sono presenti quattro file che sono stati generati automaticamente da \emph{ANTLR4} a partire dalla grammatica:
 \begin{itemize}
@@ -809,7 +797,7 @@ se eseguiamo il parsing di questa stringa otteniamo il seguente \emph{AST}:
     % \centering
     \includegraphics[width=0.7\textwidth, height=0.5\textheight]{img/antlr4_parse_tree.png}
 \end{figure}
-Durante l'attraversamento di questo albero vengono eseguiti i metodi \\ \texttt{ExitAtomic\_formula} e \texttt{exitFormula} della classe \texttt{FormulaListenerImplementation}; essi vengono richiamati rispettivamente quando si esce da un nodo \emph{atomic\_formula} e da un nodo \emph{formula}. Nel primo caso si crea una formula atomica e la si aggiunge allo \emph{stack} (tramite l'operazione di \emph{push}), nel secondo caso si controlla la presenza di un figlio che contiene un connettivo unario o binario, e si crea una formula composta applicando quel connettivo alla formula in cima allo stack (nel caso di connettivo unario) oppure alle prime due formule in cima allo stack (nel caso di connettivo binario). Infine viene inserita nello stack la formula appena creata. Per ottenere l'elemento in cima allo stack viene usata l'operazione di \emph{pop} su di esso.
+\noindent Durante l'attraversamento di questo albero vengono eseguiti i metodi \\ \texttt{ExitAtomic\_formula} e \texttt{exitFormula} della classe \texttt{FormulaListenerImplementation}; essi vengono richiamati rispettivamente quando si esce da un nodo \emph{atomic\_formula} e da un nodo \emph{formula}. Nel primo caso si crea una formula atomica e la si aggiunge allo \emph{stack} (tramite l'operazione di \emph{push}), nel secondo caso si controlla la presenza di un figlio che contiene un connettivo unario o binario, e si crea una formula composta applicando quel connettivo alla formula in cima allo stack (nel caso di connettivo unario) oppure alle prime due formule in cima allo stack (nel caso di connettivo binario). Infine viene inserita nello stack la formula appena creata. Per ottenere l'elemento in cima allo stack viene usata l'operazione di \emph{pop} su di esso.
 
 Alla fine della visita dell'\emph{AST}, in cima allo stack ci sarà la formula associata alla stringa di partenza, che viene ottenuta dal metodo \texttt{getFormula} e a sua volta restituita dal metodo \texttt{parse} (si veda il codice \ref{parse}). Nell'esempio visto in precedenza la formula ottenuta è:
 \[ (a \land \lnot b) \to c \]
@@ -852,7 +840,7 @@ Questo capitolo si concentra sulle logiche modali, in particolare sulle logiche 
 \end{definition}
 Il connettivo modale che noi consideriamo è il \emph{box} ($\Box$); esso viene utilizzato nelle formule delle logiche modali, insieme agli altri connettivi della logica classica. Questo connettivo è fondamentale nella formalizzazione di concetti come la necessità, l'obbligatorietà, la conoscenza o la verità assoluta, a seconda del contesto in cui viene utilizzato.
 
-L'interpretazione delle formule in questo tipo di logiche è più complicata rispetto a quella nella logica classica che abbiamo visto nel capitolo \ref{intro}; per approfondire questo aspetto si consulti \cite{Articolo_resolution}.
+L'interpretazione delle formule in questo tipo di logiche è più complicata rispetto all'interpretazione nella logica classica che abbiamo visto nel capitolo \ref{intro}; per approfondire questo argomento si consulti \cite{Articolo_resolution}.
 
 \section{Panoramica sulle logiche modali non-normali}
 Le logiche modali \emph{non-normali} (\emph{NNML}) sono una classe di sistemi logici che estendono la logica modale normale introducendo concetti e assiomi che non sono presenti nella forma più basilare della logica modale. Queste logiche \emph{non-normali} si discostano dalle proprietà della logica modale \emph{normale} minima, \textbf{K}, che soddisfa tutti gli assiomi basilari della logica modale. Queste logiche sono organizzate gerarchicamente in un ``cubo'' di sistemi logici, che comprende la logica modale \textbf{E} come la più semplice e altre logiche ottenute aggiungendo assiomi come \textbf{C}, \textbf{M} e \textbf{N}. Il metodo di risoluzione che vediamo in questo capitolo si concentra soltanto sulla logica modale non-normale minimale \textbf{E}.
@@ -1114,20 +1102,32 @@ In questo modo l'\emph{AST} terrà conto anche del connettivo \emph{box}.
 \section{Implementazione del metodo di risoluzione}
 \label{impl_res_modal}
 L'implementazione del metodo di risoluzione viene svolta, come nel caso della logica classica, all'interno della classe \texttt{Resolution}; essa è una classe senza costruttori dove sono presenti dei campi statici e metodi statici. I campi statici sono quelli descritti nella sezione \ref{class:Resolution}, ossia \texttt{visited}, \texttt{enableSteps} e \texttt{trace}. i metodi della classe sono i seguenti:
-\begin{itemize}
-    \item \texttt{isSatisfiable}
-    \item \texttt{getComplementaryLiteral}
-    \item \texttt{getModalLiterals}
-    \item \texttt{addCoupleInMap}
-    \item \texttt{alreadyVisited}
-    \item \texttt{setEnableSteps}
-    \item \texttt{printTrace}
-    \item \texttt{G2L}
-    \item \texttt{LRES}
-    \item \texttt{GRES}
-    \item \texttt{LERES}
-    \item \texttt{GERES}
-\end{itemize}
+
+\begin{center}
+    \begin{minipage}{0.45\textwidth}
+        \begin{itemize}
+            \item \texttt{isSatisfiable}
+            \item \texttt{getComplementaryLiteral}
+            \item \texttt{getModalLiterals}
+            \item \texttt{addCoupleInMap}
+            \item \texttt{alreadyVisited}
+            \item \texttt{setEnableSteps}
+            \item \texttt{printTrace}
+        \end{itemize}
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}{0.45\textwidth}
+        \begin{itemize}
+            \item \texttt{G2L}
+            \item \texttt{LRES}
+            \item \texttt{GRES}
+            \item \texttt{LERES}
+            \item \texttt{GERES}
+        \end{itemize}
+    \end{minipage}
+\end{center}
+
+
 \subsection*{Il metodo \texttt{isSatisfiable}}
 Il metodo \texttt{isSatisfiable} è il metodo principale che implementa l'algoritmo di risoluzione ed è l'unico ad essere pubblico. Questo metodo prende in input un oggetto \texttt{ClauseSet s} e restituisce \texttt{true} se \texttt{s} è soddisfacibile, \texttt{false} altrimenti. Inizialmente, Dopo aver controllato che \texttt{s} non sia \texttt{null} e non sia vuoto, elimina tutte le eventuali clausole tautologiche e crea la lista di clausole \texttt{listCl} dove aggiunge tutte le clausole rimaste in \texttt{s}. Lo svolgimento del metodo \texttt{isSatisfiable} può essere diviso in tre parti:
 
@@ -1157,7 +1157,7 @@ Il metodo \texttt{LERES} prende in input due clausole locali e due letterali, e 
 \vspace{20pt}
 
 \begin{minipage}{\linewidth}
-    \small
+    % \small
     \begin{lstlisting}[caption={Metodo \texttt{LRES} della classe \texttt{Resolution}}, label={method:LRES}]
 private static LocalClause LRES(LocalClause lc1, LocalClause lc2, Literal lit) {
     LocalClause result = (LocalClause) lc1.union(lc2);
@@ -1168,8 +1168,10 @@ private static LocalClause LRES(LocalClause lc1, LocalClause lc2, Literal lit) {
     \end{lstlisting}
 \end{minipage}
 
+\vspace{1cm}
+
 \begin{minipage}{\linewidth}
-    \small
+    % \small
     \begin{lstlisting}[caption={Metodo \texttt{LERES} della classe \texttt{Resolution}}, label={method:LERES}]
 private static LocalClause LERES(LocalClause lc1, LocalClause lc2, Literal ma, Literal nma) {
     LocalClause result = (LocalClause) lc1.union(lc2);
@@ -1179,6 +1181,8 @@ private static LocalClause LERES(LocalClause lc1, LocalClause lc2, Literal ma, L
 }
     \end{lstlisting}
 \end{minipage}
+
+\newpage
 
 \subsection{Memorizzazione delle coppie di clausole visitate}
 La gestione delle coppie di clausole visitate viene fatta nello stesso modo in cui veniva svolto nell'implementazione per la logica classica (si veda la sezione \ref{visited}). Si utilizza quindi la mappa \texttt{visited}, che memorizza inizialmente le coppie di clausole sulle quali vengono applicate le regole \emph{LRES} e \emph{GRES} tramite i loro indici. Dopo che sono state applicate queste due regole su tutte le coppie possibili, la mappa \texttt{visited} viene svuotata, in questo modo sarà possibile eseguire le regole \emph{LERES} e \emph{GERES} anche sulle coppie di clausole alle quali sono state applicate in precedenza le altre due regole. Si noti che l'applicazione della regola \emph{G2L} non viene memorizzata.
@@ -1437,7 +1441,15 @@ In conclusione, il metodo di risoluzione rimane un potente strumento per l'anali
 %			RINGRAZIAMENTI
 %
 \prefacesection{Ringraziamenti}
-...
+Dedico questo spazio finale della mia tesi di Laurea, alla mia famiglia e a tutte le persone che durante il mio percorso universitario mi hanno sostenuto e compreso.
+
+Un grazie ai miei amici di Università, Manuele, Samuele, Davide, Stefano, Michele, Filippo, Enrico, che hanno reso il mio percorso universitario più spensierato.
+
+Un grazie al mio relatore, Camillo Fiorentini che mi ha seguito per la realizzazione di questo elaborato finale.
+
+E un grazie speciale ai miei genitori, a mio fratello Lorenzo e mia nonna, che con la loro comprensione, il loro sostegno e il loro affetto mi hanno aiutato a superare momenti più difficili e ad arrivare alla fine di questo percorso stanco ma soddisfatto.
+
+Ringrazio anche me stesso che sono riuscito a superare difficoltà, ma con tenacia e costanza sono arrivato al traguardo che mi ero prefissato.
 
 \end{document}
 
