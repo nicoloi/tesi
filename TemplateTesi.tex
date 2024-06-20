@@ -199,9 +199,10 @@ Esempio: ``$a$'' è un letterale positivo, ``$\lnot b$'' è un letterale negativ
 
 \subsubsection{Opposto di un letterale}
 \begin{definition}
-    Dato un letterale $L$, il suo \textbf{opposto} (o \textbf{complemento}) $\overline{L}$ è la sua negazione.
+    Dato un letterale $L$, il suo \textbf{opposto} (o \textbf{complemento}) $\overline{L}$ è così definito:
+
+    se $L = p$ allora $\overline{L} = \lnot p$, e se $L = \lnot p$ allora $\overline{L} = p$.
 \end{definition}
-Esempio: se $L = p$ allora $\overline{L} = \lnot p$ e se $L = \lnot p$ allora $\overline{L} = p$.
 
 \subsection{Clausole}
 \begin{definition}
@@ -835,9 +836,8 @@ public static Formula parse(String formulaStr) {
 \label{modal}
 Questo capitolo si concentra sulle logiche modali, in particolare sulle logiche non-normali presentate nell'articolo \cite{Articolo_resolution}; principalmente, mostreremo l'implementazione di una di queste logiche ottenuta estendendo il metodo di risoluzione della logica classica. La prima parte del capitolo illustra le nozioni teoriche, la seconda parte riguarda l'implementazione in Java di ciò che viene spiegato nella parte teorica. 
 
-\begin{definition}
-    Una logica modale è un'estensione della logica classica che introduce connettivi modali per esprimere modalità come necessità e possibilità. Questi connettivi permettono di ragionare non solo sulle proposizioni, ma anche su ciò che è possibile o necessario in vari mondi possibili.
-\end{definition}
+Una logica modale è un'estensione della logica classica che introduce connettivi modali per esprimere modalità come necessità e possibilità. Questi connettivi permettono di ragionare non solo sulle proposizioni, ma anche su ciò che è possibile o necessario in vari mondi possibili.
+
 Il connettivo modale che noi consideriamo è il \emph{box} ($\Box$); esso viene utilizzato nelle formule delle logiche modali, insieme agli altri connettivi della logica classica. Questo connettivo è fondamentale nella formalizzazione di concetti come la necessità, l'obbligatorietà, la conoscenza o la verità assoluta, a seconda del contesto in cui viene utilizzato.
 
 L'interpretazione delle formule in questo tipo di logiche è più complicata rispetto all'interpretazione nella logica classica che abbiamo visto nel capitolo \ref{intro}; per approfondire questo argomento si consulti \cite{Articolo_resolution}.
@@ -1012,7 +1012,7 @@ La classe \texttt{Clause} viene estesa dalle due classi \texttt{LocalClause} e \
 La classe \texttt{ClauseSet} rappresenta la forma clausale di una formula, espressa come insieme di clausole. Questa classe è la medesima utilizzata nella logica classica (si veda sezione \ref{ClauseSet}). La differenza sostanziale è che le clausole all'interno di un'istanza di \texttt{ClauseSet} possono essere indistintamente locali o globali, e i letterali contenuti in ciascuna clausola possono essere parimenti proposizionali o modali.
 
 
-\section{implementazione delle formule modali}
+\section{Implementazione delle formule modali}
 Per l'implementazione delle formule modali generiche si segue lo stesso approccio usato per la logica classica (si veda l'inizio del capitolo \ref{formulas}); quindi si usa la classe astratta \texttt{Formula} che viene estesa dalle classi \texttt{AtomicFormula} e \texttt{CompoundFormula}. La classe \texttt{AtomicFormula} è identica a quella presentata nella sezione \ref{AtomicFormula}. La classe \texttt{CompoundFormula} utilizza l'enumerazione \texttt{Connective} estesa al connettivo unario \emph{box} (si utilizza la costante enumerativa \texttt{BOX}, la cui rappresentazione testuale usa il carattere ``$\#$''). La classe \texttt{AtomicFormula} implementa le formule seguendo lo stesso approccio con alberi binari che abbiamo già visto; i nodi che descrivono il connettivo \emph{box} hanno solo il figlio sinistro, come nel caso del \emph{not} (perché è unario).
 
 \subsection{Implementazione della clausificazione}
