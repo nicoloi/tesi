@@ -76,7 +76,7 @@
 %			PREFAZIONE
 %
 \prefacesection{Prefazione}
-Questo elaborato riguarda l'ambito della logica matematica, concentrandosi sul metodo di risoluzione e sulla sua implementazione mediante il linguaggio di programmazione Java. Inizialmente, affronteremo il metodo di risoluzione per la logica classica, ossia la logica proposizionale; successivamente, verrà trattato il metodo di risoluzione per le logiche modali non-normali, che rappresentano un'estensione della logica proposizionale.
+Questo elaborato esplora l'ambito della logica matematica, concentrandosi sul metodo di risoluzione e sulla sua implementazione mediante il linguaggio di programmazione Java. Inizialmente, affronteremo il metodo di risoluzione per la logica classica, ossia la logica proposizionale; successivamente, verrà trattato il metodo di risoluzione per le logiche modali non-normali, che rappresentano un'estensione della logica proposizionale.
 
 \afterpreface
 \pagestyle{mystyle} %togli questo per ripristinare la numerazione del template
@@ -208,7 +208,7 @@ Esempio: ``$a$'' è un letterale positivo, ``$\lnot b$'' è un letterale negativ
 \begin{definition}
     Una clausola è una disgiunzione di uno o più letterali.
 \end{definition}
-Consideriamo il seguente esempio:
+\noindent Consideriamo il seguente esempio:
 \[ a \lor \lnot b \lor \lnot c \lor d \] 
 questa è una clausola formata dai letterali ``$a$'', ``$\lnot b$'', ``$\lnot c$'', ``$d$''.
 
@@ -216,13 +216,13 @@ Una clausola può anche essere rappresentata in notazione insiemistica, in quest
 \[ \{a, \lnot b, \lnot c, d\}\]
 che come si può notare, il simbolo di disgiunzione logica non è più presente, ma è sottinteso. D'ora in avanti useremo sempre la notazione insiemistica per rappresentare le clausole.
 
-L'interpretazione delle clausole è semplice: una clausola è vera se e solo se almeno un letterale appartenente ad essa è vero in una data interpretazione (a causa della disgiunzione).
+L'interpretazione delle clausole è semplice: una clausola è soddisfatta se e solo se almeno un letterale appartenente ad essa è vero in una data interpretazione (a causa della disgiunzione).
 
 \subsubsection{Clausola tautologica}
 \begin{definition}
     Una clausola è tautologica se e solo se contiene almeno un letterale ed il suo opposto.
 \end{definition}
-\noindent Esempio: ``$\{ a, b, c, \lnot a \}$'' è una clausola tautologica, perché contiene il letterale $a$ ed il suo opposto. Questo tipo di clausola risulta essere sempre vera qualunque sia l'interpretazione dei suoi letterali, quindi essa rappresenta una tautologia (si veda la sezione \ref{taut-contr}).
+\noindent Esempio: ``$\{ a, b, c, \lnot a \}$'' è una clausola tautologica, poiché contiene il letterale $a$ ed il suo opposto. Questo tipo di clausola risulta essere sempre vera qualunque sia l'interpretazione dei suoi letterali, quindi essa rappresenta una tautologia (si veda la sezione \ref{taut-contr}).
 
 \subsubsection{Clausola vuota}
 è importante notare che una clausola può non contenere alcun letterale, in tal caso si parla di \emph{clausola vuota}. La clausola vuota rappresenta la \textbf{contraddizione} (si veda la sezione \ref{taut-contr}) e si può indicare con ``$\{ \}$''.
@@ -540,10 +540,10 @@ Consideriamo il seguente insieme di clausole con associati gli indici ad ognuna 
     \hline
 \end{tabular}
 \end{center}
-\vspace{10pt}
+\vspace{5pt}
 In questo caso, il metodo \texttt{isSatisfiable} richiama il metodo \texttt{resolRule} sulle clausole \textbf{0} e \textbf{1}, e crea la risolvente con indice \textbf{3}. Nella mappa viene aggiunto \textbf{1} nell'insieme corrispondente alla chiave \textbf{0} (perché $0 < 1$). Poi va avanti eseguendo altre volte la regola; le clausole che vengono aggiunte all'insieme di partenza sono le seguenti:
 
-% \vspace{10pt}
+\vspace{5pt}
 
 \begin{center}
     \begin{tabular}{|c||c|c|c|}
@@ -554,10 +554,10 @@ In questo caso, il metodo \texttt{isSatisfiable} richiama il metodo \texttt{reso
         \hline
     \end{tabular}
 \end{center}
-\vspace{10pt}
+\vspace{5pt}
 Nella situazione finale la mappa visited avrà la seguente struttura:
 
-\vspace{10pt}
+\vspace{5pt}
 
 \begin{center}
     \begin{tabular}{|c|c|}
@@ -622,7 +622,7 @@ La lista degli step che verrà stampata su \emph{Stdout} è la seguente:
     \centering
     \includegraphics[width=0.7\textwidth, height=0.4\textheight]{img/step.png}
 \end{figure} 
-Come si può notare, nello step 3 viene trovata la clausola vuota, quindi in questo caso il metodo restituisce \texttt{false} (\texttt{s} è \textbf{insoddisfacibile}).
+\noindent Come si può notare, nello step 3 viene trovata la clausola vuota, quindi in questo caso il metodo restituisce \texttt{false} (\texttt{s} è \textbf{insoddisfacibile}).
 
 
 % 
@@ -642,7 +642,7 @@ La classe \texttt{Formula} contiene soltanto il metodo astratto \texttt{toCnf} c
 Questa classe estende \texttt{Formula} ed istanzia una formula atomica. Essa contiene un campo \texttt{atm} di tipo \texttt{Atom} che lo identifica, e alcuni semplici metodi per la sua gestione: il metodo per ottenere il nome (\texttt{getName}), il metodo per ottenere il letterale associato (\texttt{toLiteral}), e i classici metodi \texttt{equals} e \texttt{toString}.
 
 \section{L'enumerazione \texttt{Connective}}
-Prima di considerare la classe \texttt{CompoundFormula} è bene vedere prima l'enumerazione \texttt{Connective}. Essa si trova nel package \emph{connective} e definisce delle costanti enumerative che descrivono i connettivi della logica proposizionale usati dalle formule composte. La seguente tabella mostra le costanti associate alla loro rappresentazione testuale (ottenute dal metodo \texttt{toString}):
+Prima di affrontare la classe \texttt{CompoundFormula} è bene vedere prima l'enumerazione \texttt{Connective}. Essa si trova nel package \emph{connective} e definisce delle costanti enumerative che descrivono i connettivi della logica proposizionale usati dalle formule composte. La seguente tabella mostra le costanti associate alla loro rappresentazione testuale (ottenute dal metodo \texttt{toString}):
 \begin{table}[H]
     \centering
     \begin{tabular}{|c||c|}
@@ -672,7 +672,7 @@ La sua rappresentazione ad albero è la seguente:
     \centering
     \includegraphics[width=0.7\textwidth, height=0.4\textheight]{img/albero.png}
 \end{figure}
-In questo albero, la radice è il nodo ``$-\!>$'', perché è il connettivo principale della formula dell'esempio. I nodi ``$\thicksim$'' hanno solo il figlio sinistro perché rappresentano la negazione, e le foglie sono le atomiche \emph{a, b, c, d}.
+\noindent In questo albero, la radice è il nodo ``$-\!>$'', perché è il connettivo principale della formula dell'esempio. I nodi ``$\thicksim$'' hanno solo il figlio sinistro perché rappresentano la negazione, e le foglie sono le atomiche \emph{a, b, c, d}.
 
 La classe \texttt{CompoundFormula} ha quindi come attributi il campo \texttt{mainConnective} che definisce il connettivo principale, e il campo \texttt{subFormulas} che consiste in un array di formule che contiene i nodi figli. La classe contiene dei metodi getter per ottenere il connettivo, il figlio destro ed il figlio sinistro, e sovrascrive i metodi \texttt{toString} e \texttt{toCnf}.
 
@@ -931,48 +931,6 @@ Il metodo di risoluzione per le logiche modali non-normali è un approccio siste
 
 \subsection{Regole di risoluzione per la logica modale \emph{E}}
 Nelle regole $RES_E$ che vediamo ora, $C$ e $D$ sono clausole, $l$ è un letterale, e $p$ è una variabile proposizionale. Le regole $RES_E$ sono le seguenti:
-
-% \[
-%     \AXC{$(D \lor l)$}
-%     \AXC{$(D' \lor \lnot l)$}
-%     \RightLabel{LRES}
-%     \BIC{$(D \lor D')$}
-%     \DP
-% \]
-
-% \[
-%     \AXC{$G(D \lor l)$}
-%     \AXC{$G(D' \lor \lnot l)$}
-%     \RightLabel{GRES}
-%     \BIC{$G(D \lor D')$}
-%     \DP
-% \]
-
-% \[
-%     \AXC{$G(D)$}
-%     \RightLabel{G2L}
-%     \UnaryInfC{$D$}
-%     \DP
-% \]
-
-% \begin{prooftree}
-%     \AXC{$(D \lor \Box p)$}
-%     \AXC{$(D' \lor \lnot \Box p')$}
-%     \AXC{$G(C)$}
-%     \AXC{$G(C')$}
-%     \RightLabel{LERES}
-%     \QuaternaryInfC{$(D \lor D')$}
-% \end{prooftree}
-    
-% \begin{prooftree}
-%     \AXC{$G(D \lor \Box p)$}
-%     \AXC{$G(D' \lor \lnot \Box p')$}
-%     \AXC{$G(C)$}
-%     \AXC{$G(C')$}
-%     \RightLabel{GERES}
-%     \QuaternaryInfC{$G(D \lor D')$}
-% \end{prooftree}    
-
 \begin{align*}
     \textbf{LRES} & \quad \frac{(D \lor l) \quad (D' \lor \lnot l)}{(D \lor D')} \\[10pt]
     \textbf{GRES} & \quad \frac{G(D \lor l) \quad G(D' \lor \lnot l)}{G(D \lor D')} \\[10pt]
@@ -986,7 +944,7 @@ Di seguito viene riportata la descrizione di ogni regola:
 \begin{itemize}
     \item \textbf{LRES}: Questa regola è la medesima della regola \emph{Res} della logica classica (si veda sezione \ref{Res}), con la differenza che le due premesse e la risolvente sono clausole locali, e che $l$ presente nelle premesse può essere un letterale modale.
     \item \textbf{GRES}: Come \emph{LRES}, ma le due premesse e la risolvente sono clausole globali.
-    \item \textbf{G2L}: Questa regola permette di ricavare una clausola locale a partire dalla sua controparte globale (la soddisfacibilità locale è conseguenza di quella globale).
+    \item \textbf{G2L}: Questa regola permette di ricavare una clausola locale a partire dalla sua variante globale (la soddisfacibilità locale è conseguenza di quella globale).
     \item \textbf{LERES}: Questa regola afferma che i letterali modali $\Box p$ e $\lnot \Box p'$ possono essere considerati come l'uno l'opposto dell'altro ogni volta che i letterali proposizionali $p$ e $p'$ sono globalmente equivalenti. Questo avviene in tre casi: \begin{enumerate}
         \item quando $G(C) = G(\lnot p \lor p')$ e $G(C') = G(p \lor \lnot p')$, questo significa che $p$ e $p'$ sono semanticamente equivalenti (ossia $p \tto p'$).
         \item quando $G(C) = G(\lnot p)$ e $G(C') = G(\lnot p')$, in questo caso $p$ e $p'$ sono entrambi globalmente falsi, e quindi semanticamente equivalenti.
@@ -1018,7 +976,7 @@ Per l'implementazione delle formule modali generiche si segue lo stesso approcci
 \subsection{Implementazione della clausificazione}
 \label{clausification_impl}
 \subsubsection{La classe \texttt{Eta}}
-La clausificazione viene fatta utilizzando la classe \texttt{Eta}, essa gestisce l'esecuzione della funzione di rinominazione $\eta$. Questa classe ha come campo una mappa che associa istanze di \texttt{Formula} a istanze di \texttt{PropAtom}; il costruttore della classe prende in input un oggetto \texttt{Formula} $f$ e crea ricorsivamente la mappa associando ad ogni sottoformula di $f$ una nuova variabile proposizionale (\texttt{PropAtom}), i nomi che vengono dati alle variabili atomiche sono $\$p1, \$p2, \dots, \$pi$.
+La clausificazione viene fatta utilizzando la classe \texttt{Eta}, essa gestisce l'esecuzione della funzione di rinominazione $\eta$. Questa classe ha come campo una mappa che associa istanze di \texttt{Formula} a istanze di \texttt{PropAtom}; il costruttore della classe prende in input un oggetto \texttt{Formula} $f$ e crea ricorsivamente la mappa associando ad ogni sottoformula di $f$ una nuova variabile proposizionale (\texttt{PropAtom}), i nomi che vengono dati alle variabili atomiche sono $``\$p1", ``\$p2", \; ecc\dots$
 
 La classe \emph{Eta} ha il metodo \texttt{getPropVariable} che prende in input un oggetto \texttt{Formula} $f$ e restituisce il valore $\eta(f)$. Un'istanza di \texttt{Eta} viene usata come campo statico all'interno della classe \texttt{Formula}.
 
@@ -1443,7 +1401,7 @@ In conclusione, il metodo di risoluzione rimane un potente strumento per l'anali
 \prefacesection{Ringraziamenti}
 Dedico questo spazio finale della mia tesi di Laurea, alla mia famiglia e a tutte le persone che durante il mio percorso universitario mi hanno sostenuto e compreso.
 
-Un grazie ai miei amici di Università, Manuele, Samuele, Davide, Stefano, Michele, Filippo, Enrico, che hanno reso il mio percorso universitario più spensierato.
+Un grazie ai miei amici di Università: Manuele, Stefano, Samuele, Michele, Filippo, Davide, Enrico, che hanno reso il mio percorso universitario più spensierato.
 
 Un grazie al mio relatore, Camillo Fiorentini che mi ha seguito per la realizzazione di questo elaborato finale.
 
