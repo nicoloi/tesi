@@ -171,11 +171,13 @@ L'interpretazione di una formula dipende dall'interpretazione delle variabili pr
 \begin{definition}
     Una formula è una \textbf{contraddizione} se e solo se è insoddisfacibile.
 \end{definition}
-\noindent Dunque, una contraddizione è una formula nella quale tutte le sue interpretazioni la rendono falsa. \`E bene notare che se si applica la negazione logica a una contraddizione si ottiene una tautologia, e viceversa.
+\noindent Dunque, una contraddizione è una formula nella quale tutte le sue interpretazioni la rendono falsa.
 
 \emph{Esempio}: la formula
 \[p \land \lnot p\]
-è una contraddizione, perché non è possibile renderla vera.
+è una contraddizione, perché non è possibile soddisfarla.
+
+\`E bene notare che se si applica la negazione logica a una contraddizione si ottiene una tautologia, e viceversa. Questo aspetto verrà approfondito nel capitolo~\ref{app}.
 
 Per ulteriori approfondimenti sulla logica proposizionale si consulti \cite{logica_prop}.
 
@@ -184,7 +186,7 @@ Per ulteriori approfondimenti sulla logica proposizionale si consulti \cite{logi
 %			CAPITOLO 2
 \chapter{Il metodo di risoluzione per la logica classica}
 \label{resol}
-Il metodo di risoluzione è un sistema di calcolo logico per inferire la soddisfacibilità di una formula, esso ha avuto un impatto significativo in vari settori della matematica, dell'informatica e dell'ingegneria. È stato utilizzato per dimostrare teoremi importanti, risolvere problemi pratici e sviluppare algoritmi per l'intelligenza artificiale, la verifica formale e la progettazione dei circuiti~\cite{res_calculus}.
+Il metodo di risoluzione~\cite{res_calculus} è un sistema di calcolo logico per inferire la soddisfacibilità di una formula, esso ha avuto un impatto significativo in vari settori della matematica, dell'informatica e dell'ingegneria. È stato utilizzato per dimostrare teoremi importanti, risolvere problemi pratici e sviluppare algoritmi per l'intelligenza artificiale, la verifica formale e la progettazione dei circuiti.
 
 Questo metodo consiste nell'applicare (una o più volte) una sola regola: la regola di risoluzione. Il difetto è che essa opera soltanto su formule espresse in \textbf{Forma normale congiuntiva (CNF)}. Prima di vedere il metodo di risoluzione è bene capire in che cosa consiste la \emph{CNF}.
 
